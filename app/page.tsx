@@ -1,7 +1,7 @@
-const beachWhatsapp =
-  "https://wa.me/393762115726?text=Ciao%20Playa%20Luna%2C%20vorrei%20prenotare%20una%20giornata%20al%20mare.";
-const eventWhatsapp =
-  "https://wa.me/393505908393?text=Ciao%20Playa%20Luna%2C%20vorrei%20ricevere%20informazioni%20per%20un%20evento.";
+import Image from "next/image";
+import { SiteFooter } from "./components/site-footer";
+import { SiteHeader } from "./components/site-header";
+import { beachWhatsapp, eventWhatsapp } from "./lib/site";
 
 const experiences = [
   {
@@ -9,21 +9,21 @@ const experiences = [
     title: "Beach Club",
     text: "Il mare davanti, l'isola all'orizzonte e tutto quello che serve per staccare davvero.",
     image: "/images/playa-luna/beach-day.webp",
-    href: "#beach",
+    href: "/beach-club/",
   },
   {
     number: "02",
     title: "Food & Drink",
     text: "Dalla colazione al pranzo vista mare, una cucina che segue il ritmo della giornata.",
     image: "/images/playa-luna/restaurant.webp",
-    href: "#restaurant",
+    href: "/ristorante-sul-mare/",
   },
   {
     number: "03",
     title: "Events",
     text: "Feste, cerimonie e ricorrenze da vivere a pochi passi dalla sabbia.",
     image: "/images/playa-luna/events-detail.webp",
-    href: "#events",
+    href: "/eventi/",
   },
 ];
 
@@ -49,6 +49,14 @@ export default function Home() {
       "https://www.instagram.com/lidoplayaluna/",
       "https://www.facebook.com/Complesso.Playa.Luna/",
     ],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Servizi Playa Luna",
+      itemListElement: ["Beach Club", "Ristorante sul mare", "Piscina Playa Luna", "Eventi", "Wedding"].map((name) => ({
+        "@type": "Offer",
+        itemOffered: { "@type": "Service", name },
+      })),
+    },
   };
 
   return (
@@ -58,41 +66,17 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
 
-      <header className="site-header">
-        <a className="brand-logo-link" href="#top" aria-label="Playa Luna, torna all'inizio">
-          <img className="brand-logo" src="/playaluna-logo.svg" alt="" />
-        </a>
-
-        <nav className="desktop-nav" aria-label="Navigazione principale">
-          <a href="#beach">Beach</a>
-          <a href="#restaurant">Restaurant</a>
-          <a href="#pool">Piscina</a>
-          <a href="#events">Events</a>
-          <a href="#contact">Contatti</a>
-        </nav>
-
-        <a className="header-cta" href={beachWhatsapp} target="_blank" rel="noreferrer">
-          Prenota <span aria-hidden="true">↗</span>
-        </a>
-
-        <details className="mobile-menu">
-          <summary aria-label="Apri il menu">Menu</summary>
-          <nav aria-label="Navigazione mobile">
-            <a href="#beach">Beach Club</a>
-            <a href="#restaurant">Restaurant</a>
-            <a href="#pool">Piscina</a>
-            <a href="#events">Events</a>
-            <a href="#contact">Contatti</a>
-          </nav>
-        </details>
-      </header>
+      <SiteHeader />
 
       <section className="hero" id="top" aria-labelledby="hero-title">
-        <img
+        <Image
           className="hero-image"
           src="/images/playa-luna/hero-beach.webp"
           alt="La spiaggia di Playa Luna con il mare e l'isola all'orizzonte"
-          fetchPriority="high"
+          width={1080}
+          height={1350}
+          priority
+          sizes="100vw"
         />
         <div className="hero-shade" />
         <div className="hero-content shell">
@@ -107,13 +91,13 @@ export default function Home() {
           </p>
         </div>
         <div className="hero-actions shell" aria-label="Azioni principali">
-          <a href={beachWhatsapp} target="_blank" rel="noreferrer">
+          <a href={beachWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_beach">
             <span>01</span> Prenota la tua giornata <b aria-hidden="true">↗</b>
           </a>
-          <a href="#restaurant">
+          <a href="/ristorante-sul-mare/" data-event="restaurant_page_click">
             <span>02</span> Scopri il ristorante <b aria-hidden="true">↓</b>
           </a>
-          <a href={eventWhatsapp} target="_blank" rel="noreferrer">
+          <a href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events">
             <span>03</span> Organizza un evento <b aria-hidden="true">↗</b>
           </a>
         </div>
@@ -140,9 +124,9 @@ export default function Home() {
 
       <section className="experience-grid shell" id="experience" aria-label="Esperienze Playa Luna">
         {experiences.map((item) => (
-          <a className="experience-card" href={item.href} key={item.number}>
+          <a className="experience-card" href={item.href} key={item.number} data-event="service_page_click">
             <div className="experience-image-wrap">
-              <img src={item.image} alt="" loading="lazy" />
+              <Image src={item.image} alt="" width={960} height={1200} sizes="(max-width: 800px) 82vw, 33vw" />
               <span className="card-number">{item.number}</span>
             </div>
             <div className="experience-card-copy">
@@ -169,16 +153,16 @@ export default function Home() {
               <li><span>03</span> Docce e servizi</li>
               <li><span>04</span> Area family</li>
             </ul>
-            <a className="pill-button dark" href={beachWhatsapp} target="_blank" rel="noreferrer">
+            <a className="pill-button dark" href={beachWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_beach">
               Prenota il tuo posto <span aria-hidden="true">↗</span>
             </a>
           </div>
           <figure className="beach-main-image">
-            <img src="/images/playa-luna/beach-day.webp" alt="Lettini e ombrelloni sulla spiaggia Playa Luna" loading="lazy" />
+            <Image src="/images/playa-luna/beach-day.webp" alt="Lettini e ombrelloni sulla spiaggia Playa Luna" width={960} height={1200} sizes="(max-width: 800px) 100vw, 42vw" />
             <figcaption>Marina di Varcaturo · Golfo di Napoli</figcaption>
           </figure>
           <figure className="beach-detail-image">
-            <img src="/images/playa-luna/sunset-view.webp" alt="Vista della spiaggia tra fiori e piante mediterranee" loading="lazy" />
+            <Image src="/images/playa-luna/sunset-view.webp" alt="Vista della spiaggia tra fiori e piante mediterranee" width={960} height={1200} sizes="18vw" />
           </figure>
         </div>
       </section>
@@ -195,29 +179,29 @@ export default function Home() {
 
         <div className="food-gallery shell">
           <figure className="food-large">
-            <img src="/images/playa-luna/restaurant.webp" alt="Il ristorante Playa Luna con struttura in legno e tavoli all'aperto" loading="lazy" />
+            <Image src="/images/playa-luna/restaurant.webp" alt="Il ristorante Playa Luna con struttura in legno e tavoli all'aperto" width={960} height={1200} sizes="(max-width: 800px) 78vw, 46vw" />
           </figure>
           <figure>
-            <img src="/images/playa-luna/food-tartare.webp" alt="Tartare di mare servita al ristorante Playa Luna" loading="lazy" />
+            <Image src="/images/playa-luna/food-tartare.webp" alt="Tartare di mare servita al ristorante Playa Luna" width={800} height={1000} sizes="(max-width: 800px) 78vw, 18vw" />
           </figure>
           <figure>
-            <img src="/images/playa-luna/food-pasta.webp" alt="Pasta mediterranea servita in padella" loading="lazy" />
+            <Image src="/images/playa-luna/food-pasta.webp" alt="Pasta mediterranea servita in padella" width={800} height={1000} sizes="(max-width: 800px) 78vw, 18vw" />
           </figure>
           <figure>
-            <img src="/images/playa-luna/food-fish.webp" alt="Secondo piatto di pesce con verdure" loading="lazy" />
+            <Image src="/images/playa-luna/food-fish.webp" alt="Secondo piatto di pesce con verdure" width={800} height={1000} sizes="(max-width: 800px) 78vw, 18vw" />
           </figure>
         </div>
 
         <div className="restaurant-bottom shell">
           <p>Pranzo sul mare · Cucina mediterranea · Cocktail & aperitivo</p>
-          <a className="pill-button coral" href="tel:+393762115726">Prenota un tavolo <span aria-hidden="true">↗</span></a>
+          <a className="pill-button coral" href="tel:+393762115726" data-event="phone_restaurant">Prenota un tavolo <span aria-hidden="true">↗</span></a>
         </div>
       </section>
 
       <section className="family" id="pool" aria-labelledby="pool-title">
         <div className="family-images">
-          <img src="/images/playa-luna/pool-family.webp" alt="Famiglie e bambini nella piscina di Playa Luna" loading="lazy" />
-          <img src="/images/playa-luna/pool-chair.webp" alt="Piscina Playa Luna con area relax e lettini" loading="lazy" />
+          <Image src="/images/playa-luna/pool-family.webp" alt="Famiglie e bambini nella piscina di Playa Luna" width={959} height={1200} sizes="(max-width: 800px) 100vw, 45vw" />
+          <Image src="/images/playa-luna/pool-chair.webp" alt="Piscina Playa Luna con area relax e lettini" width={800} height={1000} sizes="28vw" />
         </div>
         <div className="family-copy">
           <p className="eyebrow light">Piscina · Playa Luna</p>
@@ -226,7 +210,7 @@ export default function Home() {
             La piscina interna a Playa Luna completa la giornata al mare: uno spazio dedicato
             al divertimento dei più piccoli e al relax di tutta la famiglia.
           </p>
-          <a className="text-link light-link" href={beachWhatsapp} target="_blank" rel="noreferrer">
+          <a className="text-link light-link" href={beachWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_pool">
             Chiedi disponibilità <span aria-hidden="true">→</span>
           </a>
         </div>
@@ -243,12 +227,12 @@ export default function Home() {
               Diciottesimi, compleanni, cerimonie, matrimoni ed eventi aziendali. Costruiamo ogni
               occasione intorno alle persone, con il mare come scenografia naturale.
             </p>
-            <a className="pill-button dark" href={eventWhatsapp} target="_blank" rel="noreferrer">
+            <a className="pill-button dark" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events">
               Richiedi informazioni <span aria-hidden="true">↗</span>
             </a>
           </div>
           <figure className="events-image">
-            <img src="/images/playa-luna/events-detail.webp" alt="Dettagli bianchi di un allestimento per evento Playa Luna" loading="lazy" />
+            <Image src="/images/playa-luna/events-detail.webp" alt="Dettagli bianchi di un allestimento per evento Playa Luna" width={960} height={1200} sizes="(max-width: 800px) 100vw, 52vw" />
           </figure>
           <div className="event-types" aria-label="Tipologie di eventi">
             <div><span>01</span><h3>Private party</h3><p>Compleanni, lauree e feste su misura.</p></div>
@@ -259,50 +243,20 @@ export default function Home() {
       </section>
 
       <section className="final-cta" aria-labelledby="final-title">
-        <img src="/images/playa-luna/pool-chair.webp" alt="Postazione riservata accanto alla piscina Playa Luna" loading="lazy" />
+        <Image src="/images/playa-luna/pool-chair.webp" alt="Postazione riservata accanto alla piscina Playa Luna" width={800} height={1000} sizes="100vw" />
         <div className="final-cta-shade" />
         <div className="final-cta-content">
           <p className="eyebrow light">La tua giornata comincia qui</p>
           <h2 id="final-title">Ci vediamo<br /><em>al mare?</em></h2>
-          <a className="pill-button linen" href={beachWhatsapp} target="_blank" rel="noreferrer">
+          <a className="pill-button linen" href={beachWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_beach">
             Prenota su WhatsApp <span aria-hidden="true">↗</span>
           </a>
         </div>
       </section>
 
-      <footer id="contact">
-        <div className="shell footer-grid">
-          <div className="footer-brand">
-            <a className="brand-logo-link footer-logo-link" href="#top" aria-label="Playa Luna, torna all'inizio">
-              <img className="brand-logo footer-brand-logo" src="/playaluna-logo.svg" alt="" />
-            </a>
-            <p>Beach club · Restaurant · Events</p>
-          </div>
-          <div>
-            <p className="footer-label">Dove siamo</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Playa+Luna+Via+Marina+di+Varcaturo+42" target="_blank" rel="noreferrer">
-              Via Marina di Varcaturo, 42<br />Giugliano in Campania (NA)
-            </a>
-          </div>
-          <div>
-            <p className="footer-label">Contatti</p>
-            <a href="tel:+393762115726">+39 376 211 5726</a>
-            <a href="mailto:info@playaluna.it">info@playaluna.it</a>
-          </div>
-          <div>
-            <p className="footer-label">Seguici</p>
-            <a href="https://www.instagram.com/lidoplayaluna/" target="_blank" rel="noreferrer">Instagram ↗</a>
-            <a href="https://www.facebook.com/Complesso.Playa.Luna/" target="_blank" rel="noreferrer">Facebook ↗</a>
-          </div>
-        </div>
-        <div className="shell footer-bottom">
-          <p>© {new Date().getFullYear()} Playa Luna</p>
-          <div><span>Privacy</span><span>Cookie</span></div>
-          <p>Made with the Mediterranean in mind.</p>
-        </div>
-      </footer>
+      <SiteFooter />
 
-      <a className="whatsapp-float" href={beachWhatsapp} target="_blank" rel="noreferrer" aria-label="Prenota Playa Luna su WhatsApp">
+      <a className="whatsapp-float" href={beachWhatsapp} target="_blank" rel="noreferrer" aria-label="Prenota Playa Luna su WhatsApp" data-event="whatsapp_sticky">
         <span aria-hidden="true">✦</span> Prenota
       </a>
     </main>

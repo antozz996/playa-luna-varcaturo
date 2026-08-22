@@ -835,6 +835,11 @@ footer {
   gap: 28px;
 }
 
+.footer-bottom a:hover,
+.footer-bottom a:focus-visible {
+  color: var(--white);
+}
+
 .footer-bottom p:last-child {
   text-align: right;
 }
@@ -857,6 +862,334 @@ footer {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+.service-hero,
+.contact-hero {
+  position: relative;
+  min-height: max(700px, 88svh);
+  background: var(--deep-sea);
+  color: var(--white);
+  isolation: isolate;
+}
+
+.service-hero > img,
+.contact-hero > img,
+.service-hero-shade {
+  position: absolute;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+}
+
+.service-hero > img,
+.contact-hero > img {
+  object-fit: cover;
+  object-position: center 55%;
+}
+
+.service-hero-shade {
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(18, 24, 24, 0.7), rgba(18, 24, 24, 0.08) 72%),
+    linear-gradient(0deg, rgba(18, 24, 24, 0.48), transparent 55%);
+}
+
+.service-hero-copy {
+  display: flex;
+  min-height: max(700px, 88svh);
+  padding-top: 170px;
+  padding-bottom: 90px;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.breadcrumbs {
+  display: flex;
+  margin-bottom: auto;
+  color: rgba(255, 255, 255, 0.62);
+  gap: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.breadcrumbs a:hover,
+.breadcrumbs a:focus-visible {
+  color: var(--white);
+}
+
+.service-hero h1,
+.contact-hero h1 {
+  max-width: 1100px;
+  margin-top: 28px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(70px, 9vw, 142px);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.91;
+}
+
+.service-hero h1 em,
+.contact-hero h1 em {
+  font-weight: 400;
+}
+
+.service-hero-copy > p:last-child {
+  max-width: 620px;
+  margin-top: 30px;
+  color: rgba(255, 255, 255, 0.78);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(18px, 1.7vw, 25px);
+  line-height: 1.55;
+}
+
+.service-content {
+  display: grid;
+  grid-template-columns: 0.9fr 0.65fr 1.05fr;
+  gap: clamp(36px, 6vw, 100px);
+  align-items: start;
+}
+
+.service-main-copy h2 {
+  margin-top: 28px;
+  font-size: clamp(56px, 6vw, 92px);
+}
+
+.service-main-copy > p:not(.eyebrow) {
+  max-width: 540px;
+  margin-top: 34px;
+  color: color-mix(in srgb, var(--ink) 72%, transparent);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 20px;
+  line-height: 1.62;
+}
+
+.service-facts {
+  border-top: 1px solid var(--line);
+}
+
+.service-facts > div {
+  display: grid;
+  min-height: 88px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.service-facts span {
+  color: color-mix(in srgb, var(--ink) 45%, transparent);
+  font-size: 9px;
+}
+
+.service-facts p {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 19px;
+  line-height: 1.45;
+}
+
+.service-detail-image img {
+  width: 100%;
+  min-height: 680px;
+  object-fit: cover;
+}
+
+.service-cta {
+  padding: clamp(100px, 11vw, 180px) 0;
+  background: var(--deep-sea);
+  color: var(--white);
+  text-align: center;
+}
+
+.service-cta .eyebrow {
+  justify-content: center;
+}
+
+.service-cta h2 {
+  margin-top: 32px;
+  font-size: clamp(68px, 8vw, 126px);
+}
+
+.contact-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.contact-options > a {
+  position: relative;
+  display: flex;
+  min-height: 310px;
+  padding: 34px;
+  border: 1px solid var(--line);
+  flex-direction: column;
+  transition: 220ms ease;
+}
+
+.contact-options > a:hover,
+.contact-options > a:focus-visible {
+  background: var(--coral);
+  border-color: var(--coral);
+  color: var(--white);
+}
+
+.contact-options span {
+  font-size: 9px;
+  opacity: 0.55;
+}
+
+.contact-options h2 {
+  margin-top: 50px;
+  font-size: clamp(42px, 4.5vw, 68px);
+}
+
+.contact-options p {
+  max-width: 420px;
+  margin-top: 18px;
+  opacity: 0.72;
+}
+
+.contact-options b {
+  margin-top: auto;
+  padding-top: 30px;
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.contact-email {
+  padding-bottom: clamp(100px, 10vw, 150px);
+  text-align: center;
+}
+
+.contact-email p {
+  color: color-mix(in srgb, var(--ink) 58%, transparent);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.contact-email a {
+  display: inline-block;
+  margin-top: 18px;
+  border-bottom: 1px solid currentColor;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(30px, 5vw, 68px);
+}
+
+.legal-header {
+  min-height: 104px;
+  background: var(--ink);
+}
+
+.legal-header .site-header {
+  position: relative;
+}
+
+.legal-page {
+  max-width: 900px;
+  padding-top: 110px;
+  padding-bottom: 140px;
+}
+
+.legal-page h1 {
+  margin-top: 28px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(60px, 9vw, 112px);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.95;
+}
+
+.legal-page .legal-updated {
+  margin-top: 24px;
+  color: color-mix(in srgb, var(--ink) 55%, transparent);
+  font-size: 12px;
+}
+
+.legal-page h2 {
+  margin-top: 58px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 32px;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+.legal-page h2 + p {
+  margin-top: 16px;
+  color: color-mix(in srgb, var(--ink) 74%, transparent);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.legal-page a {
+  border-bottom: 1px solid currentColor;
+}
+
+.cookie-banner {
+  position: fixed;
+  z-index: 80;
+  right: 24px;
+  bottom: 24px;
+  display: grid;
+  width: min(620px, calc(100% - 48px));
+  padding: 24px;
+  background: var(--white);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
+  grid-template-columns: 1fr auto;
+  gap: 28px;
+  align-items: end;
+}
+
+.cookie-title {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+}
+
+.cookie-banner div > p:not(.cookie-title) {
+  max-width: 380px;
+  margin-top: 8px;
+  color: color-mix(in srgb, var(--ink) 68%, transparent);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.cookie-banner a {
+  display: inline-block;
+  margin-top: 10px;
+  border-bottom: 1px solid currentColor;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.cookie-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.cookie-actions button {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.cookie-actions .accept {
+  background: var(--ink);
+  color: var(--white);
 }
 
 @keyframes hero-in {
@@ -937,6 +1270,19 @@ footer {
   .family-images img:nth-child(2) {
     display: none;
   }
+
+  .service-content {
+    grid-template-columns: 1fr 0.75fr;
+  }
+
+  .service-detail-image {
+    grid-column: 1 / -1;
+  }
+
+  .service-detail-image img {
+    min-height: 0;
+    max-height: 760px;
+  }
 }
 
 @media (max-width: 800px) {
@@ -1012,6 +1358,83 @@ footer {
 
   .hero-actions a:last-child {
     border-bottom: 0;
+  }
+
+  .service-hero,
+  .contact-hero,
+  .service-hero-copy {
+    min-height: 760px;
+  }
+
+  .service-hero-copy {
+    padding-top: 120px;
+    padding-bottom: 72px;
+  }
+
+  .breadcrumbs {
+    margin-bottom: auto;
+  }
+
+  .service-hero h1,
+  .contact-hero h1 {
+    font-size: clamp(58px, 18vw, 86px);
+  }
+
+  .service-content {
+    grid-template-columns: 1fr;
+  }
+
+  .service-detail-image {
+    grid-column: auto;
+    grid-row: 1;
+  }
+
+  .service-detail-image img {
+    aspect-ratio: 4 / 5;
+  }
+
+  .service-main-copy {
+    grid-row: 2;
+  }
+
+  .service-facts {
+    grid-row: 3;
+  }
+
+  .service-cta h2 {
+    font-size: clamp(58px, 17vw, 86px);
+  }
+
+  .contact-options {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-options > a {
+    min-height: 280px;
+  }
+
+  .legal-header {
+    min-height: 80px;
+  }
+
+  .legal-page {
+    padding-top: 80px;
+    padding-bottom: 100px;
+  }
+
+  .cookie-banner {
+    right: 12px;
+    bottom: 12px;
+    width: calc(100% - 24px);
+    grid-template-columns: 1fr;
+  }
+
+  .cookie-actions {
+    width: 100%;
+  }
+
+  .cookie-actions button {
+    flex: 1;
   }
 
   .manifesto {

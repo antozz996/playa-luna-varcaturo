@@ -1,4 +1,28 @@
-# vinext-starter
+# Playa Luna · sito ufficiale
+
+Sito mobile-first per Playa Luna a Marina di Varcaturo. Il progetto integra
+homepage commerciale, pagine SEO dedicate, conversioni WhatsApp/telefono,
+consenso analytics, dati strutturati, sitemap e contenuti Local SEO.
+
+## Architettura pubblica
+
+- `/` — homepage e panoramica dell'esperienza
+- `/beach-club/` — spiaggia e servizi
+- `/ristorante-sul-mare/` — ristorante e cucina
+- `/piscina/` — piscina interna a Playa Luna
+- `/eventi/` — feste, cerimonie e corporate
+- `/wedding/` — matrimoni e ricevimenti sul mare
+- `/contatti/` — WhatsApp, telefono, email e indicazioni
+- `/privacy/` e `/cookie/` — informative
+
+## Analytics e Search Console
+
+Il caricamento di Google Analytics avviene solo dopo il consenso. Configurare
+le variabili runtime `NEXT_PUBLIC_GA_ID` e
+`NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` prima della pubblicazione sul dominio
+definitivo. Gli eventi principali sono dichiarati tramite `data-event`.
+
+## Runtime
 
 A clean full-stack starter running on
 [vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
