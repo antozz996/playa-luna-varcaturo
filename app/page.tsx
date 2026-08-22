@@ -22,7 +22,7 @@ const experiences = [
     number: "03",
     title: "Events",
     text: "Feste, cerimonie e ricorrenze da vivere a pochi passi dalla sabbia.",
-    image: "/images/playa-luna/events-detail.webp",
+    image: "/images/playa-luna/events/card.webp",
     href: "/eventi/",
   },
 ];
@@ -233,7 +233,7 @@ export default function Home() {
             </a>
           </div>
           <figure className="events-image">
-            <Image src="/images/playa-luna/events-detail.webp" alt="Dettagli bianchi di un allestimento per evento Playa Luna" width={960} height={1200} unoptimized sizes="(max-width: 800px) 100vw, 52vw" />
+            <Image src="/images/playa-luna/events/card.webp" alt="Performance serale durante un evento al Playa Luna" width={720} height={1280} unoptimized sizes="(max-width: 800px) 100vw, 52vw" />
           </figure>
           <div className="event-types" aria-label="Tipologie di eventi">
             <div><span>01</span><h3>Private party</h3><p>Compleanni, lauree e feste su misura.</p></div>
