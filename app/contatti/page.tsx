@@ -16,7 +16,7 @@ export default function ContactsPage() {
     <main>
       <SiteHeader />
       <section className="contact-hero">
-        <Image src="/images/playa-luna/sunset-view.webp" alt="Vista del mare da Playa Luna a Marina di Varcaturo" width={960} height={1200} priority sizes="100vw" />
+        <Image src="/images/playa-luna/sunset-view.webp" alt="Vista del mare da Playa Luna a Marina di Varcaturo" width={960} height={1200} priority unoptimized sizes="100vw" />
         <div className="service-hero-shade" />
         <div className="shell service-hero-copy">
           <p className="eyebrow light">Contatti · Marina di Varcaturo</p>

@@ -76,6 +76,7 @@ export default function Home() {
           width={1080}
           height={1350}
           priority
+          unoptimized
           sizes="100vw"
         />
         <div className="hero-shade" />
@@ -126,7 +127,7 @@ export default function Home() {
         {experiences.map((item) => (
           <a className="experience-card" href={item.href} key={item.number} data-event="service_page_click">
             <div className="experience-image-wrap">
-              <Image src={item.image} alt="" width={960} height={1200} sizes="(max-width: 800px) 82vw, 33vw" />
+              <Image src={item.image} alt="" width={960} height={1200} unoptimized sizes="(max-width: 800px) 82vw, 33vw" />
               <span className="card-number">{item.number}</span>
             </div>
             <div className="experience-card-copy">
@@ -158,11 +159,11 @@ export default function Home() {
             </a>
           </div>
           <figure className="beach-main-image">
-            <Image src="/images/playa-luna/beach-day.webp" alt="Lettini e ombrelloni sulla spiaggia Playa Luna" width={960} height={1200} sizes="(max-width: 800px) 100vw, 42vw" />
+            <Image src="/images/playa-luna/beach-day.webp" alt="Lettini e ombrelloni sulla spiaggia Playa Luna" width={960} height={1200} unoptimized sizes="(max-width: 800px) 100vw, 42vw" />
             <figcaption>Marina di Varcaturo · Golfo di Napoli</figcaption>
           </figure>
           <figure className="beach-detail-image">
-            <Image src="/images/playa-luna/sunset-view.webp" alt="Vista della spiaggia tra fiori e piante mediterranee" width={960} height={1200} sizes="18vw" />
+            <Image src="/images/playa-luna/sunset-view.webp" alt="Vista della spiaggia tra fiori e piante mediterranee" width={960} height={1200} unoptimized sizes="18vw" />
           </figure>
         </div>
       </section>
@@ -179,16 +180,16 @@ export default function Home() {
 
         <div className="food-gallery shell">
           <figure className="food-large">
-            <Image src="/images/playa-luna/restaurant.webp" alt="Il ristorante Playa Luna con struttura in legno e tavoli all'aperto" width={960} height={1200} sizes="(max-width: 800px) 78vw, 46vw" />
+            <Image src="/images/playa-luna/restaurant.webp" alt="Il ristorante Playa Luna con struttura in legno e tavoli all'aperto" width={960} height={1200} unoptimized sizes="(max-width: 800px) 78vw, 46vw" />
           </figure>
           <figure>
-            <Image src="/images/playa-luna/food-tartare.webp" alt="Tartare di mare servita al ristorante Playa Luna" width={800} height={1000} sizes="(max-width: 800px) 78vw, 18vw" />
+            <Image src="/images/playa-luna/food-tartare.webp" alt="Tartare di mare servita al ristorante Playa Luna" width={800} height={1000} unoptimized sizes="(max-width: 800px) 78vw, 18vw" />
           </figure>
           <figure>
-            <Image src="/images/playa-luna/food-pasta.webp" alt="Pasta mediterranea servita in padella" width={800} height={1000} sizes="(max-width: 800px) 78vw, 18vw" />
+            <Image src="/images/playa-luna/food-pasta.webp" alt="Pasta mediterranea servita in padella" width={800} height={1000} unoptimized sizes="(max-width: 800px) 78vw, 18vw" />
           </figure>
           <figure>
-            <Image src="/images/playa-luna/food-fish.webp" alt="Secondo piatto di pesce con verdure" width={800} height={1000} sizes="(max-width: 800px) 78vw, 18vw" />
+            <Image src="/images/playa-luna/food-fish.webp" alt="Secondo piatto di pesce con verdure" width={800} height={1000} unoptimized sizes="(max-width: 800px) 78vw, 18vw" />
           </figure>
         </div>
 
@@ -200,8 +201,8 @@ export default function Home() {
 
       <section className="family" id="pool" aria-labelledby="pool-title">
         <div className="family-images">
-          <Image src="/images/playa-luna/pool-family.webp" alt="Famiglie e bambini nella piscina di Playa Luna" width={959} height={1200} sizes="(max-width: 800px) 100vw, 45vw" />
-          <Image src="/images/playa-luna/pool-chair.webp" alt="Piscina Playa Luna con area relax e lettini" width={800} height={1000} sizes="28vw" />
+          <Image src="/images/playa-luna/pool-family.webp" alt="Famiglie e bambini nella piscina di Playa Luna" width={959} height={1200} unoptimized sizes="(max-width: 800px) 100vw, 45vw" />
+          <Image src="/images/playa-luna/pool-chair.webp" alt="Piscina Playa Luna con area relax e lettini" width={800} height={1000} unoptimized sizes="28vw" />
         </div>
         <div className="family-copy">
           <p className="eyebrow light">Piscina · Playa Luna</p>
@@ -232,7 +233,7 @@ export default function Home() {
             </a>
           </div>
           <figure className="events-image">
-            <Image src="/images/playa-luna/events-detail.webp" alt="Dettagli bianchi di un allestimento per evento Playa Luna" width={960} height={1200} sizes="(max-width: 800px) 100vw, 52vw" />
+            <Image src="/images/playa-luna/events-detail.webp" alt="Dettagli bianchi di un allestimento per evento Playa Luna" width={960} height={1200} unoptimized sizes="(max-width: 800px) 100vw, 52vw" />
           </figure>
           <div className="event-types" aria-label="Tipologie di eventi">
             <div><span>01</span><h3>Private party</h3><p>Compleanni, lauree e feste su misura.</p></div>
@@ -243,7 +244,7 @@ export default function Home() {
       </section>
 
       <section className="final-cta" aria-labelledby="final-title">
-        <Image src="/images/playa-luna/pool-chair.webp" alt="Postazione riservata accanto alla piscina Playa Luna" width={800} height={1000} sizes="100vw" />
+        <Image src="/images/playa-luna/pool-chair.webp" alt="Postazione riservata accanto alla piscina Playa Luna" width={800} height={1000} unoptimized sizes="100vw" />
         <div className="final-cta-shade" />
         <div className="final-cta-content">
           <p className="eyebrow light">La tua giornata comincia qui</p>

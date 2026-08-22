@@ -68,7 +68,7 @@ export function ServicePage({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <SiteHeader />
       <section className="service-hero" aria-labelledby="service-title">
-        <Image src={image} alt={imageAlt} width={960} height={1200} priority sizes="100vw" />
+        <Image src={image} alt={imageAlt} width={960} height={1200} priority unoptimized sizes="100vw" />
         <div className="service-hero-shade" />
         <div className="shell service-hero-copy">
           <nav className="breadcrumbs" aria-label="Percorso"><Link href="/">Home</Link><span>/</span><span>{eyebrow}</span></nav>
@@ -93,7 +93,7 @@ export function ServicePage({
           ))}
         </div>
         <figure className="service-detail-image">
-          <Image src={detailImage} alt={detailAlt} width={960} height={1200} sizes="(max-width: 800px) 100vw, 36vw" />
+          <Image src={detailImage} alt={detailAlt} width={960} height={1200} unoptimized sizes="(max-width: 800px) 100vw, 36vw" />
         </figure>
       </section>
 
