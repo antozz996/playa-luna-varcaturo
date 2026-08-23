@@ -1,4 +1,6 @@
 import type { Metadata, Viewport } from "next";
+import { draftMode } from "next/headers";
+import { VisualEditing } from "next-sanity/visual-editing";
 import "./globals.css";
 import { AnalyticsConsent } from "./components/analytics-consent";
 
@@ -25,7 +27,14 @@ export const metadata: Metadata = {
     siteName: "Playa Luna",
     title: "Playa Luna | Tutto il mare in un giorno",
     description: "Beach club, cucina, piscina ed eventi a Marina di Varcaturo.",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Playa Luna · Beach Club, Restaurant, Events" }],
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Playa Luna · Beach Club, Restaurant, Events",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -48,12 +57,19 @@ export const viewport: Viewport = {
   themeColor: "#27251f",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const { isEnabled } = await draftMode();
+
   return (
     <html lang="it">
       <body>
         {children}
         <AnalyticsConsent />
+        {isEnabled && <VisualEditing />}
       </body>
     </html>
   );
