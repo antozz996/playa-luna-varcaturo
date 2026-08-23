@@ -4,6 +4,7 @@ import Link from "next/link";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
 import { eventPhoneNumber, eventWhatsapp, siteUrl } from "../lib/site";
+import { getMediaDocument, mediaAlt, mediaCaption, mediaUrl, type ManagedImage } from "../lib/sanity";
 
 export const metadata: Metadata = {
   title: "Ricevimento di matrimonio sul mare a Napoli",
@@ -46,36 +47,40 @@ const weddingGallery = [
     src: "/images/playa-luna/wedding/place-setting.webp",
     alt: "Dettaglio della mise en place bianca e azzurra",
     caption: "Una tavola che parla di voi",
+    slot: "gallery01",
   },
   {
     src: "/images/playa-luna/wedding/flowers.webp",
     alt: "Composizione floreale per un ricevimento al Playa Luna",
     caption: "Fiori, luce, materia",
+    slot: "gallery02",
   },
   {
     src: "/images/playa-luna/wedding/sea-table.webp",
     alt: "Tavola elegante allestita davanti al mare",
     caption: "Il mare come scenografia",
+    slot: "gallery03",
   },
   {
     src: "/images/playa-luna/wedding/table-by-sea.webp",
     alt: "Ricevimento con tavoli apparecchiati sulla terrazza sul mare",
     caption: "Il ricevimento all’aperto",
+    slot: "gallery04",
   },
   {
     src: "/images/playa-luna/wedding/white-table.webp",
     alt: "Tavola nuziale bianca con composizioni floreali",
     caption: "Eleganza, senza distanza",
+    slot: "gallery05",
   },
 ];
 
-const schema = {
+const baseSchema = {
   "@context": "https://schema.org",
   "@type": "EventVenue",
   name: "Playa Luna Wedding",
   url: `${siteUrl}/wedding/`,
   telephone: eventPhoneNumber,
-  image: `${siteUrl}/images/playa-luna/wedding/hero.webp`,
   address: {
     "@type": "PostalAddress",
     streetAddress: "Via Marina di Varcaturo, 42",
@@ -85,7 +90,18 @@ const schema = {
   },
 };
 
-export default function WeddingPage() {
+export default async function WeddingPage() {
+  const media = await getMediaDocument<Record<string, ManagedImage>>("weddingMedia");
+  const hero = mediaUrl(media.hero, "/images/playa-luna/wedding/hero.webp");
+  const gallery = weddingGallery.map((item) => ({
+    ...item,
+    src: mediaUrl(media[item.slot], item.src),
+    alt: mediaAlt(media[item.slot], item.alt),
+    caption: mediaCaption(media[item.slot], item.caption),
+  }));
+  const closing = mediaUrl(media.closing, "/images/playa-luna/wedding/favors.webp");
+  const schema = { ...baseSchema, image: hero.startsWith("http") ? hero : `${siteUrl}${hero}` };
+
   return (
     <main className="wedding-editorial-v2">
       <SiteHeader />
@@ -93,8 +109,8 @@ export default function WeddingPage() {
       <section className="wedding-hero-v2">
         <Image
           className="wedding-hero-image-v2"
-          src="/images/playa-luna/wedding/hero.webp"
-          alt="Tavola wedding bianca e azzurra allestita al Playa Luna"
+          src={hero}
+          alt={mediaAlt(media.hero, "Tavola wedding bianca e azzurra allestita al Playa Luna")}
           fill
           priority
           unoptimized
@@ -131,7 +147,7 @@ export default function WeddingPage() {
             Materiali naturali, colori morbidi e composizioni leggere dialogano con il paesaggio. La scenografia non copre il luogo: lo rende vostro.
           </p>
         </div>
-        {weddingGallery.map((item, index) => (
+        {gallery.map((item, index) => (
           <figure className={`wedding-gallery-item-v3 wedding-gallery-item-${index + 1}-v3`} key={item.src}>
             <Image src={item.src} alt={item.alt} fill unoptimized sizes={index < 2 ? "(max-width: 800px) 100vw, 58vw" : "(max-width: 800px) 100vw, 33vw"} />
             <figcaption>{item.caption}</figcaption>
@@ -156,7 +172,7 @@ export default function WeddingPage() {
 
       <section className="wedding-moment-v2">
         <div className="wedding-moment-image-v2">
-          <Image src="/images/playa-luna/wedding/favors.webp" alt="Dettagli e cadeaux preparati per un ricevimento al Playa Luna" fill unoptimized sizes="(max-width: 800px) 100vw, 52vw" />
+          <Image src={closing} alt={mediaAlt(media.closing, "Dettagli e cadeaux preparati per un ricevimento al Playa Luna")} fill unoptimized sizes="(max-width: 800px) 100vw, 52vw" />
         </div>
         <div className="wedding-moment-copy-v2">
           <p className="eyebrow">Cominciamo da voi</p>

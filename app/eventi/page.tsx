@@ -4,6 +4,7 @@ import Link from "next/link";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
 import { eventPhoneNumber, eventWhatsapp, siteUrl } from "../lib/site";
+import { getMediaDocument, mediaAlt, mediaCaption, mediaUrl, type ManagedImage } from "../lib/sanity";
 
 export const metadata: Metadata = {
   title: "Eventi sul mare a Varcaturo",
@@ -46,59 +47,67 @@ const eventGallery = [
     src: "/images/playa-luna/events/gathering.webp",
     alt: "Ospiti durante un evento negli spazi del Playa Luna",
     caption: "Persone, atmosfera, mare",
+    slot: "gallery01",
     wide: true,
   },
   {
     src: "/images/playa-luna/events/night-01.webp",
     alt: "La sala e la pista illuminate durante una festa serale al Playa Luna",
     caption: "Quando la notte prende vita",
+    slot: "gallery02",
   },
   {
     src: "/images/playa-luna/events/night-02.webp",
     alt: "Gruppo di amici in festa durante un evento al Playa Luna",
     caption: "Una festa da condividere",
+    slot: "gallery03",
   },
   {
     src: "/images/playa-luna/events/night-03.webp",
     alt: "Ospiti che ballano durante una serata al Playa Luna",
     caption: "Fino all’ultima canzone",
+    slot: "gallery04",
   },
   {
     src: "/images/playa-luna/events/night-04.webp",
     alt: "Consolle DJ accesa durante un evento serale",
     caption: "Il suono della serata",
+    slot: "gallery05",
   },
   {
     src: "/images/playa-luna/events/night-05.webp",
     alt: "Bottiglia celebrativa con luci da festa",
     caption: "Brindisi che restano",
+    slot: "gallery06",
   },
   {
     src: "/images/playa-luna/events/buffet.webp",
     alt: "Buffet preparato per un evento al Playa Luna",
     caption: "La cucina entra in scena",
+    slot: "gallery07",
     wide: true,
   },
   {
     src: "/images/playa-luna/events/night-06.webp",
     alt: "Torta con scintille durante una festa al Playa Luna",
     caption: "Il momento più atteso",
+    slot: "gallery08",
   },
   {
     src: "/images/playa-luna/events/corporate.webp",
     alt: "Dettaglio di un’esperienza organizzata durante un evento",
     caption: "Dettagli che danno carattere",
+    slot: "gallery09",
     wide: true,
   },
 ];
 
-const schema = {
+const baseSchema = {
   "@context": "https://schema.org",
   "@type": "EventVenue",
   name: "Playa Luna Events",
   url: `${siteUrl}/eventi/`,
   telephone: eventPhoneNumber,
-  image: `${siteUrl}/images/playa-luna/events/hero.webp`,
   address: {
     "@type": "PostalAddress",
     streetAddress: "Via Marina di Varcaturo, 42",
@@ -108,7 +117,17 @@ const schema = {
   },
 };
 
-export default function EventsPage() {
+export default async function EventsPage() {
+  const media = await getMediaDocument<Record<string, ManagedImage>>("eventsMedia");
+  const hero = mediaUrl(media.hero, "/images/playa-luna/events/hero.webp");
+  const gallery = eventGallery.map((item) => ({
+    ...item,
+    src: mediaUrl(media[item.slot], item.src),
+    alt: mediaAlt(media[item.slot], item.alt),
+    caption: mediaCaption(media[item.slot], item.caption),
+  }));
+  const schema = { ...baseSchema, image: hero.startsWith("http") ? hero : `${siteUrl}${hero}` };
+
   return (
     <main className="events-editorial-v2">
       <SiteHeader />
@@ -116,8 +135,8 @@ export default function EventsPage() {
       <section className="events-hero-v2">
         <Image
           className="events-hero-image-v2"
-          src="/images/playa-luna/events/hero.webp"
-          alt="Tavola allestita per un evento serale al Playa Luna"
+          src={hero}
+          alt={mediaAlt(media.hero, "Tavola allestita per un evento serale al Playa Luna")}
           fill
           priority
           unoptimized
@@ -154,7 +173,7 @@ export default function EventsPage() {
       </section>
 
       <section className="shell events-gallery-v2" aria-label="Atmosfere degli eventi Playa Luna">
-        {eventGallery.map((item) => (
+        {gallery.map((item) => (
           <figure className={item.wide ? "events-gallery-wide-v2" : undefined} key={item.src}>
             <Image src={item.src} alt={item.alt} fill unoptimized sizes={item.wide ? "(max-width: 800px) 100vw, 66vw" : "(max-width: 800px) 100vw, 33vw"} />
             <figcaption>{item.caption}</figcaption>

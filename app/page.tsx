@@ -9,13 +9,20 @@ import {
   restaurantPhoneHref,
   restaurantPhoneNumber,
 } from "./lib/site";
+import {
+  getMediaDocument,
+  mediaAlt,
+  mediaUrl,
+  type ManagedImage,
+} from "./lib/sanity";
 
-const experiences = [
+const experienceDefaults = [
   {
     number: "01",
     title: "Beach Club",
     text: "Il mare davanti, l'isola all'orizzonte e tutto quello che serve per staccare davvero.",
     image: "/images/playa-luna/beach-day.webp",
+    slot: "experienceBeach",
     href: "/beach-club/",
   },
   {
@@ -23,6 +30,7 @@ const experiences = [
     title: "Food & Drink",
     text: "Dalla colazione al pranzo vista mare, una cucina che segue il ritmo della giornata.",
     image: "/images/playa-luna/restaurant.webp",
+    slot: "experienceRestaurant",
     href: "/ristorante-sul-mare/",
   },
   {
@@ -30,11 +38,18 @@ const experiences = [
     title: "Events",
     text: "Feste, cerimonie e ricorrenze da vivere a pochi passi dalla sabbia.",
     image: "/images/playa-luna/events/home-card.webp",
+    slot: "experienceEvents",
     href: "/eventi/",
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const media = await getMediaDocument<Record<string, ManagedImage>>("homeMedia");
+  const experiences = experienceDefaults.map((item) => ({
+    ...item,
+    image: mediaUrl(media[item.slot], item.image),
+  }));
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": ["Beach", "Restaurant", "EventVenue", "LocalBusiness"],
@@ -83,8 +98,8 @@ export default function Home() {
       <section className="hero" id="top" aria-labelledby="hero-title">
         <Image
           className="hero-image"
-          src="/images/playa-luna/hero-beach.webp"
-          alt="La spiaggia di Playa Luna con il mare e l'isola all'orizzonte"
+          src={mediaUrl(media.hero, "/images/playa-luna/hero-beach.webp")}
+          alt={mediaAlt(media.hero, "La spiaggia di Playa Luna con il mare e l'isola all'orizzonte")}
           width={1080}
           height={1350}
           priority
@@ -171,11 +186,11 @@ export default function Home() {
             </a>
           </div>
           <figure className="beach-main-image">
-            <Image src="/images/playa-luna/beach-day.webp" alt="Lettini e ombrelloni sulla spiaggia Playa Luna" width={960} height={1200} unoptimized sizes="(max-width: 800px) 100vw, 42vw" />
+            <Image src={mediaUrl(media.beachMain, "/images/playa-luna/beach-day.webp")} alt={mediaAlt(media.beachMain, "Lettini e ombrelloni sulla spiaggia Playa Luna")} width={960} height={1200} unoptimized sizes="(max-width: 800px) 100vw, 42vw" />
             <figcaption>Marina di Varcaturo · Golfo di Napoli</figcaption>
           </figure>
           <figure className="beach-detail-image">
-            <Image src="/images/playa-luna/sunset-view.webp" alt="Vista della spiaggia tra fiori e piante mediterranee" width={960} height={1200} unoptimized sizes="18vw" />
+            <Image src={mediaUrl(media.beachDetail, "/images/playa-luna/sunset-view.webp")} alt={mediaAlt(media.beachDetail, "Vista della spiaggia tra fiori e piante mediterranee")} width={960} height={1200} unoptimized sizes="18vw" />
           </figure>
         </div>
       </section>
@@ -192,16 +207,16 @@ export default function Home() {
 
         <div className="food-gallery shell">
           <figure className="food-large">
-            <Image src="/images/playa-luna/restaurant.webp" alt="Il ristorante Playa Luna con struttura in legno e tavoli all'aperto" width={960} height={1200} unoptimized sizes="(max-width: 800px) 78vw, 46vw" />
+            <Image src={mediaUrl(media.restaurantMain, "/images/playa-luna/restaurant.webp")} alt={mediaAlt(media.restaurantMain, "Il ristorante Playa Luna con struttura in legno e tavoli all'aperto")} width={960} height={1200} unoptimized sizes="(max-width: 800px) 78vw, 46vw" />
           </figure>
           <figure>
-            <Image src="/images/playa-luna/food-tartare.webp" alt="Tartare di mare servita al ristorante Playa Luna" width={800} height={1000} unoptimized sizes="(max-width: 800px) 78vw, 18vw" />
+            <Image src={mediaUrl(media.foodOne, "/images/playa-luna/food-tartare.webp")} alt={mediaAlt(media.foodOne, "Tartare di mare servita al ristorante Playa Luna")} width={800} height={1000} unoptimized sizes="(max-width: 800px) 78vw, 18vw" />
           </figure>
           <figure>
-            <Image src="/images/playa-luna/food-pasta.webp" alt="Pasta mediterranea servita in padella" width={800} height={1000} unoptimized sizes="(max-width: 800px) 78vw, 18vw" />
+            <Image src={mediaUrl(media.foodTwo, "/images/playa-luna/food-pasta.webp")} alt={mediaAlt(media.foodTwo, "Pasta mediterranea servita in padella")} width={800} height={1000} unoptimized sizes="(max-width: 800px) 78vw, 18vw" />
           </figure>
           <figure>
-            <Image src="/images/playa-luna/food-fish.webp" alt="Secondo piatto di pesce con verdure" width={800} height={1000} unoptimized sizes="(max-width: 800px) 78vw, 18vw" />
+            <Image src={mediaUrl(media.foodThree, "/images/playa-luna/food-fish.webp")} alt={mediaAlt(media.foodThree, "Secondo piatto di pesce con verdure")} width={800} height={1000} unoptimized sizes="(max-width: 800px) 78vw, 18vw" />
           </figure>
         </div>
 
@@ -213,8 +228,8 @@ export default function Home() {
 
       <section className="family" id="pool" aria-labelledby="pool-title">
         <div className="family-images">
-          <Image src="/images/playa-luna/pool-family.webp" alt="Famiglie e bambini nella piscina di Playa Luna" width={959} height={1200} unoptimized sizes="(max-width: 800px) 100vw, 45vw" />
-          <Image src="/images/playa-luna/pool-chair.webp" alt="Piscina Playa Luna con area relax e lettini" width={800} height={1000} unoptimized sizes="28vw" />
+          <Image src={mediaUrl(media.poolMain, "/images/playa-luna/pool-family.webp")} alt={mediaAlt(media.poolMain, "Famiglie e bambini nella piscina di Playa Luna")} width={959} height={1200} unoptimized sizes="(max-width: 800px) 100vw, 45vw" />
+          <Image src={mediaUrl(media.poolDetail, "/images/playa-luna/pool-chair.webp")} alt={mediaAlt(media.poolDetail, "Piscina Playa Luna con area relax e lettini")} width={800} height={1000} unoptimized sizes="28vw" />
         </div>
         <div className="family-copy">
           <p className="eyebrow light">Piscina · Playa Luna</p>
@@ -245,7 +260,7 @@ export default function Home() {
             </a>
           </div>
           <figure className="events-image">
-            <Image src="/images/playa-luna/events/home-feature.webp" alt="Allestimento elegante per un evento al Playa Luna" width={960} height={1200} unoptimized sizes="(max-width: 800px) 100vw, 52vw" />
+            <Image src={mediaUrl(media.eventsFeature, "/images/playa-luna/events/home-feature.webp")} alt={mediaAlt(media.eventsFeature, "Allestimento elegante per un evento al Playa Luna")} width={960} height={1200} unoptimized sizes="(max-width: 800px) 100vw, 52vw" />
           </figure>
           <div className="event-types" aria-label="Tipologie di eventi">
             <div><span>01</span><h3>Private party</h3><p>Compleanni, lauree e feste su misura.</p></div>
@@ -256,7 +271,7 @@ export default function Home() {
       </section>
 
       <section className="final-cta" aria-labelledby="final-title">
-        <Image src="/images/playa-luna/pool-chair.webp" alt="Postazione riservata accanto alla piscina Playa Luna" width={800} height={1000} unoptimized sizes="100vw" />
+        <Image src={mediaUrl(media.finalCta, "/images/playa-luna/pool-chair.webp")} alt={mediaAlt(media.finalCta, "Postazione riservata accanto alla piscina Playa Luna")} width={800} height={1000} unoptimized sizes="100vw" />
         <div className="final-cta-shade" />
         <div className="final-cta-content">
           <p className="eyebrow light">La tua giornata comincia qui</p>
