@@ -22,16 +22,35 @@ const managedImage = defineType({
   fields: [
     defineField({
       name: "alt",
-      title: "Descrizione accessibile",
+      title: "Descrizione SEO / accessibilità",
       type: "string",
-      description: "Descrivi brevemente ciò che si vede nella foto.",
-      validation: (Rule) => Rule.max(140),
+      description:
+        "Descrivi in modo naturale ciò che si vede nella foto. Esempio: ‘Spiaggia attrezzata del Playa Luna a Marina di Varcaturo’. Evita elenchi di parole chiave.",
+      validation: (Rule) =>
+        Rule.max(140).custom((value, context) => {
+          const parent = context.parent as { asset?: unknown } | undefined;
+          if (parent?.asset && (!value || !value.trim())) {
+            return "Inserisci una breve descrizione della foto prima di pubblicare.";
+          }
+          return true;
+        }),
     }),
     defineField({
       name: "caption",
-      title: "Didascalia",
+      title: "Didascalia visibile",
       type: "string",
-      description: "Facoltativa. Usata nelle gallerie Eventi e Wedding.",
+      description:
+        "Facoltativa. Questo testo può comparire sotto la foto nelle gallery Eventi e Wedding.",
+      hidden: ({ document, path }) => {
+        const documentType = document?._type;
+        const topLevelField = path?.[0];
+        const isGalleryDocument =
+          documentType === "eventsMedia" || documentType === "weddingMedia";
+        const isGalleryField =
+          typeof topLevelField === "string" && topLevelField.startsWith("gallery");
+
+        return !(isGalleryDocument && isGalleryField);
+      },
       validation: (Rule) => Rule.max(80),
     }),
   ],
