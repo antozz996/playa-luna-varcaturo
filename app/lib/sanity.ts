@@ -1,23 +1,33 @@
+import "server-only";
+
 import { createImageUrlBuilder, type SanityImageSource } from "@sanity/image-url";
 import { createClient } from "next-sanity";
+import { draftMode } from "next/headers";
 
 const configuredProjectId =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || process.env.SANITY_PROJECT_ID || "";
 const configuredDataset =
   process.env.NEXT_PUBLIC_SANITY_DATASET || process.env.SANITY_DATASET || "production";
+const readToken =
+  process.env.SANITY_API_READ_TOKEN || process.env.SANITY_API_TOKEN || "";
 
 export const isSanityConfigured = Boolean(configuredProjectId);
 
-const client = createClient({
+const publishedClient = createClient({
   projectId: configuredProjectId || "00000000",
   dataset: configuredDataset,
   apiVersion: "2026-08-23",
-  useCdn: !process.env.SANITY_API_TOKEN,
-  token: process.env.SANITY_API_TOKEN,
+  useCdn: true,
   perspective: "published",
 });
 
-const builder = createImageUrlBuilder(client);
+const previewClient = publishedClient.withConfig({
+  useCdn: false,
+  token: readToken || undefined,
+  perspective: "drafts",
+});
+
+const builder = createImageUrlBuilder(publishedClient);
 
 export type ManagedImage = {
   asset?: SanityImageSource;
@@ -33,11 +43,18 @@ export async function getMediaDocument<T extends Record<string, unknown>>(
   if (!isSanityConfigured) return {};
 
   try {
-    const result = await client.fetch<Partial<T> | null>(
+    const { isEnabled } = await draftMode();
+    const canPreviewDrafts = isEnabled && Boolean(readToken);
+    const activeClient = canPreviewDrafts ? previewClient : publishedClient;
+
+    const result = await activeClient.fetch<Partial<T> | null>(
       "*[_type == $type][0]",
       { type },
-      { next: { revalidate: 30, tags: [`sanity:${type}`] } },
+      canPreviewDrafts
+        ? { cache: "no-store" }
+        : { next: { revalidate: 30, tags: [`sanity:${type}`] } },
     );
+
     return result || {};
   } catch {
     return {};
@@ -46,7 +63,14 @@ export async function getMediaDocument<T extends Record<string, unknown>>(
 
 export function mediaUrl(image: ManagedImage | undefined, fallback: string) {
   if (!image?.asset) return fallback;
-  return builder.image(image).auto("format").quality(88).url();
+
+  return builder
+    .image(image)
+    .width(1920)
+    .fit("max")
+    .auto("format")
+    .quality(84)
+    .url();
 }
 
 export function mediaAlt(image: ManagedImage | undefined, fallback: string) {
