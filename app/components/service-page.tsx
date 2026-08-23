@@ -76,6 +76,10 @@ export function ServicePage({
   sanityDocumentId,
   sanityDocumentType,
 }: ServicePageProps) {
+  const structuredImage = image.startsWith("http")
+    ? image
+    : `${siteUrl}${image}`;
+
   const structuredData = [
     {
       "@context": "https://schema.org",
@@ -88,7 +92,7 @@ export function ServicePage({
         name: "Playa Luna",
         url: siteUrl,
       },
-      image: `${siteUrl}${image}`,
+      image: structuredImage,
       address: {
         "@type": "PostalAddress",
         streetAddress: "Via Marina di Varcaturo, 42",
@@ -151,7 +155,6 @@ export function ServicePage({
             width={960}
             height={1200}
             priority
-            unoptimized
             sizes="100vw"
           />
         </div>
@@ -228,7 +231,6 @@ export function ServicePage({
             alt={detailAlt}
             width={960}
             height={1200}
-            unoptimized
             sizes="(max-width: 800px) 100vw, 36vw"
           />
         </figure>
