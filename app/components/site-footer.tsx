@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { email, mapsUrl, phoneHref, phoneNumber } from "../lib/site";
+import { mapsUrl, phoneHref, phoneNumber } from "../lib/site";
 
 export function SiteFooter() {
   return (
@@ -21,7 +21,6 @@ export function SiteFooter() {
         <div>
           <p className="footer-label">Contatti</p>
           <a href={phoneHref} data-event="phone_click">{phoneNumber}</a>
-          <a href={`mailto:${email}`} data-event="email_click">{email}</a>
         </div>
         <div>
           <p className="footer-label">Seguici</p>

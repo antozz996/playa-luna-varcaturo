@@ -41,6 +41,34 @@ const weddingDetails = [
   },
 ];
 
+const weddingGallery = [
+  {
+    src: "/images/playa-luna/wedding/place-setting.webp",
+    alt: "Dettaglio della mise en place bianca e azzurra",
+    caption: "Una tavola che parla di voi",
+  },
+  {
+    src: "/images/playa-luna/wedding/flowers.webp",
+    alt: "Composizione floreale per un ricevimento al Playa Luna",
+    caption: "Fiori, luce, materia",
+  },
+  {
+    src: "/images/playa-luna/wedding/sea-table.webp",
+    alt: "Tavola elegante allestita davanti al mare",
+    caption: "Il mare come scenografia",
+  },
+  {
+    src: "/images/playa-luna/wedding/table-by-sea.webp",
+    alt: "Ricevimento con tavoli apparecchiati sulla terrazza sul mare",
+    caption: "Il ricevimento all’aperto",
+  },
+  {
+    src: "/images/playa-luna/wedding/white-table.webp",
+    alt: "Tavola nuziale bianca con composizioni floreali",
+    caption: "Eleganza, senza distanza",
+  },
+];
+
 const schema = {
   "@context": "https://schema.org",
   "@type": "EventVenue",
@@ -94,20 +122,20 @@ export default function WeddingPage() {
         </p>
       </section>
 
-      <section className="shell wedding-story-v2" aria-label="Dettagli wedding Playa Luna">
-        <figure className="wedding-story-main-v2">
-          <Image src="/images/playa-luna/wedding/place-setting.webp" alt="Dettaglio della mise en place bianca e azzurra" fill unoptimized sizes="(max-width: 800px) 100vw, 64vw" />
-        </figure>
-        <div className="wedding-story-copy-v2">
+      <section className="shell wedding-gallery-v3" aria-label="Dettagli wedding Playa Luna">
+        <div className="wedding-gallery-copy-v3">
           <p className="eyebrow">Mediterraneo contemporaneo</p>
           <h2>La bellezza<br /><em>dei dettagli.</em></h2>
           <p>
             Materiali naturali, colori morbidi e composizioni leggere dialogano con il paesaggio. La scenografia non copre il luogo: lo rende vostro.
           </p>
         </div>
-        <figure className="wedding-story-small-v2">
-          <Image src="/images/playa-luna/wedding/flowers.webp" alt="Composizione floreale per un ricevimento al Playa Luna" fill unoptimized sizes="(max-width: 800px) 100vw, 36vw" />
-        </figure>
+        {weddingGallery.map((item, index) => (
+          <figure className={`wedding-gallery-item-v3 wedding-gallery-item-${index + 1}-v3`} key={item.src}>
+            <Image src={item.src} alt={item.alt} fill unoptimized sizes={index < 2 ? "(max-width: 800px) 100vw, 58vw" : "(max-width: 800px) 100vw, 33vw"} />
+            <figcaption>{item.caption}</figcaption>
+          </figure>
+        ))}
       </section>
 
       <section className="wedding-details-v2">
@@ -127,7 +155,7 @@ export default function WeddingPage() {
 
       <section className="wedding-moment-v2">
         <div className="wedding-moment-image-v2">
-          <Image src="/images/playa-luna/wedding/sea-table.webp" alt="Tavola elegante allestita sul mare" fill unoptimized sizes="(max-width: 800px) 100vw, 52vw" />
+          <Image src="/images/playa-luna/wedding/favors.webp" alt="Dettagli e cadeaux preparati per un ricevimento al Playa Luna" fill unoptimized sizes="(max-width: 800px) 100vw, 52vw" />
         </div>
         <div className="wedding-moment-copy-v2">
           <p className="eyebrow">Cominciamo da voi</p>

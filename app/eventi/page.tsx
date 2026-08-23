@@ -41,6 +41,57 @@ const eventTypes = [
   },
 ];
 
+const eventGallery = [
+  {
+    src: "/images/playa-luna/events/gathering.webp",
+    alt: "Ospiti durante un evento negli spazi del Playa Luna",
+    caption: "Persone, atmosfera, mare",
+    wide: true,
+  },
+  {
+    src: "/images/playa-luna/events/night-01.webp",
+    alt: "La sala e la pista illuminate durante una festa serale al Playa Luna",
+    caption: "Quando la notte prende vita",
+  },
+  {
+    src: "/images/playa-luna/events/night-02.webp",
+    alt: "Gruppo di amici in festa durante un evento al Playa Luna",
+    caption: "Una festa da condividere",
+  },
+  {
+    src: "/images/playa-luna/events/night-03.webp",
+    alt: "Ospiti che ballano durante una serata al Playa Luna",
+    caption: "Fino all’ultima canzone",
+  },
+  {
+    src: "/images/playa-luna/events/night-04.webp",
+    alt: "Consolle DJ accesa durante un evento serale",
+    caption: "Il suono della serata",
+  },
+  {
+    src: "/images/playa-luna/events/night-05.webp",
+    alt: "Bottiglia celebrativa con luci da festa",
+    caption: "Brindisi che restano",
+  },
+  {
+    src: "/images/playa-luna/events/buffet.webp",
+    alt: "Buffet preparato per un evento al Playa Luna",
+    caption: "La cucina entra in scena",
+    wide: true,
+  },
+  {
+    src: "/images/playa-luna/events/night-06.webp",
+    alt: "Torta con scintille durante una festa al Playa Luna",
+    caption: "Il momento più atteso",
+  },
+  {
+    src: "/images/playa-luna/events/corporate.webp",
+    alt: "Dettaglio di un’esperienza organizzata durante un evento",
+    caption: "Dettagli che danno carattere",
+    wide: true,
+  },
+];
+
 const schema = {
   "@context": "https://schema.org",
   "@type": "EventVenue",
@@ -102,18 +153,12 @@ export default function EventsPage() {
       </section>
 
       <section className="shell events-gallery-v2" aria-label="Atmosfere degli eventi Playa Luna">
-        <figure className="events-gallery-main-v2">
-          <Image src="/images/playa-luna/events/gathering.webp" alt="Ospiti durante un evento negli spazi del Playa Luna" fill unoptimized sizes="(max-width: 800px) 100vw, 62vw" />
-          <figcaption>Persone, atmosfera, mare</figcaption>
-        </figure>
-        <figure>
-          <Image src="/images/playa-luna/events/buffet.webp" alt="Buffet preparato per un evento al Playa Luna" fill unoptimized sizes="(max-width: 800px) 100vw, 38vw" />
-          <figcaption>La cucina entra in scena</figcaption>
-        </figure>
-        <figure>
-          <Image src="/images/playa-luna/events/corporate.webp" alt="Dettaglio di un’esperienza organizzata durante un evento" fill unoptimized sizes="(max-width: 800px) 100vw, 38vw" />
-          <figcaption>Dettagli che danno carattere</figcaption>
-        </figure>
+        {eventGallery.map((item) => (
+          <figure className={item.wide ? "events-gallery-wide-v2" : undefined} key={item.src}>
+            <Image src={item.src} alt={item.alt} fill unoptimized sizes={item.wide ? "(max-width: 800px) 100vw, 66vw" : "(max-width: 800px) 100vw, 33vw"} />
+            <figcaption>{item.caption}</figcaption>
+          </figure>
+        ))}
       </section>
 
       <section className="events-formats-v2">
