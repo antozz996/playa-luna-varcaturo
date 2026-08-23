@@ -1,21 +1,38 @@
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
+import { presentationTool } from "sanity/presentation";
 import { visionTool } from "@sanity/vision";
 import { schemaTypes } from "./sanity/schemaTypes";
 import { playaLunaStructure } from "./sanity/structure";
 
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "00000000";
-const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
+const projectId =
+  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "00000000";
+
+const dataset =
+  process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
 
 export default defineConfig({
   name: "playa-luna-manager",
   title: "Playa Luna Manager",
+
   projectId,
   dataset,
+
   basePath: "/studio",
+
   plugins: [
-    structureTool({ structure: playaLunaStructure }),
+    structureTool({
+      structure: playaLunaStructure,
+    }),
+
+    presentationTool({
+      previewUrl: "https://playa-luna-varcaturo-delta.vercel.app",
+    }),
+
     visionTool(),
   ],
-  schema: { types: schemaTypes },
+
+  schema: {
+    types: schemaTypes,
+  },
 });
