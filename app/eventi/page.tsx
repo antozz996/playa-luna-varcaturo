@@ -5,6 +5,7 @@ import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
 import { eventPhoneNumber, eventWhatsapp, siteUrl } from "../lib/site";
 import { getMediaDocument, mediaAlt, mediaCaption, mediaUrl, type ManagedImage } from "../lib/sanity";
+import { sanityImageAttribute } from "../lib/sanity-visual";
 
 export const metadata: Metadata = {
   title: "Eventi sul mare a Varcaturo",
@@ -132,7 +133,10 @@ export default async function EventsPage() {
     <main className="events-editorial-v2">
       <SiteHeader />
 
-      <section className="events-hero-v2">
+      <section
+        className="events-hero-v2"
+        data-sanity={sanityImageAttribute("eventsMedia", "eventsMedia", "hero")}
+      >
         <Image
           className="events-hero-image-v2"
           src={hero}
@@ -174,7 +178,11 @@ export default async function EventsPage() {
 
       <section className="shell events-gallery-v2" aria-label="Atmosfere degli eventi Playa Luna">
         {gallery.map((item) => (
-          <figure className={item.wide ? "events-gallery-wide-v2" : undefined} key={item.src}>
+          <figure
+            className={item.wide ? "events-gallery-wide-v2" : undefined}
+            key={item.slot}
+            data-sanity={sanityImageAttribute("eventsMedia", "eventsMedia", item.slot)}
+          >
             <Image src={item.src} alt={item.alt} fill unoptimized sizes={item.wide ? "(max-width: 800px) 100vw, 66vw" : "(max-width: 800px) 100vw, 33vw"} />
             <figcaption>{item.caption}</figcaption>
           </figure>
