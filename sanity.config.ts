@@ -25,9 +25,14 @@ export default defineConfig({
       structure: playaLunaStructure,
     }),
 
-    presentationTool({
-      previewUrl: "https://playa-luna-varcaturo-delta.vercel.app",
-    }),
+   presentationTool({
+  previewUrl: {
+    origin: "https://playa-luna-varcaturo-delta.vercel.app",
+    previewMode: {
+      enable: "/api/draft-mode/enable",
+    },
+  },
+}),
 
     visionTool(),
   ],
