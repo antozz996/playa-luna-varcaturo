@@ -143,7 +143,6 @@ export default async function EventsPage() {
           alt={mediaAlt(media.hero, "Tavola allestita per un evento serale al Playa Luna")}
           fill
           priority
-          unoptimized
           sizes="100vw"
         />
         <div className="events-hero-shade-v2" />
@@ -183,7 +182,7 @@ export default async function EventsPage() {
             key={item.slot}
             data-sanity={sanityImageAttribute("eventsMedia", "eventsMedia", item.slot)}
           >
-            <Image src={item.src} alt={item.alt} fill unoptimized sizes={item.wide ? "(max-width: 800px) 100vw, 66vw" : "(max-width: 800px) 100vw, 33vw"} />
+            <Image src={item.src} alt={item.alt} fill sizes={item.wide ? "(max-width: 800px) 100vw, 66vw" : "(max-width: 800px) 100vw, 33vw"} />
             <figcaption>{item.caption}</figcaption>
           </figure>
         ))}
