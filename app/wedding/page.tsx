@@ -5,6 +5,7 @@ import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
 import { eventPhoneNumber, eventWhatsapp, siteUrl } from "../lib/site";
 import { getMediaDocument, mediaAlt, mediaCaption, mediaUrl, type ManagedImage } from "../lib/sanity";
+import { sanityImageAttribute } from "../lib/sanity-visual";
 
 export const metadata: Metadata = {
   title: "Ricevimento di matrimonio sul mare a Napoli",
@@ -106,7 +107,10 @@ export default async function WeddingPage() {
     <main className="wedding-editorial-v2">
       <SiteHeader />
 
-      <section className="wedding-hero-v2">
+      <section
+        className="wedding-hero-v2"
+        data-sanity={sanityImageAttribute("weddingMedia", "weddingMedia", "hero")}
+      >
         <Image
           className="wedding-hero-image-v2"
           src={hero}
@@ -148,7 +152,11 @@ export default async function WeddingPage() {
           </p>
         </div>
         {gallery.map((item, index) => (
-          <figure className={`wedding-gallery-item-v3 wedding-gallery-item-${index + 1}-v3`} key={item.src}>
+          <figure
+            className={`wedding-gallery-item-v3 wedding-gallery-item-${index + 1}-v3`}
+            key={item.slot}
+            data-sanity={sanityImageAttribute("weddingMedia", "weddingMedia", item.slot)}
+          >
             <Image src={item.src} alt={item.alt} fill unoptimized sizes={index < 2 ? "(max-width: 800px) 100vw, 58vw" : "(max-width: 800px) 100vw, 33vw"} />
             <figcaption>{item.caption}</figcaption>
           </figure>
@@ -171,7 +179,10 @@ export default async function WeddingPage() {
       </section>
 
       <section className="wedding-moment-v2">
-        <div className="wedding-moment-image-v2">
+        <div
+          className="wedding-moment-image-v2"
+          data-sanity={sanityImageAttribute("weddingMedia", "weddingMedia", "closing")}
+        >
           <Image src={closing} alt={mediaAlt(media.closing, "Dettagli e cadeaux preparati per un ricevimento al Playa Luna")} fill unoptimized sizes="(max-width: 800px) 100vw, 52vw" />
         </div>
         <div className="wedding-moment-copy-v2">
