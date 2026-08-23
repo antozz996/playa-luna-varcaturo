@@ -117,7 +117,6 @@ export default async function WeddingPage() {
           alt={mediaAlt(media.hero, "Tavola wedding bianca e azzurra allestita al Playa Luna")}
           fill
           priority
-          unoptimized
           sizes="100vw"
         />
         <div className="wedding-hero-shade-v2" />
@@ -157,7 +156,7 @@ export default async function WeddingPage() {
             key={item.slot}
             data-sanity={sanityImageAttribute("weddingMedia", "weddingMedia", item.slot)}
           >
-            <Image src={item.src} alt={item.alt} fill unoptimized sizes={index < 2 ? "(max-width: 800px) 100vw, 58vw" : "(max-width: 800px) 100vw, 33vw"} />
+            <Image src={item.src} alt={item.alt} fill sizes={index < 2 ? "(max-width: 800px) 100vw, 58vw" : "(max-width: 800px) 100vw, 33vw"} />
             <figcaption>{item.caption}</figcaption>
           </figure>
         ))}
@@ -183,7 +182,7 @@ export default async function WeddingPage() {
           className="wedding-moment-image-v2"
           data-sanity={sanityImageAttribute("weddingMedia", "weddingMedia", "closing")}
         >
-          <Image src={closing} alt={mediaAlt(media.closing, "Dettagli e cadeaux preparati per un ricevimento al Playa Luna")} fill unoptimized sizes="(max-width: 800px) 100vw, 52vw" />
+          <Image src={closing} alt={mediaAlt(media.closing, "Dettagli e cadeaux preparati per un ricevimento al Playa Luna")} fill sizes="(max-width: 800px) 100vw, 52vw" />
         </div>
         <div className="wedding-moment-copy-v2">
           <p className="eyebrow">Cominciamo da voi</p>
