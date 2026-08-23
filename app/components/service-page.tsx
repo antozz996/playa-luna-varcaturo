@@ -1,3 +1,5 @@
+import Image from "next/image";
+import Link from "next/link";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
 import { beachWhatsapp, siteUrl } from "../lib/site";
@@ -17,6 +19,7 @@ type ServicePageProps = {
   ctaLabel?: string;
   ctaHref?: string;
   ctaEvent?: string;
+  telephone?: string;
   schemaType?: "Beach" | "Restaurant" | "EventVenue" | "LocalBusiness";
 };
 
@@ -35,6 +38,7 @@ export function ServicePage({
   ctaLabel = "Chiedi informazioni",
   ctaHref = beachWhatsapp,
   ctaEvent = "whatsapp_beach",
+  telephone,
   schemaType = "LocalBusiness",
 }: ServicePageProps) {
   const structuredData = [
@@ -43,6 +47,7 @@ export function ServicePage({
       "@type": schemaType,
       name: `Playa Luna · ${eyebrow}`,
       url: `${siteUrl}/${slug}/`,
+      telephone,
       isPartOf: { "@type": "LocalBusiness", name: "Playa Luna", url: siteUrl },
       image: `${siteUrl}${image}`,
       address: {
@@ -113,5 +118,3 @@ export function ServicePage({
     </main>
   );
 }
-import Image from "next/image";
-import Link from "next/link";

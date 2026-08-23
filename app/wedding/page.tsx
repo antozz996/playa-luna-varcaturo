@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
-import { eventWhatsapp, siteUrl } from "../lib/site";
+import { eventPhoneNumber, eventWhatsapp, siteUrl } from "../lib/site";
 
 export const metadata: Metadata = {
   title: "Ricevimento di matrimonio sul mare a Napoli",
@@ -74,6 +74,7 @@ const schema = {
   "@type": "EventVenue",
   name: "Playa Luna Wedding",
   url: `${siteUrl}/wedding/`,
+  telephone: eventPhoneNumber,
   image: `${siteUrl}/images/playa-luna/wedding/hero.webp`,
   address: {
     "@type": "PostalAddress",

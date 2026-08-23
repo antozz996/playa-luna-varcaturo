@@ -1,7 +1,14 @@
 import Image from "next/image";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
-import { beachWhatsapp, eventWhatsapp } from "./lib/site";
+import {
+  beachPhoneNumber,
+  beachWhatsapp,
+  eventPhoneNumber,
+  eventWhatsapp,
+  restaurantPhoneHref,
+  restaurantPhoneNumber,
+} from "./lib/site";
 
 const experiences = [
   {
@@ -35,7 +42,12 @@ export default function Home() {
     description:
       "Beach club, ristorante sul mare, piscina ed eventi a Marina di Varcaturo.",
     url: "https://playaluna.it/",
-    telephone: "+39 376 211 5726",
+    telephone: beachPhoneNumber,
+    contactPoint: [
+      { "@type": "ContactPoint", contactType: "Beach Club", telephone: beachPhoneNumber },
+      { "@type": "ContactPoint", contactType: "Ristorante", telephone: restaurantPhoneNumber },
+      { "@type": "ContactPoint", contactType: "Events", telephone: eventPhoneNumber },
+    ],
     priceRange: "€€",
     image: "https://playaluna.it/images/playa-luna/hero-beach.webp",
     address: {
@@ -195,7 +207,7 @@ export default function Home() {
 
         <div className="restaurant-bottom shell">
           <p>Pranzo sul mare · Cucina mediterranea · Cocktail & aperitivo</p>
-          <a className="pill-button coral" href="tel:+393762115726" data-event="phone_restaurant">Prenota un tavolo <span aria-hidden="true">↗</span></a>
+          <a className="pill-button coral" href={restaurantPhoneHref} data-event="phone_restaurant">Prenota un tavolo <span aria-hidden="true">↗</span></a>
         </div>
       </section>
 

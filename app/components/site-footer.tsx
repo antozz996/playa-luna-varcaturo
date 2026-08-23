@@ -1,6 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import { mapsUrl, phoneHref, phoneNumber } from "../lib/site";
+import {
+  beachPhoneHref,
+  beachPhoneNumber,
+  eventPhoneHref,
+  eventPhoneNumber,
+  mapsUrl,
+  restaurantPhoneHref,
+  restaurantPhoneNumber,
+} from "../lib/site";
 
 export function SiteFooter() {
   return (
@@ -20,7 +28,9 @@ export function SiteFooter() {
         </div>
         <div>
           <p className="footer-label">Contatti</p>
-          <a href={phoneHref} data-event="phone_click">{phoneNumber}</a>
+          <a href={beachPhoneHref} data-event="phone_beach">Beach · {beachPhoneNumber}</a>
+          <a href={restaurantPhoneHref} data-event="phone_restaurant">Ristorante · {restaurantPhoneNumber}</a>
+          <a href={eventPhoneHref} data-event="phone_events">Events · {eventPhoneNumber}</a>
         </div>
         <div>
           <p className="footer-label">Seguici</p>

@@ -2,7 +2,15 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
-import { beachWhatsapp, email, eventWhatsapp, mapsUrl, phoneHref, phoneNumber } from "../lib/site";
+import {
+  beachPhoneNumber,
+  beachWhatsapp,
+  eventPhoneNumber,
+  eventWhatsapp,
+  mapsUrl,
+  restaurantPhoneHref,
+  restaurantPhoneNumber,
+} from "../lib/site";
 
 export const metadata: Metadata = {
   title: "Contatti e indicazioni",
@@ -25,12 +33,11 @@ export default function ContactsPage() {
         </div>
       </section>
       <section className="contact-options shell section-space" aria-label="Contatti Playa Luna">
-        <a href={beachWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_beach"><span>01</span><h2>Beach Club</h2><p>Prenota o chiedi disponibilità su WhatsApp.</p><b>Apri WhatsApp ↗</b></a>
-        <a href={phoneHref} data-event="phone_click"><span>02</span><h2>Ristorante</h2><p>Chiama {phoneNumber} per prenotare un tavolo.</p><b>Chiama ora ↗</b></a>
-        <a href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events"><span>03</span><h2>Eventi</h2><p>Raccontaci che tipo di occasione vuoi organizzare.</p><b>Richiedi informazioni ↗</b></a>
+        <a href={beachWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_beach"><span>01</span><h2>Beach Club</h2><p>{beachPhoneNumber} · Prenota o chiedi disponibilità su WhatsApp.</p><b>Apri WhatsApp ↗</b></a>
+        <a href={restaurantPhoneHref} data-event="phone_restaurant"><span>02</span><h2>Ristorante</h2><p>Chiama {restaurantPhoneNumber} per prenotare un tavolo.</p><b>Chiama ora ↗</b></a>
+        <a href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events"><span>03</span><h2>Eventi</h2><p>{eventPhoneNumber} · Raccontaci che tipo di occasione vuoi organizzare.</p><b>Richiedi informazioni ↗</b></a>
         <a href={mapsUrl} target="_blank" rel="noreferrer" data-event="directions_click"><span>04</span><h2>Come arrivare</h2><p>Via Marina di Varcaturo, 42 · Giugliano in Campania.</p><b>Apri la mappa ↗</b></a>
       </section>
-      <section className="contact-email shell"><p>Preferisci scrivere?</p><a href={`mailto:${email}`} data-event="email_click">{email}</a></section>
       <SiteFooter />
     </main>
   );

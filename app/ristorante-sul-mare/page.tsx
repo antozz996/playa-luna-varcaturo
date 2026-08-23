@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ServicePage } from "../components/service-page";
+import { restaurantPhoneHref, restaurantPhoneNumber } from "../lib/site";
 
 export const metadata: Metadata = {
   title: "Ristorante sul mare a Varcaturo",
@@ -9,5 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function RestaurantPage() {
-  return <ServicePage slug="ristorante-sul-mare" eyebrow="Restaurant" title="Il sapore" emphasis="del mare." intro="Il ristorante è parte della giornata Playa Luna: una sala aperta sulla luce, cucina mediterranea e tavoli da condividere." body="La proposta accompagna il ritmo del lido, dal pranzo agli aperitivi. Il mare resta il filo conduttore, insieme a ingredienti mediterranei, piatti curati e un ambiente informale ma attento ai dettagli." image="/images/playa-luna/restaurant/hero.webp" imageAlt="La sala luminosa del ristorante Playa Luna durante il servizio" detailImage="/images/playa-luna/food-pasta.webp" detailAlt="Piatto di pasta mediterranea preparato al ristorante Playa Luna" features={["Pranzo nella struttura sul mare", "Cucina mediterranea e piatti di pesce", "Proposte da condividere", "Cocktail e aperitivo"]} ctaLabel="Prenota un tavolo" ctaHref="tel:+393762115726" ctaEvent="phone_restaurant" schemaType="Restaurant" />;
+  return <ServicePage slug="ristorante-sul-mare" eyebrow="Restaurant" title="Il sapore" emphasis="del mare." intro="Il ristorante è parte della giornata Playa Luna: una sala aperta sulla luce, cucina mediterranea e tavoli da condividere." body="La proposta accompagna il ritmo del lido, dal pranzo agli aperitivi. Il mare resta il filo conduttore, insieme a ingredienti mediterranei, piatti curati e un ambiente informale ma attento ai dettagli." image="/images/playa-luna/restaurant/hero.webp" imageAlt="La sala luminosa del ristorante Playa Luna durante il servizio" detailImage="/images/playa-luna/food-pasta.webp" detailAlt="Piatto di pasta mediterranea preparato al ristorante Playa Luna" features={["Pranzo nella struttura sul mare", "Cucina mediterranea e piatti di pesce", "Proposte da condividere", "Cocktail e aperitivo"]} ctaLabel="Prenota un tavolo" ctaHref={restaurantPhoneHref} ctaEvent="phone_restaurant" telephone={restaurantPhoneNumber} schemaType="Restaurant" />;
 }

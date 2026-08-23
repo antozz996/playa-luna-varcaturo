@@ -1061,27 +1061,6 @@ footer {
   text-transform: uppercase;
 }
 
-.contact-email {
-  padding-bottom: clamp(100px, 10vw, 150px);
-  text-align: center;
-}
-
-.contact-email p {
-  color: color-mix(in srgb, var(--ink) 58%, transparent);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-
-.contact-email a {
-  display: inline-block;
-  margin-top: 18px;
-  border-bottom: 1px solid currentColor;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(30px, 5vw, 68px);
-}
-
 .legal-header {
   min-height: 104px;
   background: var(--ink);
