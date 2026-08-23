@@ -15,6 +15,7 @@ import {
   mediaUrl,
   type ManagedImage,
 } from "./lib/sanity";
+import { sanityImageAttribute } from "./lib/sanity-visual";
 
 const experienceDefaults = [
   {
@@ -95,7 +96,12 @@ export default async function Home() {
 
       <SiteHeader />
 
-      <section className="hero" id="top" aria-labelledby="hero-title">
+      <section
+        className="hero"
+        id="top"
+        aria-labelledby="hero-title"
+        data-sanity={sanityImageAttribute("homeMedia", "homeMedia", "hero")}
+      >
         <Image
           className="hero-image"
           src={mediaUrl(media.hero, "/images/playa-luna/hero-beach.webp")}
@@ -153,7 +159,10 @@ export default async function Home() {
       <section className="experience-grid shell" id="experience" aria-label="Esperienze Playa Luna">
         {experiences.map((item) => (
           <a className="experience-card" href={item.href} key={item.number} data-event="service_page_click">
-            <div className="experience-image-wrap">
+            <div
+              className="experience-image-wrap"
+              data-sanity={sanityImageAttribute("homeMedia", "homeMedia", item.slot)}
+            >
               <Image src={item.image} alt="" width={960} height={1200} unoptimized sizes="(max-width: 800px) 82vw, 33vw" />
               <span className="card-number">{item.number}</span>
             </div>
@@ -185,11 +194,17 @@ export default async function Home() {
               Prenota il tuo posto <span aria-hidden="true">↗</span>
             </a>
           </div>
-          <figure className="beach-main-image">
+          <figure
+            className="beach-main-image"
+            data-sanity={sanityImageAttribute("homeMedia", "homeMedia", "beachMain")}
+          >
             <Image src={mediaUrl(media.beachMain, "/images/playa-luna/beach-day.webp")} alt={mediaAlt(media.beachMain, "Lettini e ombrelloni sulla spiaggia Playa Luna")} width={960} height={1200} unoptimized sizes="(max-width: 800px) 100vw, 42vw" />
             <figcaption>Marina di Varcaturo · Golfo di Napoli</figcaption>
           </figure>
-          <figure className="beach-detail-image">
+          <figure
+            className="beach-detail-image"
+            data-sanity={sanityImageAttribute("homeMedia", "homeMedia", "beachDetail")}
+          >
             <Image src={mediaUrl(media.beachDetail, "/images/playa-luna/sunset-view.webp")} alt={mediaAlt(media.beachDetail, "Vista della spiaggia tra fiori e piante mediterranee")} width={960} height={1200} unoptimized sizes="18vw" />
           </figure>
         </div>
@@ -206,16 +221,19 @@ export default async function Home() {
         </div>
 
         <div className="food-gallery shell">
-          <figure className="food-large">
+          <figure
+            className="food-large"
+            data-sanity={sanityImageAttribute("homeMedia", "homeMedia", "restaurantMain")}
+          >
             <Image src={mediaUrl(media.restaurantMain, "/images/playa-luna/restaurant.webp")} alt={mediaAlt(media.restaurantMain, "Il ristorante Playa Luna con struttura in legno e tavoli all'aperto")} width={960} height={1200} unoptimized sizes="(max-width: 800px) 78vw, 46vw" />
           </figure>
-          <figure>
+          <figure data-sanity={sanityImageAttribute("homeMedia", "homeMedia", "foodOne")}>
             <Image src={mediaUrl(media.foodOne, "/images/playa-luna/food-tartare.webp")} alt={mediaAlt(media.foodOne, "Tartare di mare servita al ristorante Playa Luna")} width={800} height={1000} unoptimized sizes="(max-width: 800px) 78vw, 18vw" />
           </figure>
-          <figure>
+          <figure data-sanity={sanityImageAttribute("homeMedia", "homeMedia", "foodTwo")}>
             <Image src={mediaUrl(media.foodTwo, "/images/playa-luna/food-pasta.webp")} alt={mediaAlt(media.foodTwo, "Pasta mediterranea servita in padella")} width={800} height={1000} unoptimized sizes="(max-width: 800px) 78vw, 18vw" />
           </figure>
-          <figure>
+          <figure data-sanity={sanityImageAttribute("homeMedia", "homeMedia", "foodThree")}>
             <Image src={mediaUrl(media.foodThree, "/images/playa-luna/food-fish.webp")} alt={mediaAlt(media.foodThree, "Secondo piatto di pesce con verdure")} width={800} height={1000} unoptimized sizes="(max-width: 800px) 78vw, 18vw" />
           </figure>
         </div>
@@ -228,8 +246,24 @@ export default async function Home() {
 
       <section className="family" id="pool" aria-labelledby="pool-title">
         <div className="family-images">
-          <Image src={mediaUrl(media.poolMain, "/images/playa-luna/pool-family.webp")} alt={mediaAlt(media.poolMain, "Famiglie e bambini nella piscina di Playa Luna")} width={959} height={1200} unoptimized sizes="(max-width: 800px) 100vw, 45vw" />
-          <Image src={mediaUrl(media.poolDetail, "/images/playa-luna/pool-chair.webp")} alt={mediaAlt(media.poolDetail, "Piscina Playa Luna con area relax e lettini")} width={800} height={1000} unoptimized sizes="28vw" />
+          <Image
+            src={mediaUrl(media.poolMain, "/images/playa-luna/pool-family.webp")}
+            alt={mediaAlt(media.poolMain, "Famiglie e bambini nella piscina di Playa Luna")}
+            width={959}
+            height={1200}
+            unoptimized
+            sizes="(max-width: 800px) 100vw, 45vw"
+            data-sanity={sanityImageAttribute("homeMedia", "homeMedia", "poolMain")}
+          />
+          <Image
+            src={mediaUrl(media.poolDetail, "/images/playa-luna/pool-chair.webp")}
+            alt={mediaAlt(media.poolDetail, "Piscina Playa Luna con area relax e lettini")}
+            width={800}
+            height={1000}
+            unoptimized
+            sizes="28vw"
+            data-sanity={sanityImageAttribute("homeMedia", "homeMedia", "poolDetail")}
+          />
         </div>
         <div className="family-copy">
           <p className="eyebrow light">Piscina · Playa Luna</p>
@@ -259,7 +293,10 @@ export default async function Home() {
               Richiedi informazioni <span aria-hidden="true">↗</span>
             </a>
           </div>
-          <figure className="events-image">
+          <figure
+            className="events-image"
+            data-sanity={sanityImageAttribute("homeMedia", "homeMedia", "eventsFeature")}
+          >
             <Image src={mediaUrl(media.eventsFeature, "/images/playa-luna/events/home-feature.webp")} alt={mediaAlt(media.eventsFeature, "Allestimento elegante per un evento al Playa Luna")} width={960} height={1200} unoptimized sizes="(max-width: 800px) 100vw, 52vw" />
           </figure>
           <div className="event-types" aria-label="Tipologie di eventi">
@@ -270,7 +307,11 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="final-cta" aria-labelledby="final-title">
+      <section
+        className="final-cta"
+        aria-labelledby="final-title"
+        data-sanity={sanityImageAttribute("homeMedia", "homeMedia", "finalCta")}
+      >
         <Image src={mediaUrl(media.finalCta, "/images/playa-luna/pool-chair.webp")} alt={mediaAlt(media.finalCta, "Postazione riservata accanto alla piscina Playa Luna")} width={800} height={1000} unoptimized sizes="100vw" />
         <div className="final-cta-shade" />
         <div className="final-cta-content">
