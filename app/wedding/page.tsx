@@ -1,17 +1,16 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
+import { CmsMedia } from "../components/cms-media";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
 import { eventPhoneNumber, eventWhatsapp, siteUrl } from "../lib/site";
 import {
   getMediaDocument,
-  mediaAlt,
   mediaCaption,
-  mediaObjectPosition,
   mediaUrl,
   type ManagedImage,
 } from "../lib/sanity";
+import { type ManagedFile } from "../lib/sanity-file";
 import { sanityImageAttribute } from "../lib/sanity-visual";
 
 export const metadata: Metadata = {
@@ -57,43 +56,49 @@ const baseSchema = {
   },
 };
 
+function mediaPath(slot: string, video?: ManagedFile) {
+  return video?.asset?._ref ? `${slot}Video` : slot;
+}
+
 export default async function WeddingPage() {
-  const media = await getMediaDocument<Record<string, ManagedImage>>("weddingMedia");
-  const hero = mediaUrl(media.hero, "/images/playa-luna/wedding/hero.webp");
-  const gallery = weddingGallery.map((item) => ({
-    ...item,
-    src: mediaUrl(media[item.slot], item.src),
-    alt: mediaAlt(media[item.slot], item.alt),
-    caption: mediaCaption(media[item.slot], item.caption),
-    objectPosition: mediaObjectPosition(media[item.slot]),
-  }));
-  const closing = mediaUrl(media.closing, "/images/playa-luna/wedding/favors.webp");
+  const media = await getMediaDocument<Record<string, unknown>>("weddingMedia");
+  const heroImage = media.hero as ManagedImage | undefined;
+  const heroVideo = media.heroVideo as ManagedFile | undefined;
+  const closingImage = media.closing as ManagedImage | undefined;
+  const closingVideo = media.closingVideo as ManagedFile | undefined;
+  const hero = mediaUrl(heroImage, "/images/playa-luna/wedding/hero.webp");
   const schema = { ...baseSchema, image: hero.startsWith("http") ? hero : `${siteUrl}${hero}` };
 
   return (
     <main className="wedding-editorial-v2">
       <SiteHeader />
 
-      <section className="wedding-hero-v2" data-sanity={sanityImageAttribute("weddingMedia", "weddingMedia", "hero")}>
-        <Image
-          className="wedding-hero-image-v2"
-          src={hero}
-          alt={mediaAlt(media.hero, "Tavola wedding bianca e azzurra allestita al Playa Luna")}
+      <section className="wedding-hero-v2">
+        <CmsMedia
+          image={heroImage}
+          video={heroVideo}
+          fallback="/images/playa-luna/wedding/hero.webp"
+          altFallback="Tavola wedding bianca e azzurra allestita al Playa Luna"
+          sizes="100vw"
           fill
           priority
-          sizes="100vw"
-          style={{ objectPosition: mediaObjectPosition(media.hero) }}
+          className="wedding-hero-image-v2"
+          dataSanity={sanityImageAttribute("weddingMedia", "weddingMedia", mediaPath("hero", heroVideo))}
         />
         <div className="wedding-hero-shade-v2" />
         <div className="shell wedding-hero-copy-v2">
           <p className="eyebrow">Playa Luna · Wedding</p>
           <h1>Il vostro sì,<br /><em>con il mare davanti.</em></h1>
           <p>Un ricevimento mediterraneo, intimo e personale. Creato intorno a voi.</p>
-          <a className="pill-button light" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_wedding">Raccontateci il vostro giorno <span aria-hidden="true">↗</span></a>
+          <a className="pill-button light" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_wedding">
+            Raccontateci il vostro giorno <span aria-hidden="true">↗</span>
+          </a>
         </div>
       </section>
 
-      <nav className="shell breadcrumbs wedding-breadcrumbs-v2" aria-label="Percorso"><Link href="/">Home</Link><span>/</span><span>Wedding</span></nav>
+      <nav className="shell breadcrumbs wedding-breadcrumbs-v2" aria-label="Percorso">
+        <Link href="/">Home</Link><span>/</span><span>Wedding</span>
+      </nav>
 
       <section className="shell wedding-intro-v2">
         <p className="eyebrow">La vostra storia</p>
@@ -107,12 +112,28 @@ export default async function WeddingPage() {
           <h2>La bellezza<br /><em>dei dettagli.</em></h2>
           <p>Materiali naturali, colori morbidi e composizioni leggere dialogano con il paesaggio. La scenografia non copre il luogo: lo rende vostro.</p>
         </div>
-        {gallery.map((item, index) => (
-          <figure className={`wedding-gallery-item-v3 wedding-gallery-item-${index + 1}-v3`} key={item.slot} data-sanity={sanityImageAttribute("weddingMedia", "weddingMedia", item.slot)}>
-            <Image src={item.src} alt={item.alt} fill sizes={index < 2 ? "(max-width: 800px) 100vw, 58vw" : "(max-width: 800px) 100vw, 33vw"} style={{ objectPosition: item.objectPosition }} />
-            <figcaption>{item.caption}</figcaption>
-          </figure>
-        ))}
+        {weddingGallery.map((item, index) => {
+          const image = media[item.slot] as ManagedImage | undefined;
+          const video = media[`${item.slot}Video`] as ManagedFile | undefined;
+          return (
+            <figure
+              className={`wedding-gallery-item-v3 wedding-gallery-item-${index + 1}-v3`}
+              key={item.slot}
+              style={{ position: "relative", overflow: "hidden" }}
+            >
+              <CmsMedia
+                image={image}
+                video={video}
+                fallback={item.src}
+                altFallback={item.alt}
+                fill
+                sizes={index < 2 ? "(max-width: 800px) 100vw, 58vw" : "(max-width: 800px) 100vw, 33vw"}
+                dataSanity={sanityImageAttribute("weddingMedia", "weddingMedia", mediaPath(item.slot, video))}
+              />
+              <figcaption>{mediaCaption(image, item.caption)}</figcaption>
+            </figure>
+          );
+        })}
       </section>
 
       <section className="wedding-details-v2">
@@ -120,21 +141,35 @@ export default async function WeddingPage() {
           <p className="eyebrow">Un racconto completo</p>
           <div className="wedding-detail-grid-v2">
             {weddingDetails.map((item) => (
-              <article key={item.number}><span>{item.number}</span><h3>{item.title}</h3><p>{item.text}</p></article>
+              <article key={item.number}>
+                <span>{item.number}</span>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
       <section className="wedding-moment-v2">
-        <div className="wedding-moment-image-v2" data-sanity={sanityImageAttribute("weddingMedia", "weddingMedia", "closing")}>
-          <Image src={closing} alt={mediaAlt(media.closing, "Dettagli e cadeaux preparati per un ricevimento al Playa Luna")} fill sizes="(max-width: 800px) 100vw, 52vw" style={{ objectPosition: mediaObjectPosition(media.closing) }} />
+        <div className="wedding-moment-image-v2" style={{ position: "relative", overflow: "hidden" }}>
+          <CmsMedia
+            image={closingImage}
+            video={closingVideo}
+            fallback="/images/playa-luna/wedding/favors.webp"
+            altFallback="Dettagli e cadeaux preparati per un ricevimento al Playa Luna"
+            fill
+            sizes="(max-width: 800px) 100vw, 52vw"
+            dataSanity={sanityImageAttribute("weddingMedia", "weddingMedia", mediaPath("closing", closingVideo))}
+          />
         </div>
         <div className="wedding-moment-copy-v2">
           <p className="eyebrow">Cominciamo da voi</p>
           <h2>Immaginiamolo<br /><em>insieme.</em></h2>
           <p>Raccontateci la data, il numero di invitati e la sensazione che desiderate per il vostro ricevimento.</p>
-          <a className="pill-button light" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_wedding_bottom">Parliamo del vostro matrimonio <span aria-hidden="true">↗</span></a>
+          <a className="pill-button light" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_wedding_bottom">
+            Parliamo del vostro matrimonio <span aria-hidden="true">↗</span>
+          </a>
         </div>
       </section>
 
