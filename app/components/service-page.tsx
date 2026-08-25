@@ -23,29 +23,21 @@ type ServicePageProps = {
   telephone?: string;
   schemaType?: "Beach" | "Restaurant" | "EventVenue" | "LocalBusiness";
   heroObjectPosition?: string;
-
-  // Documento Sanity collegato alla pagina
+  detailObjectPosition?: string;
   sanityDocumentId?: string;
   sanityDocumentType?: string;
 };
 
-const projectId =
-  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "";
-
-const dataset =
-  process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
-
-const studioUrl =
-  "https://playa-luna-varcaturo-delta.vercel.app/studio";
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "";
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
+const studioUrl = "https://playa-luna-varcaturo-delta.vercel.app/studio";
 
 function imageDataAttribute(
   id: string | undefined,
   type: string | undefined,
   path: string,
 ) {
-  if (!id || !type || !projectId) {
-    return undefined;
-  }
+  if (!id || !type || !projectId) return undefined;
 
   return createDataAttribute({
     projectId,
@@ -74,13 +66,12 @@ export function ServicePage({
   ctaEvent = "whatsapp_beach",
   telephone,
   schemaType = "LocalBusiness",
-  heroObjectPosition = "center 55%",
+  heroObjectPosition = "50% 55%",
+  detailObjectPosition = "50% 50%",
   sanityDocumentId,
   sanityDocumentType,
 }: ServicePageProps) {
-  const structuredImage = image.startsWith("http")
-    ? image
-    : `${siteUrl}${image}`;
+  const structuredImage = image.startsWith("http") ? image : `${siteUrl}${image}`;
 
   const structuredData = [
     {
@@ -107,49 +98,25 @@ export function ServicePage({
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        {
-          "@type": "ListItem",
-          position: 1,
-          name: "Home",
-          item: `${siteUrl}/`,
-        },
-        {
-          "@type": "ListItem",
-          position: 2,
-          name: eyebrow,
-          item: `${siteUrl}/${slug}/`,
-        },
+        { "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` },
+        { "@type": "ListItem", position: 2, name: eyebrow, item: `${siteUrl}/${slug}/` },
       ],
     },
   ];
 
-  const heroSanity = imageDataAttribute(
-    sanityDocumentId,
-    sanityDocumentType,
-    "hero",
-  );
-
-  const detailSanity = imageDataAttribute(
-    sanityDocumentId,
-    sanityDocumentType,
-    "detail",
-  );
+  const heroSanity = imageDataAttribute(sanityDocumentId, sanityDocumentType, "hero");
+  const detailSanity = imageDataAttribute(sanityDocumentId, sanityDocumentType, "detail");
 
   return (
     <main>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
 
       <SiteHeader />
 
-      <section
-        className="service-hero"
-        aria-labelledby="service-title"
-      >
+      <section className="service-hero" aria-labelledby="service-title">
         <Image
           src={image}
           alt={imageAlt}
@@ -164,18 +131,13 @@ export function ServicePage({
         <div className="service-hero-shade" />
 
         <div className="shell service-hero-copy">
-          <nav
-            className="breadcrumbs"
-            aria-label="Percorso"
-          >
+          <nav className="breadcrumbs" aria-label="Percorso">
             <Link href="/">Home</Link>
             <span>/</span>
             <span>{eyebrow}</span>
           </nav>
 
-          <p className="eyebrow light">
-            {eyebrow} · Playa Luna
-          </p>
+          <p className="eyebrow light">{eyebrow} · Playa Luna</p>
 
           <h1 id="service-title">
             {title}
@@ -190,13 +152,11 @@ export function ServicePage({
       <section className="service-content shell section-space">
         <div className="service-main-copy">
           <p className="eyebrow">Informazioni</p>
-
           <h2>
             Quello che
             <br />
             <em>trovi qui.</em>
           </h2>
-
           <p>{body}</p>
 
           <a
@@ -210,46 +170,35 @@ export function ServicePage({
           </a>
         </div>
 
-        <div
-          className="service-facts"
-          aria-label={`Caratteristiche ${eyebrow}`}
-        >
+        <div className="service-facts" aria-label={`Caratteristiche ${eyebrow}`}>
           {features.map((feature, index) => (
             <div key={feature}>
-              <span>
-                {String(index + 1).padStart(2, "0")}
-              </span>
+              <span>{String(index + 1).padStart(2, "0")}</span>
               <p>{feature}</p>
             </div>
           ))}
         </div>
 
-        <figure
-          className="service-detail-image"
-          data-sanity={detailSanity}
-        >
+        <figure className="service-detail-image" data-sanity={detailSanity}>
           <Image
             src={detailImage}
             alt={detailAlt}
             width={960}
             height={1200}
             sizes="(max-width: 800px) 100vw, 36vw"
+            style={{ objectPosition: detailObjectPosition }}
           />
         </figure>
       </section>
 
       <section className="service-cta">
         <div className="shell">
-          <p className="eyebrow light">
-            Playa Luna · Marina di Varcaturo
-          </p>
-
+          <p className="eyebrow light">Playa Luna · Marina di Varcaturo</p>
           <h2>
             Organizza la tua
             <br />
             <em>giornata sul mare.</em>
           </h2>
-
           <a
             className="pill-button linen"
             href={ctaHref}
