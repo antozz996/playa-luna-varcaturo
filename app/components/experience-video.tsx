@@ -6,17 +6,25 @@ import styles from "./experience-video.module.css";
 type ExperienceVideoProps = {
   src: string;
   objectPosition?: string;
+  fill?: boolean;
+  priority?: boolean;
+  className?: string;
 };
 
 export function ExperienceVideo({
   src,
   objectPosition = "50% 50%",
+  fill = false,
+  priority = false,
+  className = "",
 }: ExperienceVideoProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [shouldLoad, setShouldLoad] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(priority);
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
+    if (priority) return;
+
     const node = videoRef.current;
     if (!node) return;
 
@@ -37,7 +45,7 @@ export function ExperienceVideo({
 
     observer.observe(node);
     return () => observer.disconnect();
-  }, []);
+  }, [priority]);
 
   useEffect(() => {
     if (!shouldLoad || !videoRef.current) return;
@@ -52,14 +60,14 @@ export function ExperienceVideo({
   return (
     <video
       ref={videoRef}
-      className={`${styles.video} ${isReady ? styles.ready : ""}`}
+      className={`${styles.video} ${fill ? styles.fill : ""} ${isReady ? styles.ready : ""} ${className}`}
       src={shouldLoad ? src : undefined}
       style={{ objectPosition }}
       muted
       loop
       playsInline
       autoPlay
-      preload={shouldLoad ? "metadata" : "none"}
+      preload={priority ? "auto" : shouldLoad ? "metadata" : "none"}
       onLoadedData={() => setIsReady(true)}
       aria-hidden="true"
       tabIndex={-1}
