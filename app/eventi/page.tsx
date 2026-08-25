@@ -1,17 +1,16 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
+import { CmsMedia } from "../components/cms-media";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
 import { eventPhoneNumber, eventWhatsapp, siteUrl } from "../lib/site";
 import {
   getMediaDocument,
-  mediaAlt,
   mediaCaption,
-  mediaObjectPosition,
   mediaUrl,
   type ManagedImage,
 } from "../lib/sanity";
+import { type ManagedFile } from "../lib/sanity-file";
 import { sanityImageAttribute } from "../lib/sanity-visual";
 
 export const metadata: Metadata = {
@@ -61,42 +60,47 @@ const baseSchema = {
   },
 };
 
+function mediaPath(slot: string, video?: ManagedFile) {
+  return video?.asset?._ref ? `${slot}Video` : slot;
+}
+
 export default async function EventsPage() {
-  const media = await getMediaDocument<Record<string, ManagedImage>>("eventsMedia");
-  const hero = mediaUrl(media.hero, "/images/playa-luna/events/hero.webp");
-  const gallery = eventGallery.map((item) => ({
-    ...item,
-    src: mediaUrl(media[item.slot], item.src),
-    alt: mediaAlt(media[item.slot], item.alt),
-    caption: mediaCaption(media[item.slot], item.caption),
-    objectPosition: mediaObjectPosition(media[item.slot]),
-  }));
+  const media = await getMediaDocument<Record<string, unknown>>("eventsMedia");
+  const heroImage = media.hero as ManagedImage | undefined;
+  const heroVideo = media.heroVideo as ManagedFile | undefined;
+  const hero = mediaUrl(heroImage, "/images/playa-luna/events/hero.webp");
   const schema = { ...baseSchema, image: hero.startsWith("http") ? hero : `${siteUrl}${hero}` };
 
   return (
     <main className="events-editorial-v2">
       <SiteHeader />
 
-      <section className="events-hero-v2" data-sanity={sanityImageAttribute("eventsMedia", "eventsMedia", "hero")}>
-        <Image
-          className="events-hero-image-v2"
-          src={hero}
-          alt={mediaAlt(media.hero, "Tavola allestita per un evento serale al Playa Luna")}
+      <section className="events-hero-v2">
+        <CmsMedia
+          image={heroImage}
+          video={heroVideo}
+          fallback="/images/playa-luna/events/hero.webp"
+          altFallback="Tavola allestita per un evento serale al Playa Luna"
+          sizes="100vw"
           fill
           priority
-          sizes="100vw"
-          style={{ objectPosition: mediaObjectPosition(media.hero) }}
+          className="events-hero-image-v2"
+          dataSanity={sanityImageAttribute("eventsMedia", "eventsMedia", mediaPath("hero", heroVideo))}
         />
         <div className="events-hero-shade-v2" />
         <div className="shell events-hero-copy-v2">
           <p className="eyebrow">Playa Luna · Events</p>
           <h1>La tua storia<br /><em>prende vita.</em></h1>
           <p className="events-hero-lead-v2">Il mare come scenografia. Tutto il resto prende forma intorno a voi.</p>
-          <a className="pill-button light" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events">Raccontaci il tuo evento <span aria-hidden="true">↗</span></a>
+          <a className="pill-button light" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events">
+            Raccontaci il tuo evento <span aria-hidden="true">↗</span>
+          </a>
         </div>
       </section>
 
-      <nav className="shell breadcrumbs events-breadcrumbs-v2" aria-label="Percorso"><Link href="/">Home</Link><span>/</span><span>Eventi</span></nav>
+      <nav className="shell breadcrumbs events-breadcrumbs-v2" aria-label="Percorso">
+        <Link href="/">Home</Link><span>/</span><span>Eventi</span>
+      </nav>
 
       <section className="shell events-intro-v2">
         <p className="eyebrow">Un luogo, molte possibilità</p>
@@ -108,12 +112,28 @@ export default async function EventsPage() {
       </section>
 
       <section className="shell events-gallery-v2" aria-label="Atmosfere degli eventi Playa Luna">
-        {gallery.map((item) => (
-          <figure className={item.wide ? "events-gallery-wide-v2" : undefined} key={item.slot} data-sanity={sanityImageAttribute("eventsMedia", "eventsMedia", item.slot)}>
-            <Image src={item.src} alt={item.alt} fill sizes={item.wide ? "(max-width: 800px) 100vw, 66vw" : "(max-width: 800px) 100vw, 33vw"} style={{ objectPosition: item.objectPosition }} />
-            <figcaption>{item.caption}</figcaption>
-          </figure>
-        ))}
+        {eventGallery.map((item) => {
+          const image = media[item.slot] as ManagedImage | undefined;
+          const video = media[`${item.slot}Video`] as ManagedFile | undefined;
+          return (
+            <figure
+              className={item.wide ? "events-gallery-wide-v2" : undefined}
+              key={item.slot}
+              style={{ position: "relative", overflow: "hidden" }}
+            >
+              <CmsMedia
+                image={image}
+                video={video}
+                fallback={item.src}
+                altFallback={item.alt}
+                fill
+                sizes={item.wide ? "(max-width: 800px) 100vw, 66vw" : "(max-width: 800px) 100vw, 33vw"}
+                dataSanity={sanityImageAttribute("eventsMedia", "eventsMedia", mediaPath(item.slot, video))}
+              />
+              <figcaption>{mediaCaption(image, item.caption)}</figcaption>
+            </figure>
+          );
+        })}
       </section>
 
       <section className="events-formats-v2">
@@ -124,7 +144,11 @@ export default async function EventsPage() {
           </div>
           <div className="events-format-grid-v2">
             {eventTypes.map((item) => (
-              <article key={item.number}><span>{item.number}</span><h3>{item.title}</h3><p>{item.text}</p></article>
+              <article key={item.number}>
+                <span>{item.number}</span>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </article>
             ))}
           </div>
         </div>
@@ -134,7 +158,9 @@ export default async function EventsPage() {
         <p className="eyebrow">Il prossimo evento</p>
         <h2>Partiamo dalla<br /><em>vostra idea.</em></h2>
         <p>Data, numero di ospiti, tipo di occasione e atmosfera desiderata: raccontateci da qui.</p>
-        <a className="pill-button" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events_bottom">Richiedi informazioni <span aria-hidden="true">↗</span></a>
+        <a className="pill-button" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events_bottom">
+          Richiedi informazioni <span aria-hidden="true">↗</span>
+        </a>
       </section>
 
       <SiteFooter />
