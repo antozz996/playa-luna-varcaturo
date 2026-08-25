@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { createDataAttribute } from "next-sanity";
+import { ExperienceVideo } from "./experience-video";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
 import { beachWhatsapp, siteUrl } from "../lib/site";
@@ -24,20 +25,32 @@ type ServicePageProps = {
   schemaType?: "Beach" | "Restaurant" | "EventVenue" | "LocalBusiness";
   heroObjectPosition?: string;
   detailObjectPosition?: string;
+  heroVideo?: string;
+  heroVideoObjectPosition?: string;
+  detailVideo?: string;
+  detailVideoObjectPosition?: string;
+
   sanityDocumentId?: string;
   sanityDocumentType?: string;
 };
 
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "";
-const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
-const studioUrl = "https://playa-luna-varcaturo-delta.vercel.app/studio";
+const projectId =
+  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "";
+
+const dataset =
+  process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
+
+const studioUrl =
+  "https://playa-luna-varcaturo-delta.vercel.app/studio";
 
 function imageDataAttribute(
   id: string | undefined,
   type: string | undefined,
   path: string,
 ) {
-  if (!id || !type || !projectId) return undefined;
+  if (!id || !type || !projectId) {
+    return undefined;
+  }
 
   return createDataAttribute({
     projectId,
@@ -66,12 +79,18 @@ export function ServicePage({
   ctaEvent = "whatsapp_beach",
   telephone,
   schemaType = "LocalBusiness",
-  heroObjectPosition = "50% 55%",
+  heroObjectPosition = "center 55%",
   detailObjectPosition = "50% 50%",
+  heroVideo,
+  heroVideoObjectPosition = "50% 50%",
+  detailVideo,
+  detailVideoObjectPosition = "50% 50%",
   sanityDocumentId,
   sanityDocumentType,
 }: ServicePageProps) {
-  const structuredImage = image.startsWith("http") ? image : `${siteUrl}${image}`;
+  const structuredImage = image.startsWith("http")
+    ? image
+    : `${siteUrl}${image}`;
 
   const structuredData = [
     {
@@ -98,35 +117,68 @@ export function ServicePage({
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` },
-        { "@type": "ListItem", position: 2, name: eyebrow, item: `${siteUrl}/${slug}/` },
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: `${siteUrl}/`,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: eyebrow,
+          item: `${siteUrl}/${slug}/`,
+        },
       ],
     },
   ];
 
-  const heroSanity = imageDataAttribute(sanityDocumentId, sanityDocumentType, "hero");
-  const detailSanity = imageDataAttribute(sanityDocumentId, sanityDocumentType, "detail");
+  const heroSanity = imageDataAttribute(
+    sanityDocumentId,
+    sanityDocumentType,
+    heroVideo ? "heroVideo" : "hero",
+  );
+
+  const detailSanity = imageDataAttribute(
+    sanityDocumentId,
+    sanityDocumentType,
+    detailVideo ? "detailVideo" : "detail",
+  );
 
   return (
     <main>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData),
+        }}
       />
 
       <SiteHeader />
 
-      <section className="service-hero" aria-labelledby="service-title">
-        <Image
-          src={image}
-          alt={imageAlt}
-          width={960}
-          height={1200}
-          priority
-          sizes="100vw"
-          style={{ objectPosition: heroObjectPosition }}
-          data-sanity={heroSanity}
-        />
+      <section
+        className="service-hero"
+        aria-labelledby="service-title"
+        data-sanity={heroSanity}
+      >
+        {heroVideo ? (
+          <ExperienceVideo
+            src={heroVideo}
+            objectPosition={heroVideoObjectPosition}
+            fill
+            priority
+          />
+        ) : (
+          <Image
+            src={image}
+            alt={imageAlt}
+            width={960}
+            height={1200}
+            priority
+            sizes="100vw"
+            style={{ objectPosition: heroObjectPosition }}
+          />
+        )}
 
         <div className="service-hero-shade" />
 
@@ -152,11 +204,13 @@ export function ServicePage({
       <section className="service-content shell section-space">
         <div className="service-main-copy">
           <p className="eyebrow">Informazioni</p>
+
           <h2>
             Quello che
             <br />
             <em>trovi qui.</em>
           </h2>
+
           <p>{body}</p>
 
           <a
@@ -179,26 +233,40 @@ export function ServicePage({
           ))}
         </div>
 
-        <figure className="service-detail-image" data-sanity={detailSanity}>
-          <Image
-            src={detailImage}
-            alt={detailAlt}
-            width={960}
-            height={1200}
-            sizes="(max-width: 800px) 100vw, 36vw"
-            style={{ objectPosition: detailObjectPosition }}
-          />
+        <figure
+          className="service-detail-image"
+          data-sanity={detailSanity}
+          style={detailVideo ? { position: "relative", minHeight: 680, overflow: "hidden" } : undefined}
+        >
+          {detailVideo ? (
+            <ExperienceVideo
+              src={detailVideo}
+              objectPosition={detailVideoObjectPosition}
+              fill
+            />
+          ) : (
+            <Image
+              src={detailImage}
+              alt={detailAlt}
+              width={960}
+              height={1200}
+              sizes="(max-width: 800px) 100vw, 36vw"
+              style={{ objectPosition: detailObjectPosition }}
+            />
+          )}
         </figure>
       </section>
 
       <section className="service-cta">
         <div className="shell">
           <p className="eyebrow light">Playa Luna · Marina di Varcaturo</p>
+
           <h2>
             Organizza la tua
             <br />
             <em>giornata sul mare.</em>
           </h2>
+
           <a
             className="pill-button linen"
             href={ctaHref}
