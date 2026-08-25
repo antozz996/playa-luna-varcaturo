@@ -11,6 +11,18 @@ import {
   mediaUrl,
   type ManagedImage,
 } from "../lib/sanity";
+import {
+  mediaFileObjectPosition,
+  mediaFileUrl,
+  type ManagedFile,
+} from "../lib/sanity-file";
+
+type RestaurantMedia = {
+  hero?: ManagedImage;
+  heroVideo?: ManagedFile;
+  detail?: ManagedImage;
+  detailVideo?: ManagedFile;
+};
 
 export const metadata: Metadata = {
   title: "Ristorante sul mare a Varcaturo",
@@ -26,9 +38,11 @@ export const metadata: Metadata = {
 };
 
 export default async function RestaurantPage() {
-  const media = await getMediaDocument<Record<string, ManagedImage>>(
+  const media = await getMediaDocument<RestaurantMedia & Record<string, unknown>>(
     "restaurantMedia",
   );
+  const heroVideo = mediaFileUrl(media.heroVideo);
+  const detailVideo = mediaFileUrl(media.detailVideo);
 
   return (
     <ServicePage
@@ -41,9 +55,13 @@ export default async function RestaurantPage() {
       image={mediaUrl(media.hero, "/images/playa-luna/restaurant/hero.webp")}
       imageAlt={mediaAlt(media.hero, "La sala luminosa del ristorante Playa Luna durante il servizio")}
       heroObjectPosition={mediaObjectPosition(media.hero, "50% 35%")}
+      heroVideo={heroVideo}
+      heroVideoObjectPosition={mediaFileObjectPosition(media.heroVideo)}
       detailImage={mediaUrl(media.detail, "/images/playa-luna/food-pasta.webp")}
       detailAlt={mediaAlt(media.detail, "Piatto di pasta mediterranea preparato al ristorante Playa Luna")}
       detailObjectPosition={mediaObjectPosition(media.detail)}
+      detailVideo={detailVideo}
+      detailVideoObjectPosition={mediaFileObjectPosition(media.detailVideo)}
       features={[
         "Pranzo nella struttura sul mare",
         "Cucina mediterranea e piatti di pesce",
