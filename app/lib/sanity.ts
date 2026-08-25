@@ -73,6 +73,17 @@ export function mediaUrl(image: ManagedImage | undefined, fallback: string) {
     .url();
 }
 
+export function mediaObjectPosition(
+  image: ManagedImage | undefined,
+  fallback = "50% 50%",
+) {
+  if (!image?.hotspot) return fallback;
+
+  const x = Math.round(image.hotspot.x * 1000) / 10;
+  const y = Math.round(image.hotspot.y * 1000) / 10;
+  return `${x}% ${y}%`;
+}
+
 export function mediaAlt(image: ManagedImage | undefined, fallback: string) {
   return image?.alt?.trim() || fallback;
 }
