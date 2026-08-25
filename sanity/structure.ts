@@ -26,4 +26,6 @@ export const playaLunaStructure: StructureResolver = (S) =>
       singleton(S, "poolMedia", "Piscina Playa Luna"),
       singleton(S, "eventsMedia", "Eventi"),
       singleton(S, "weddingMedia", "Wedding"),
+      S.divider(),
+      singleton(S, "cultoMedia", "CULTO"),
     ]);
