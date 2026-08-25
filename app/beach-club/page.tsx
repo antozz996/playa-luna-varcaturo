@@ -4,6 +4,7 @@ import { beachPhoneNumber } from "../lib/site";
 import {
   getMediaDocument,
   mediaAlt,
+  mediaObjectPosition,
   mediaUrl,
   type ManagedImage,
 } from "../lib/sanity";
@@ -12,23 +13,19 @@ export const metadata: Metadata = {
   title: "Beach Club a Varcaturo",
   description:
     "Spiaggia attrezzata, lettini, ombrelloni, bar e servizi family al Playa Luna di Marina di Varcaturo. Contattaci per disponibilità e prenotazioni.",
-  alternates: {
-    canonical: "/beach-club/",
-  },
+  alternates: { canonical: "/beach-club/" },
   openGraph: {
     title: "Beach Club Playa Luna a Varcaturo",
-    description:
-      "Vivi la spiaggia di Playa Luna sul litorale di Varcaturo.",
+    description: "Vivi la spiaggia di Playa Luna sul litorale di Varcaturo.",
     url: "/beach-club/",
     images: ["/og.png"],
   },
 };
 
 export default async function BeachClubPage() {
-  const media =
-    await getMediaDocument<Record<string, ManagedImage>>(
-      "beachMedia",
-    );
+  const media = await getMediaDocument<Record<string, ManagedImage>>(
+    "beachMedia",
+  );
 
   return (
     <ServicePage
@@ -38,22 +35,12 @@ export default async function BeachClubPage() {
       emphasis="senza orari."
       intro="Una giornata sul litorale di Varcaturo con spiaggia attrezzata, servizi e il mare sempre davanti."
       body="Playa Luna è pensato per chi vuole vivere il mare con semplicità, senza rinunciare ai servizi. Puoi prenotare la tua postazione, fermarti per pranzo e alternare la spiaggia agli altri spazi della struttura."
-      image={mediaUrl(
-        media.hero,
-        "/images/playa-luna/beach-day.webp",
-      )}
-      imageAlt={mediaAlt(
-        media.hero,
-        "Spiaggia attrezzata del beach club Playa Luna a Varcaturo",
-      )}
-      detailImage={mediaUrl(
-        media.detail,
-        "/images/playa-luna/sunset-view.webp",
-      )}
-      detailAlt={mediaAlt(
-        media.detail,
-        "Vista del mare dagli spazi mediterranei di Playa Luna",
-      )}
+      image={mediaUrl(media.hero, "/images/playa-luna/beach-day.webp")}
+      imageAlt={mediaAlt(media.hero, "Spiaggia attrezzata del beach club Playa Luna a Varcaturo")}
+      heroObjectPosition={mediaObjectPosition(media.hero, "50% 55%")}
+      detailImage={mediaUrl(media.detail, "/images/playa-luna/sunset-view.webp")}
+      detailAlt={mediaAlt(media.detail, "Vista del mare dagli spazi mediterranei di Playa Luna")}
+      detailObjectPosition={mediaObjectPosition(media.detail)}
       features={[
         "Spiaggia attrezzata con ombrelloni e lettini",
         "Bar e proposte per il pranzo",
@@ -62,7 +49,6 @@ export default async function BeachClubPage() {
       ]}
       telephone={beachPhoneNumber}
       schemaType="Beach"
-
       sanityDocumentId="beachMedia"
       sanityDocumentType="beachMedia"
     />
