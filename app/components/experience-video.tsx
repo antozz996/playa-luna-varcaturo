@@ -5,10 +5,13 @@ import styles from "./experience-video.module.css";
 
 type ExperienceVideoProps = {
   src: string;
-  poster?: string;
+  objectPosition?: string;
 };
 
-export function ExperienceVideo({ src }: ExperienceVideoProps) {
+export function ExperienceVideo({
+  src,
+  objectPosition = "50% 50%",
+}: ExperienceVideoProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [shouldLoad, setShouldLoad] = useState(false);
   const [isReady, setIsReady] = useState(false);
@@ -51,6 +54,7 @@ export function ExperienceVideo({ src }: ExperienceVideoProps) {
       ref={videoRef}
       className={`${styles.video} ${isReady ? styles.ready : ""}`}
       src={shouldLoad ? src : undefined}
+      style={{ objectPosition }}
       muted
       loop
       playsInline
