@@ -9,6 +9,8 @@ export type ManagedFile = {
   asset?: {
     _ref?: string;
   };
+  focusX?: number;
+  focusY?: number;
 };
 
 export function mediaFileUrl(file: ManagedFile | undefined) {
@@ -20,4 +22,10 @@ export function mediaFileUrl(file: ManagedFile | undefined) {
 
   const [, assetId, extension] = match;
   return `https://cdn.sanity.io/files/${projectId}/${dataset}/${assetId}.${extension}`;
+}
+
+export function mediaFileObjectPosition(file: ManagedFile | undefined) {
+  const x = Math.min(100, Math.max(0, file?.focusX ?? 50));
+  const y = Math.min(100, Math.max(0, file?.focusY ?? 50));
+  return `${x}% ${y}%`;
 }
