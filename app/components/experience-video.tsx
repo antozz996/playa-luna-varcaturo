@@ -39,6 +39,7 @@ export function ExperienceVideo({ src, poster }: ExperienceVideoProps) {
     <video
       ref={videoRef}
       className={styles.video}
+      src={shouldLoad ? src : undefined}
       poster={poster}
       muted
       loop
@@ -47,8 +48,6 @@ export function ExperienceVideo({ src, poster }: ExperienceVideoProps) {
       preload="none"
       aria-hidden="true"
       tabIndex={-1}
-    >
-      {shouldLoad ? <source src={src} /> : null}
-    </video>
+    />
   );
 }
