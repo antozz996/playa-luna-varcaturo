@@ -6,6 +6,7 @@ const singleton = (
   title: string,
 ) =>
   S.listItem()
+    .id(schemaType)
     .title(title)
     .child(
       S.document()
