@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ExperienceVideo } from "./components/experience-video";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
 import {
@@ -15,7 +16,26 @@ import {
   mediaUrl,
   type ManagedImage,
 } from "./lib/sanity";
+import { mediaFileUrl, type ManagedFile } from "./lib/sanity-file";
 import { sanityImageAttribute } from "./lib/sanity-visual";
+
+type HomeMedia = {
+  hero?: ManagedImage;
+  experienceBeach?: ManagedImage;
+  experienceRestaurant?: ManagedImage;
+  experienceEvents?: ManagedImage;
+  experienceEventsVideo?: ManagedFile;
+  beachMain?: ManagedImage;
+  beachDetail?: ManagedImage;
+  restaurantMain?: ManagedImage;
+  foodOne?: ManagedImage;
+  foodTwo?: ManagedImage;
+  foodThree?: ManagedImage;
+  poolMain?: ManagedImage;
+  poolDetail?: ManagedImage;
+  eventsFeature?: ManagedImage;
+  finalCta?: ManagedImage;
+};
 
 const experienceDefaults = [
   {
@@ -42,14 +62,16 @@ const experienceDefaults = [
     slot: "experienceEvents",
     href: "/eventi/",
   },
-];
+] as const;
 
 export default async function Home() {
-  const media = await getMediaDocument<Record<string, ManagedImage>>("homeMedia");
+  const media = await getMediaDocument<HomeMedia & Record<string, unknown>>("homeMedia");
   const hero = mediaUrl(media.hero, "/images/playa-luna/hero-beach.webp");
+  const eventsVideo = mediaFileUrl(media.experienceEventsVideo);
   const experiences = experienceDefaults.map((item) => ({
     ...item,
     image: mediaUrl(media[item.slot], item.image),
+    video: item.slot === "experienceEvents" ? eventsVideo : undefined,
   }));
 
   const structuredData = {
@@ -161,9 +183,17 @@ export default async function Home() {
           <a className="experience-card" href={item.href} key={item.number} data-event="service_page_click">
             <div
               className="experience-image-wrap"
-              data-sanity={sanityImageAttribute("homeMedia", "homeMedia", item.slot)}
+              data-sanity={sanityImageAttribute(
+                "homeMedia",
+                "homeMedia",
+                item.video ? "experienceEventsVideo" : item.slot,
+              )}
             >
-              <Image src={item.image} alt="" width={960} height={1200} sizes="(max-width: 800px) 82vw, 33vw" />
+              {item.video ? (
+                <ExperienceVideo src={item.video} poster={item.image} />
+              ) : (
+                <Image src={item.image} alt="" width={960} height={1200} sizes="(max-width: 800px) 82vw, 33vw" />
+              )}
               <span className="card-number">{item.number}</span>
             </div>
             <div className="experience-card-copy">
