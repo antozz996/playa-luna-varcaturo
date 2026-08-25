@@ -29,28 +29,20 @@ type ServicePageProps = {
   heroVideoObjectPosition?: string;
   detailVideo?: string;
   detailVideoObjectPosition?: string;
-
   sanityDocumentId?: string;
   sanityDocumentType?: string;
 };
 
-const projectId =
-  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "";
-
-const dataset =
-  process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
-
-const studioUrl =
-  "https://playa-luna-varcaturo-delta.vercel.app/studio";
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "";
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
+const studioUrl = "https://playa-luna-varcaturo-delta.vercel.app/studio";
 
 function imageDataAttribute(
   id: string | undefined,
   type: string | undefined,
   path: string,
 ) {
-  if (!id || !type || !projectId) {
-    return undefined;
-  }
+  if (!id || !type || !projectId) return undefined;
 
   return createDataAttribute({
     projectId,
@@ -88,9 +80,7 @@ export function ServicePage({
   sanityDocumentId,
   sanityDocumentType,
 }: ServicePageProps) {
-  const structuredImage = image.startsWith("http")
-    ? image
-    : `${siteUrl}${image}`;
+  const structuredImage = image.startsWith("http") ? image : `${siteUrl}${image}`;
 
   const structuredData = [
     {
@@ -99,11 +89,7 @@ export function ServicePage({
       name: `Playa Luna · ${eyebrow}`,
       url: `${siteUrl}/${slug}/`,
       telephone,
-      isPartOf: {
-        "@type": "LocalBusiness",
-        name: "Playa Luna",
-        url: siteUrl,
-      },
+      isPartOf: { "@type": "LocalBusiness", name: "Playa Luna", url: siteUrl },
       image: structuredImage,
       address: {
         "@type": "PostalAddress",
@@ -117,18 +103,8 @@ export function ServicePage({
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        {
-          "@type": "ListItem",
-          position: 1,
-          name: "Home",
-          item: `${siteUrl}/`,
-        },
-        {
-          "@type": "ListItem",
-          position: 2,
-          name: eyebrow,
-          item: `${siteUrl}/${slug}/`,
-        },
+        { "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` },
+        { "@type": "ListItem", position: 2, name: eyebrow, item: `${siteUrl}/${slug}/` },
       ],
     },
   ];
@@ -138,7 +114,6 @@ export function ServicePage({
     sanityDocumentType,
     heroVideo ? "heroVideo" : "hero",
   );
-
   const detailSanity = imageDataAttribute(
     sanityDocumentId,
     sanityDocumentType,
@@ -147,26 +122,17 @@ export function ServicePage({
 
   return (
     <main>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData),
-        }}
-      />
-
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <SiteHeader />
 
-      <section
-        className="service-hero"
-        aria-labelledby="service-title"
-        data-sanity={heroSanity}
-      >
+      <section className="service-hero" aria-labelledby="service-title" data-sanity={heroSanity}>
         {heroVideo ? (
           <ExperienceVideo
             src={heroVideo}
             objectPosition={heroVideoObjectPosition}
             fill
             priority
+            zIndex={-2}
           />
         ) : (
           <Image
@@ -184,19 +150,10 @@ export function ServicePage({
 
         <div className="shell service-hero-copy">
           <nav className="breadcrumbs" aria-label="Percorso">
-            <Link href="/">Home</Link>
-            <span>/</span>
-            <span>{eyebrow}</span>
+            <Link href="/">Home</Link><span>/</span><span>{eyebrow}</span>
           </nav>
-
           <p className="eyebrow light">{eyebrow} · Playa Luna</p>
-
-          <h1 id="service-title">
-            {title}
-            <br />
-            <em>{emphasis}</em>
-          </h1>
-
+          <h1 id="service-title">{title}<br /><em>{emphasis}</em></h1>
           <p>{intro}</p>
         </div>
       </section>
@@ -204,22 +161,9 @@ export function ServicePage({
       <section className="service-content shell section-space">
         <div className="service-main-copy">
           <p className="eyebrow">Informazioni</p>
-
-          <h2>
-            Quello che
-            <br />
-            <em>trovi qui.</em>
-          </h2>
-
+          <h2>Quello che<br /><em>trovi qui.</em></h2>
           <p>{body}</p>
-
-          <a
-            className="pill-button dark"
-            href={ctaHref}
-            target="_blank"
-            rel="noreferrer"
-            data-event={ctaEvent}
-          >
+          <a className="pill-button dark" href={ctaHref} target="_blank" rel="noreferrer" data-event={ctaEvent}>
             {ctaLabel} <span aria-hidden="true">↗</span>
           </a>
         </div>
@@ -239,11 +183,7 @@ export function ServicePage({
           style={detailVideo ? { position: "relative", minHeight: 680, overflow: "hidden" } : undefined}
         >
           {detailVideo ? (
-            <ExperienceVideo
-              src={detailVideo}
-              objectPosition={detailVideoObjectPosition}
-              fill
-            />
+            <ExperienceVideo src={detailVideo} objectPosition={detailVideoObjectPosition} fill />
           ) : (
             <Image
               src={detailImage}
@@ -260,35 +200,15 @@ export function ServicePage({
       <section className="service-cta">
         <div className="shell">
           <p className="eyebrow light">Playa Luna · Marina di Varcaturo</p>
-
-          <h2>
-            Organizza la tua
-            <br />
-            <em>giornata sul mare.</em>
-          </h2>
-
-          <a
-            className="pill-button linen"
-            href={ctaHref}
-            target="_blank"
-            rel="noreferrer"
-            data-event={ctaEvent}
-          >
+          <h2>Organizza la tua<br /><em>giornata sul mare.</em></h2>
+          <a className="pill-button linen" href={ctaHref} target="_blank" rel="noreferrer" data-event={ctaEvent}>
             {ctaLabel} <span aria-hidden="true">↗</span>
           </a>
         </div>
       </section>
 
       <SiteFooter />
-
-      <a
-        className="whatsapp-float"
-        href={ctaHref}
-        target="_blank"
-        rel="noreferrer"
-        aria-label={ctaLabel}
-        data-event={ctaEvent}
-      >
+      <a className="whatsapp-float" href={ctaHref} target="_blank" rel="noreferrer" aria-label={ctaLabel} data-event={ctaEvent}>
         <span aria-hidden="true">✦</span> Contattaci
       </a>
     </main>
