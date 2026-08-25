@@ -33,6 +33,8 @@ export type ManagedImage = {
   asset?: SanityImageSource;
   alt?: string;
   caption?: string;
+  focusX?: number;
+  focusY?: number;
   crop?: { top: number; right: number; bottom: number; left: number };
   hotspot?: { x: number; y: number; height: number; width: number };
 };
@@ -77,6 +79,15 @@ export function mediaObjectPosition(
   image: ManagedImage | undefined,
   fallback = "50% 50%",
 ) {
+  const explicitX = image?.focusX;
+  const explicitY = image?.focusY;
+
+  if (typeof explicitX === "number" || typeof explicitY === "number") {
+    const x = Math.min(100, Math.max(0, explicitX ?? 50));
+    const y = Math.min(100, Math.max(0, explicitY ?? 50));
+    return `${x}% ${y}%`;
+  }
+
   if (!image?.hotspot) return fallback;
 
   const x = Math.round(image.hotspot.x * 1000) / 10;
