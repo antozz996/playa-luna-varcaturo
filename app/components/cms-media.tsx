@@ -24,6 +24,7 @@ type CmsMediaProps = {
   priority?: boolean;
   className?: string;
   imagePositionFallback?: string;
+  dataSanity?: string;
 };
 
 export function CmsMedia({
@@ -38,6 +39,7 @@ export function CmsMedia({
   priority = false,
   className,
   imagePositionFallback = "50% 50%",
+  dataSanity,
 }: CmsMediaProps) {
   const videoUrl = mediaFileUrl(video);
 
@@ -49,6 +51,7 @@ export function CmsMedia({
         fill={fill}
         priority={priority}
         className={className}
+        dataSanity={dataSanity}
       />
     );
   }
@@ -60,6 +63,7 @@ export function CmsMedia({
     priority,
     className,
     style: { objectPosition: mediaObjectPosition(image, imagePositionFallback) },
+    "data-sanity": dataSanity,
   };
 
   if (fill) {
