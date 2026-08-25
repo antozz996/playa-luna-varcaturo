@@ -1,0 +1,7 @@
+.food-gallery {
+  grid-template-columns: 1.5fr 0.75fr 0.75fr;
+}
+
+.food-gallery > figure:nth-child(n + 4) {
+  display: none;
+}
