@@ -22,7 +22,9 @@ import { sanityImageAttribute } from "./lib/sanity-visual";
 type HomeMedia = {
   hero?: ManagedImage;
   experienceBeach?: ManagedImage;
+  experienceBeachVideo?: ManagedFile;
   experienceRestaurant?: ManagedImage;
+  experienceRestaurantVideo?: ManagedFile;
   experienceEvents?: ManagedImage;
   experienceEventsVideo?: ManagedFile;
   beachMain?: ManagedImage;
@@ -44,6 +46,7 @@ const experienceDefaults = [
     text: "Il mare davanti, l'isola all'orizzonte e tutto quello che serve per staccare davvero.",
     image: "/images/playa-luna/beach-day.webp",
     slot: "experienceBeach",
+    videoSlot: "experienceBeachVideo",
     href: "/beach-club/",
   },
   {
@@ -52,6 +55,7 @@ const experienceDefaults = [
     text: "Dalla colazione al pranzo vista mare, una cucina che segue il ritmo della giornata.",
     image: "/images/playa-luna/restaurant.webp",
     slot: "experienceRestaurant",
+    videoSlot: "experienceRestaurantVideo",
     href: "/ristorante-sul-mare/",
   },
   {
@@ -60,6 +64,7 @@ const experienceDefaults = [
     text: "Feste, cerimonie e ricorrenze da vivere a pochi passi dalla sabbia.",
     image: "/images/playa-luna/events/home-card.webp",
     slot: "experienceEvents",
+    videoSlot: "experienceEventsVideo",
     href: "/eventi/",
   },
 ] as const;
@@ -67,11 +72,10 @@ const experienceDefaults = [
 export default async function Home() {
   const media = await getMediaDocument<HomeMedia & Record<string, unknown>>("homeMedia");
   const hero = mediaUrl(media.hero, "/images/playa-luna/hero-beach.webp");
-  const eventsVideo = mediaFileUrl(media.experienceEventsVideo);
   const experiences = experienceDefaults.map((item) => ({
     ...item,
     image: mediaUrl(media[item.slot], item.image),
-    video: item.slot === "experienceEvents" ? eventsVideo : undefined,
+    video: mediaFileUrl(media[item.videoSlot]),
   }));
 
   const structuredData = {
@@ -186,7 +190,7 @@ export default async function Home() {
               data-sanity={sanityImageAttribute(
                 "homeMedia",
                 "homeMedia",
-                item.video ? "experienceEventsVideo" : item.slot,
+                item.video ? item.videoSlot : item.slot,
               )}
             >
               {item.video ? (
