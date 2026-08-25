@@ -8,6 +8,18 @@ import {
   mediaUrl,
   type ManagedImage,
 } from "../lib/sanity";
+import {
+  mediaFileObjectPosition,
+  mediaFileUrl,
+  type ManagedFile,
+} from "../lib/sanity-file";
+
+type PoolMedia = {
+  hero?: ManagedImage;
+  heroVideo?: ManagedFile;
+  detail?: ManagedImage;
+  detailVideo?: ManagedFile;
+};
 
 export const metadata: Metadata = {
   title: "Piscina Playa Luna a Varcaturo",
@@ -23,9 +35,11 @@ export const metadata: Metadata = {
 };
 
 export default async function PoolPage() {
-  const media = await getMediaDocument<Record<string, ManagedImage>>(
+  const media = await getMediaDocument<PoolMedia & Record<string, unknown>>(
     "poolMedia",
   );
+  const heroVideo = mediaFileUrl(media.heroVideo);
+  const detailVideo = mediaFileUrl(media.detailVideo);
 
   return (
     <ServicePage
@@ -38,9 +52,13 @@ export default async function PoolPage() {
       image={mediaUrl(media.hero, "/images/playa-luna/pool-family.webp")}
       imageAlt={mediaAlt(media.hero, "Bambini e famiglie nella piscina interna di Playa Luna")}
       heroObjectPosition={mediaObjectPosition(media.hero, "50% 55%")}
+      heroVideo={heroVideo}
+      heroVideoObjectPosition={mediaFileObjectPosition(media.heroVideo)}
       detailImage={mediaUrl(media.detail, "/images/playa-luna/pool-chair.webp")}
       detailAlt={mediaAlt(media.detail, "Lettino davanti alla piscina Playa Luna con il logo della struttura")}
       detailObjectPosition={mediaObjectPosition(media.detail)}
+      detailVideo={detailVideo}
+      detailVideoObjectPosition={mediaFileObjectPosition(media.detailVideo)}
       features={[
         "Piscina interna a Playa Luna",
         "Spazio dedicato alle famiglie",
