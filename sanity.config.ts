@@ -4,6 +4,7 @@ import { presentationTool } from "sanity/presentation";
 import { visionTool } from "@sanity/vision";
 import { schemaTypes } from "./sanity/schemaTypes";
 import { playaLunaStructure } from "./sanity/structure";
+import { playaLunaPresentationResolve } from "./sanity/presentation";
 
 const projectId =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "00000000";
@@ -25,14 +26,15 @@ export default defineConfig({
       structure: playaLunaStructure,
     }),
 
-   presentationTool({
-  previewUrl: {
-    origin: "https://playa-luna-varcaturo-delta.vercel.app",
-    previewMode: {
-      enable: "/api/draft-mode/enable",
-    },
-  },
-}),
+    presentationTool({
+      previewUrl: {
+        origin: "https://playa-luna-varcaturo-delta.vercel.app",
+        previewMode: {
+          enable: "/api/draft-mode/enable",
+        },
+      },
+      resolve: playaLunaPresentationResolve,
+    }),
 
     visionTool(),
   ],
