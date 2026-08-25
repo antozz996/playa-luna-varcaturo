@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
   "installCommand": "npm install",
-  "buildCommand": "npx sanity manifest extract --path public/studio/static && npx next build",
+  "buildCommand": "npx sanity manifest extract --path public/studio/static && mkdir -p public/static && cp -R public/studio/static/. public/static/ && npx next build",
   "headers": [
     {
       "source": "/studio/:path*",
