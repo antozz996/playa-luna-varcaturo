@@ -1,0 +1,244 @@
+.wowRoot {
+  --wow-neon: #c8ff00;
+  --wow-plum: #5b3148;
+  --wow-cream: #f3eee5;
+  --wow-ink: #11100e;
+}
+
+/* Sticky branded header + tactile menu */
+.wowRoot > header {
+  transition: background .35s ease, backdrop-filter .35s ease, border-color .35s ease;
+}
+
+.wowRoot > header > a {
+  text-shadow: 3px 4px 0 rgba(91,49,72,.82);
+}
+
+.wowRoot > header details > summary {
+  border-radius: 16px;
+  box-shadow: 0 5px 0 rgba(91,49,72,.78);
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.wowRoot > header details > summary:hover,
+.wowRoot > header details > summary:focus-visible {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,.1);
+  box-shadow: 0 7px 0 rgba(91,49,72,.9);
+}
+
+.wowRoot > header details[open] > summary {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 rgba(91,49,72,.9);
+}
+
+/* Floating contact bubble inspired by the reference, without faking a WhatsApp number */
+.wowRoot > a[href*="instagram.com"] {
+  box-shadow: 0 7px 0 var(--wow-plum), 0 16px 34px rgba(0,0,0,.3);
+  animation: wowFloat 3.2s ease-in-out infinite;
+}
+
+/* Hero gets the reference's 3D/extruded punch, only here */
+.wowRoot h1 {
+  text-shadow:
+    4px 5px 0 rgba(91,49,72,.96),
+    8px 10px 26px rgba(0,0,0,.24);
+}
+
+.wowRoot h1::after {
+  content: "✦";
+  display: inline-block;
+  margin-left: .08em;
+  color: var(--wow-neon);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .2em;
+  line-height: 1;
+  vertical-align: top;
+  transform: rotate(12deg) translateY(.15em);
+  text-shadow: none;
+}
+
+/* 3D pills: same visual trick as the reference, but reserved for conversion CTAs */
+.wowRoot section[id] article > a[href*="instagram.com"],
+.wowRoot section:last-of-type a[href*="instagram.com"] {
+  box-shadow: 0 7px 0 var(--wow-plum), 0 13px 28px rgba(0,0,0,.12);
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+
+.wowRoot section[id] article > a[href*="instagram.com"]:hover,
+.wowRoot section:last-of-type a[href*="instagram.com"]:hover,
+.wowRoot section[id] article > a[href*="instagram.com"]:focus-visible,
+.wowRoot section:last-of-type a[href*="instagram.com"]:focus-visible {
+  transform: translateY(-3px);
+  filter: saturate(1.08);
+  box-shadow: 0 10px 0 var(--wow-plum), 0 17px 34px rgba(0,0,0,.16);
+}
+
+.wowRoot section[id] article > a[href*="instagram.com"]:active,
+.wowRoot section:last-of-type a[href*="instagram.com"]:active {
+  transform: translateY(5px);
+  box-shadow: 0 2px 0 var(--wow-plum), 0 7px 18px rgba(0,0,0,.12);
+}
+
+/* Starburst micro-signature on section labels */
+.wowRoot section[id] article > div:first-child b {
+  display: inline-flex;
+  align-items: center;
+  gap: .7em;
+}
+
+.wowRoot section[id] article > div:first-child b::before {
+  content: "✦";
+  color: var(--wow-neon);
+  font-size: 1.35em;
+  line-height: 1;
+  transform: rotate(10deg);
+}
+
+/* Reference-style framed Saturday block: one strong card, not cards everywhere */
+.wowRoot :global(#saturday) article > div:nth-of-type(3) {
+  border: 2px solid var(--wow-neon);
+  box-shadow: 0 8px 0 var(--wow-plum);
+}
+
+/* Dynamic framed imagery */
+.wowRoot figure {
+  transform: translateZ(0);
+}
+
+.wowRoot figure img,
+.wowRoot figure video {
+  transition: transform .7s cubic-bezier(.2,.7,.2,1), filter .5s ease;
+}
+
+@media (hover: hover) {
+  .wowRoot figure:hover img,
+  .wowRoot figure:hover video {
+    transform: scale(1.025);
+  }
+
+  .wowRoot :global(#night) figure:hover img,
+  .wowRoot :global(#night) figure:hover video {
+    filter: saturate(1.02) contrast(1.08);
+  }
+}
+
+/* Marquees actually move, like the reference's SUNSET / EXPERIENCE strips */
+.wowRoot > div[aria-hidden="true"] {
+  position: relative;
+  mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+}
+
+.wowRoot > div[aria-hidden="true"] > * {
+  animation: wowTicker 24s linear infinite;
+}
+
+.wowRoot > div[aria-hidden="true"]:last-of-type > * {
+  animation-direction: reverse;
+  animation-duration: 28s;
+}
+
+/* Selected graphic strips borrow the lime accent without taking over the palette */
+.wowRoot :global(#taste) article > div:nth-of-type(3),
+.wowRoot :global(#night) article > div:nth-of-type(3) {
+  position: relative;
+  padding-left: 2.1em;
+}
+
+.wowRoot :global(#taste) article > div:nth-of-type(3)::before,
+.wowRoot :global(#night) article > div:nth-of-type(3)::before {
+  content: "✦";
+  position: absolute;
+  left: .15em;
+  top: 50%;
+  color: var(--wow-neon);
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: normal;
+  transform: translateY(-50%) rotate(14deg);
+}
+
+/* Scroll-based reveal: progressive enhancement, zero JS */
+@supports (animation-timeline: view()) {
+  .wowRoot section[id] article > h2,
+  .wowRoot section[id] article > p,
+  .wowRoot section[id] figure,
+  .wowRoot section:not([id]) h2 {
+    animation: wowReveal linear both;
+    animation-timeline: view();
+    animation-range: entry 6% cover 32%;
+  }
+
+  .wowRoot section[id] figure {
+    animation-name: wowImageReveal;
+    animation-range: entry 4% cover 28%;
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  .wowRoot > header {
+    animation: wowHeader linear both;
+    animation-timeline: scroll();
+    animation-range: 0 260px;
+  }
+}
+
+@keyframes wowTicker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-24%); }
+}
+
+@keyframes wowFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(2deg); }
+}
+
+@keyframes wowReveal {
+  from { opacity: 0; transform: translateY(34px); filter: blur(5px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+@keyframes wowImageReveal {
+  from { opacity: .25; transform: translateY(26px) scale(.965); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes wowHeader {
+  from {
+    background: linear-gradient(180deg, rgba(6,6,6,.12), transparent);
+    border-bottom-color: transparent;
+    backdrop-filter: blur(0);
+  }
+  to {
+    background: rgba(20,13,10,.82);
+    border-bottom-color: rgba(255,255,255,.1);
+    backdrop-filter: blur(18px);
+  }
+}
+
+@media (max-width: 820px) {
+  .wowRoot h1 {
+    text-shadow: 3px 4px 0 rgba(91,49,72,.94), 6px 8px 18px rgba(0,0,0,.2);
+  }
+
+  .wowRoot h1::after {
+    font-size: .18em;
+  }
+
+  .wowRoot section[id] article > a[href*="instagram.com"],
+  .wowRoot section:last-of-type a[href*="instagram.com"] {
+    box-shadow: 0 6px 0 var(--wow-plum), 0 12px 24px rgba(0,0,0,.13);
+  }
+
+  .wowRoot > div[aria-hidden="true"] > * {
+    animation-duration: 18s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wowRoot *,
+  .wowRoot *::before,
+  .wowRoot *::after {
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}
