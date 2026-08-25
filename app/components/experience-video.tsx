@@ -10,6 +10,7 @@ type ExperienceVideoProps = {
   priority?: boolean;
   className?: string;
   dataSanity?: string;
+  zIndex?: number;
 };
 
 export function ExperienceVideo({
@@ -19,6 +20,7 @@ export function ExperienceVideo({
   priority = false,
   className = "",
   dataSanity,
+  zIndex,
 }: ExperienceVideoProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [shouldLoad, setShouldLoad] = useState(priority);
@@ -64,7 +66,7 @@ export function ExperienceVideo({
       ref={videoRef}
       className={`${styles.video} ${fill ? styles.fill : ""} ${isReady ? styles.ready : ""} ${className}`}
       src={shouldLoad ? src : undefined}
-      style={{ objectPosition }}
+      style={{ objectPosition, zIndex }}
       muted
       loop
       playsInline
