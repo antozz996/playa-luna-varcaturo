@@ -14,6 +14,20 @@ const mediaField = (
     options: { caption: options.caption },
   });
 
+const videoField = (name: string, title: string) =>
+  defineField({
+    name,
+    title,
+    type: "file",
+    group: "cards",
+    description:
+      "Se carichi un video, sostituisce la foto nella card. La foto resta come poster e fallback. Consigliato: MP4 H.264, verticale o 4:5, breve e leggero.",
+    options: {
+      accept: "video/mp4,video/webm",
+      storeOriginalFilename: false,
+    },
+  });
+
 const managedImage = defineType({
   name: "managedImage",
   title: "Foto",
@@ -70,21 +84,12 @@ const homeMedia = defineType({
   ],
   fields: [
     { ...mediaField("hero", "Copertina principale", "/images/playa-luna/hero-beach.webp"), group: "hero" },
-    { ...mediaField("experienceBeach", "Card Beach Club", "/images/playa-luna/beach-day.webp"), group: "cards" },
-    { ...mediaField("experienceRestaurant", "Card Food & Drink", "/images/playa-luna/restaurant.webp"), group: "cards" },
+    { ...mediaField("experienceBeach", "Card Beach Club · Foto / poster", "/images/playa-luna/beach-day.webp"), group: "cards" },
+    videoField("experienceBeachVideo", "Card Beach Club · Video (opzionale)"),
+    { ...mediaField("experienceRestaurant", "Card Food & Drink · Foto / poster", "/images/playa-luna/restaurant.webp"), group: "cards" },
+    videoField("experienceRestaurantVideo", "Card Food & Drink · Video (opzionale)"),
     { ...mediaField("experienceEvents", "Card Events · Foto / poster", "/images/playa-luna/events/home-card.webp"), group: "cards" },
-    defineField({
-      name: "experienceEventsVideo",
-      title: "Card Events · Video (opzionale)",
-      type: "file",
-      group: "cards",
-      description:
-        "Se carichi un video, sostituisce la foto nella card Events. La foto sopra resta come poster e fallback. Consigliato: MP4 H.264, verticale o 4:5, breve e leggero.",
-      options: {
-        accept: "video/mp4,video/webm",
-        storeOriginalFilename: false,
-      },
-    }),
+    videoField("experienceEventsVideo", "Card Events · Video (opzionale)"),
     { ...mediaField("beachMain", "Beach · Foto principale", "/images/playa-luna/beach-day.webp"), group: "beach" },
     { ...mediaField("beachDetail", "Beach · Dettaglio", "/images/playa-luna/sunset-view.webp"), group: "beach" },
     { ...mediaField("restaurantMain", "Ristorante · Ambiente", "/images/playa-luna/restaurant.webp"), group: "restaurant" },
