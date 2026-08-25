@@ -51,21 +51,21 @@ type HomeMedia = {
 const experienceDefaults = [
   {
     number: "01",
-    title: "Beach Club",
-    text: "Il mare davanti, l'isola all'orizzonte e tutto quello che serve per staccare davvero.",
-    image: "/images/playa-luna/beach-day.webp",
-    slot: "experienceBeach",
-    videoSlot: "experienceBeachVideo",
-    href: "/beach-club/",
-  },
-  {
-    number: "02",
     title: "Food & Drink",
     text: "Dalla colazione al pranzo vista mare, una cucina che segue il ritmo della giornata.",
     image: "/images/playa-luna/restaurant.webp",
     slot: "experienceRestaurant",
     videoSlot: "experienceRestaurantVideo",
     href: "/ristorante-sul-mare/",
+  },
+  {
+    number: "02",
+    title: "Beach Club",
+    text: "Il mare davanti, l'isola all'orizzonte e tutto quello che serve per staccare davvero.",
+    image: "/images/playa-luna/beach-day.webp",
+    slot: "experienceBeach",
+    videoSlot: "experienceBeachVideo",
+    href: "/beach-club/",
   },
   {
     number: "03",
