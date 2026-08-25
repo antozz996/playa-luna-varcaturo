@@ -25,6 +25,7 @@ type CmsMediaProps = {
   className?: string;
   imagePositionFallback?: string;
   dataSanity?: string;
+  videoZIndex?: number;
 };
 
 export function CmsMedia({
@@ -40,6 +41,7 @@ export function CmsMedia({
   className,
   imagePositionFallback = "50% 50%",
   dataSanity,
+  videoZIndex,
 }: CmsMediaProps) {
   const videoUrl = mediaFileUrl(video);
 
@@ -52,6 +54,7 @@ export function CmsMedia({
         priority={priority}
         className={className}
         dataSanity={dataSanity}
+        zIndex={videoZIndex}
       />
     );
   }
