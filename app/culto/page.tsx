@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     title: "CULTO · Beach. Dining. Club.",
     description: "Daylife, contemporary fusion sushi e Saturday nightlife dentro Playa Luna, a Marina di Varcaturo.",
     url: "/culto/",
-    images: ["/images/playa-luna/events/night-02.webp"],
+    images: ["/images/playa-luna/beach-day.webp"],
   },
 };
 
@@ -48,7 +48,7 @@ function mediaAttr(base: string, video?: ManagedFile) {
 
 export default async function CultoPage() {
   const media = await getMediaDocument<CultoMedia & Record<string, unknown>>("cultoMedia");
-  const hero = mediaUrl(media.hero, "/images/playa-luna/events/night-02.webp");
+  const hero = mediaUrl(media.hero, "/images/playa-luna/beach-day.webp");
 
   const schema = {
     "@context": "https://schema.org",
@@ -93,23 +93,23 @@ export default async function CultoPage() {
         <CmsMedia
           image={media.hero}
           video={media.heroVideo}
-          fallback="/images/playa-luna/events/night-02.webp"
-          altFallback="Atmosfera CULTO a Playa Luna, Marina di Varcaturo"
+          fallback="/images/playa-luna/beach-day.webp"
+          altFallback="Beach club CULTO a Playa Luna, Marina di Varcaturo"
           sizes="100vw"
           fill
           priority
           className={styles.coverMedia}
-          imagePositionFallback="50% 55%"
+          imagePositionFallback="50% 62%"
           dataSanity={mediaAttr("hero", media.heroVideo)}
         />
         <div className={styles.heroShade} />
         <div className={styles.heroContent}>
-          <p className={styles.eyebrow}>Inside Playa Luna · Varcaturo</p>
-          <h1 id="culto-title">More than<br />a beach.</h1>
-          <p className={styles.heroCopy}>Beach club selezionato, fusion sushi contemporanea e nightlife del sabato. Un solo luogo, quattro ritmi.</p>
+          <p className={styles.eyebrow}>Playa Luna presents</p>
+          <h1 id="culto-title">CULTO</h1>
+          <p className={styles.heroCopy}>Beach. Dining. Club. Dal daylight al nightfall, CULTO cambia ritmo senza cambiare identità.</p>
           <div className={styles.heroActions}>
-            <a className={styles.limeButton} href="#day">Enter the experience <span>↓</span></a>
-            <a className={styles.ghostButton} href={cultoInstagram} target="_blank" rel="noreferrer">@culto.ent <span>↗</span></a>
+            <a className={styles.limeButton} href="#day">Discover CULTO <span>↓</span></a>
+            <a className={styles.ghostButton} href={cultoInstagram} target="_blank" rel="noreferrer">Reservations <span>↗</span></a>
           </div>
         </div>
       </section>
@@ -120,7 +120,7 @@ export default async function CultoPage() {
 
       <section className={styles.intro}>
         <span className={styles.star}>✦</span>
-        <p>Il concept originale resta: la pagina cambia insieme alla giornata. La nuova identità visiva porta dentro il linguaggio CULTO — più grafico, più community, più riconoscibile.</p>
+        <p>CULTO vive dentro Playa Luna, ma segue un ritmo tutto suo. Di giorno è mare, selezione e beach culture. Durante la settimana incontra la cucina fusion. Il sabato, quando cala il sole, cambia completamente identità.</p>
       </section>
 
       <section className={styles.stage} id="day">
