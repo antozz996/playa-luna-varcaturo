@@ -22,6 +22,7 @@ type ServicePageProps = {
   ctaEvent?: string;
   telephone?: string;
   schemaType?: "Beach" | "Restaurant" | "EventVenue" | "LocalBusiness";
+  heroObjectPosition?: string;
 
   // Documento Sanity collegato alla pagina
   sanityDocumentId?: string;
@@ -73,6 +74,7 @@ export function ServicePage({
   ctaEvent = "whatsapp_beach",
   telephone,
   schemaType = "LocalBusiness",
+  heroObjectPosition = "center 55%",
   sanityDocumentId,
   sanityDocumentType,
 }: ServicePageProps) {
@@ -155,6 +157,7 @@ export function ServicePage({
           height={1200}
           priority
           sizes="100vw"
+          style={{ objectPosition: heroObjectPosition }}
           data-sanity={heroSanity}
         />
 
