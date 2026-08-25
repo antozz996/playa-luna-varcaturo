@@ -5,6 +5,7 @@ import styles from "./experience-video.module.css";
 
 type ExperienceVideoProps = {
   src: string;
+  poster?: string;
 };
 
 export function ExperienceVideo({ src }: ExperienceVideoProps) {
