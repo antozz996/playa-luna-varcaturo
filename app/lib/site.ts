@@ -22,5 +22,6 @@ export const mainNavigation = [
   { href: "/piscina/", label: "Piscina" },
   { href: "/eventi/", label: "Events" },
   { href: "/wedding/", label: "Wedding" },
+  { href: "/culto/", label: "CULTO" },
   { href: "/contatti/", label: "Contatti" },
 ];
