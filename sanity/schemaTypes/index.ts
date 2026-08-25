@@ -72,7 +72,19 @@ const homeMedia = defineType({
     { ...mediaField("hero", "Copertina principale", "/images/playa-luna/hero-beach.webp"), group: "hero" },
     { ...mediaField("experienceBeach", "Card Beach Club", "/images/playa-luna/beach-day.webp"), group: "cards" },
     { ...mediaField("experienceRestaurant", "Card Food & Drink", "/images/playa-luna/restaurant.webp"), group: "cards" },
-    { ...mediaField("experienceEvents", "Card Events", "/images/playa-luna/events/home-card.webp"), group: "cards" },
+    { ...mediaField("experienceEvents", "Card Events · Foto / poster", "/images/playa-luna/events/home-card.webp"), group: "cards" },
+    defineField({
+      name: "experienceEventsVideo",
+      title: "Card Events · Video (opzionale)",
+      type: "file",
+      group: "cards",
+      description:
+        "Se carichi un video, sostituisce la foto nella card Events. La foto sopra resta come poster e fallback. Consigliato: MP4 H.264, verticale o 4:5, breve e leggero.",
+      options: {
+        accept: "video/mp4,video/webm",
+        storeOriginalFilename: false,
+      },
+    }),
     { ...mediaField("beachMain", "Beach · Foto principale", "/images/playa-luna/beach-day.webp"), group: "beach" },
     { ...mediaField("beachDetail", "Beach · Dettaglio", "/images/playa-luna/sunset-view.webp"), group: "beach" },
     { ...mediaField("restaurantMain", "Ristorante · Ambiente", "/images/playa-luna/restaurant.webp"), group: "restaurant" },
