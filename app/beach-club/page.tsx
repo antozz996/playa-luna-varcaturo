@@ -8,6 +8,18 @@ import {
   mediaUrl,
   type ManagedImage,
 } from "../lib/sanity";
+import {
+  mediaFileObjectPosition,
+  mediaFileUrl,
+  type ManagedFile,
+} from "../lib/sanity-file";
+
+type BeachMedia = {
+  hero?: ManagedImage;
+  heroVideo?: ManagedFile;
+  detail?: ManagedImage;
+  detailVideo?: ManagedFile;
+};
 
 export const metadata: Metadata = {
   title: "Beach Club a Varcaturo",
@@ -23,9 +35,11 @@ export const metadata: Metadata = {
 };
 
 export default async function BeachClubPage() {
-  const media = await getMediaDocument<Record<string, ManagedImage>>(
+  const media = await getMediaDocument<BeachMedia & Record<string, unknown>>(
     "beachMedia",
   );
+  const heroVideo = mediaFileUrl(media.heroVideo);
+  const detailVideo = mediaFileUrl(media.detailVideo);
 
   return (
     <ServicePage
@@ -38,9 +52,13 @@ export default async function BeachClubPage() {
       image={mediaUrl(media.hero, "/images/playa-luna/beach-day.webp")}
       imageAlt={mediaAlt(media.hero, "Spiaggia attrezzata del beach club Playa Luna a Varcaturo")}
       heroObjectPosition={mediaObjectPosition(media.hero, "50% 55%")}
+      heroVideo={heroVideo}
+      heroVideoObjectPosition={mediaFileObjectPosition(media.heroVideo)}
       detailImage={mediaUrl(media.detail, "/images/playa-luna/sunset-view.webp")}
       detailAlt={mediaAlt(media.detail, "Vista del mare dagli spazi mediterranei di Playa Luna")}
       detailObjectPosition={mediaObjectPosition(media.detail)}
+      detailVideo={detailVideo}
+      detailVideoObjectPosition={mediaFileObjectPosition(media.detailVideo)}
       features={[
         "Spiaggia attrezzata con ombrelloni e lettini",
         "Bar e proposte per il pranzo",
