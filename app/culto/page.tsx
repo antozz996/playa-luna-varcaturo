@@ -7,6 +7,7 @@ import { getMediaDocument, mediaUrl, type ManagedImage } from "../lib/sanity";
 import { type ManagedFile } from "../lib/sanity-file";
 import { sanityImageAttribute } from "../lib/sanity-visual";
 import styles from "./culto.module.css";
+import wow from "./culto-wow.module.css";
 
 const cultoInstagram = "https://www.instagram.com/culto.ent/";
 
@@ -70,7 +71,7 @@ export default async function CultoPage() {
   };
 
   return (
-    <main className={styles.page}>
+    <main className={`${styles.page} ${wow.wowRoot}`}>
       <header className={styles.cultoHeader}>
         <Link className={styles.wordmark} href="/" aria-label="Torna a Playa Luna">
           CULT<span>O</span>
