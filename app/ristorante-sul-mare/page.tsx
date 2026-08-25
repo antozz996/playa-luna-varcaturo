@@ -49,6 +49,7 @@ export default async function RestaurantPage() {
         media.hero,
         "La sala luminosa del ristorante Playa Luna durante il servizio",
       )}
+      heroObjectPosition="center 35%"
       detailImage={mediaUrl(
         media.detail,
         "/images/playa-luna/food-pasta.webp",
