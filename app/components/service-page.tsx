@@ -148,16 +148,15 @@ export function ServicePage({
         className="service-hero"
         aria-labelledby="service-title"
       >
-        <div data-sanity={heroSanity}>
-          <Image
-            src={image}
-            alt={imageAlt}
-            width={960}
-            height={1200}
-            priority
-            sizes="100vw"
-          />
-        </div>
+        <Image
+          src={image}
+          alt={imageAlt}
+          width={960}
+          height={1200}
+          priority
+          sizes="100vw"
+          data-sanity={heroSanity}
+        />
 
         <div className="service-hero-shade" />
 
