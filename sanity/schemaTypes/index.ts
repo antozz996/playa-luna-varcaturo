@@ -10,7 +10,7 @@ const mediaField = (
     name,
     title,
     type: "managedImage",
-    description: `Immagine attuale: ${fallback}. Carica una nuova foto solo quando vuoi sostituirla.`,
+    description: `Immagine attuale: ${fallback}. Puoi sostituirla e usare Hotspot/Crop per scegliere l'inquadratura mostrata sul sito.`,
     options: { caption: options.caption },
   });
 
@@ -21,11 +21,29 @@ const videoField = (name: string, title: string) =>
     type: "file",
     group: "cards",
     description:
-      "Se carichi un video, sostituisce la foto nella card. La foto resta come poster e fallback. Consigliato: MP4 H.264, verticale o 4:5, breve e leggero.",
+      "Se carichi un video, sostituisce la foto nella card. Usa i controlli Focus sotto al file per decidere l'inquadratura. Consigliato: MP4 H.264, verticale o 4:5, breve e leggero.",
     options: {
       accept: "video/mp4,video/webm",
       storeOriginalFilename: false,
     },
+    fields: [
+      defineField({
+        name: "focusX",
+        title: "Focus orizzontale (0–100)",
+        type: "number",
+        description: "0 = sinistra · 50 = centro · 100 = destra",
+        initialValue: 50,
+        validation: (Rule) => Rule.min(0).max(100),
+      }),
+      defineField({
+        name: "focusY",
+        title: "Focus verticale (0–100)",
+        type: "number",
+        description: "0 = alto · 50 = centro · 100 = basso",
+        initialValue: 50,
+        validation: (Rule) => Rule.min(0).max(100),
+      }),
+    ],
   });
 
 const managedImage = defineType({
