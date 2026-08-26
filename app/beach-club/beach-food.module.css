@@ -121,7 +121,11 @@
 }
 
 .service {
-  grid-column: span 8;
+  grid-column: span 4;
+}
+
+.videoDetail {
+  grid-column: span 4;
 }
 
 .caption {
@@ -186,7 +190,8 @@
   .video,
   .secondary,
   .small,
-  .service {
+  .service,
+  .videoDetail {
     grid-column: span 1;
     grid-row: span 1;
   }
@@ -222,7 +227,8 @@
   .video,
   .secondary,
   .small,
-  .service {
+  .service,
+  .videoDetail {
     flex: 0 0 82vw;
     height: 104vw;
     max-height: 560px;
