@@ -17,6 +17,8 @@ export const playaLunaPresentationResolve: PresentationPluginOptions["resolve"] 
     { route: "/eventi/", type: "eventsMedia" },
     { route: "/wedding", type: "weddingMedia" },
     { route: "/wedding/", type: "weddingMedia" },
+    { route: "/culto", type: "cultoMedia" },
+    { route: "/culto/", type: "cultoMedia" },
   ]),
   locations: {
     homeMedia: defineLocations({
@@ -29,9 +31,7 @@ export const playaLunaPresentationResolve: PresentationPluginOptions["resolve"] 
     }),
     restaurantMedia: defineLocations({
       select: { _id: "_id" },
-      resolve: () => ({
-        locations: [{ title: "Ristorante", href: "/ristorante-sul-mare/" }],
-      }),
+      resolve: () => ({ locations: [{ title: "Ristorante", href: "/ristorante-sul-mare/" }] }),
     }),
     poolMedia: defineLocations({
       select: { _id: "_id" },
@@ -44,6 +44,10 @@ export const playaLunaPresentationResolve: PresentationPluginOptions["resolve"] 
     weddingMedia: defineLocations({
       select: { _id: "_id" },
       resolve: () => ({ locations: [{ title: "Wedding", href: "/wedding/" }] }),
+    }),
+    cultoMedia: defineLocations({
+      select: { _id: "_id" },
+      resolve: () => ({ locations: [{ title: "CULTO", href: "/culto/" }] }),
     }),
   },
 };

@@ -3,6 +3,7 @@ import { structureTool } from "sanity/structure";
 import { presentationTool } from "sanity/presentation";
 import { visionTool } from "@sanity/vision";
 import { schemaTypes } from "./sanity/schemaTypes";
+import { cultoMedia } from "./sanity/schemaTypes/culto";
 import { playaLunaStructure } from "./sanity/structure";
 import { playaLunaPresentationResolve } from "./sanity/presentation";
 
@@ -40,6 +41,6 @@ export default defineConfig({
   ],
 
   schema: {
-    types: schemaTypes,
+    types: [...schemaTypes, cultoMedia],
   },
 });

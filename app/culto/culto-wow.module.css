@@ -1,0 +1,484 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Syncopate:wght@400;700&display=swap");
+
+.wowRoot {
+  --wow-neon: #c8ff00;
+  --wow-plum: #5b3148;
+  --wow-cream: #f3eee5;
+  --wow-ink: #11100e;
+  --wow-brown: #2d1c13;
+  font-family: "Space Grotesk", Arial, Helvetica, sans-serif;
+}
+
+/* Reference typography: wide display face + clean geometric body. */
+.wowRoot p,
+.wowRoot small,
+.wowRoot nav {
+  font-family: "Space Grotesk", Arial, Helvetica, sans-serif;
+}
+
+.wowRoot h2,
+.wowRoot h3,
+.wowRoot strong,
+.wowRoot button,
+.wowRoot summary,
+.wowRoot a {
+  font-family: "Syncopate", "Arial Black", Arial, Helvetica, sans-serif;
+}
+
+/* Sticky branded header + tactile menu */
+.wowRoot > header {
+  transition: background .35s ease, backdrop-filter .35s ease, border-color .35s ease;
+}
+
+.wowRoot > header > a {
+  text-shadow: 3px 4px 0 rgba(91,49,72,.82);
+}
+
+.wowRoot > header details > summary {
+  border-radius: 16px;
+  box-shadow: 0 5px 0 rgba(91,49,72,.78);
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.wowRoot > header details > summary:hover,
+.wowRoot > header details > summary:focus-visible {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,.1);
+  box-shadow: 0 7px 0 rgba(91,49,72,.9);
+}
+
+.wowRoot > header details[open] > summary {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 rgba(91,49,72,.9);
+}
+
+/* Floating contact bubble inspired by the reference, without faking a WhatsApp number */
+.wowRoot > a[href*="instagram.com"] {
+  box-shadow: 0 7px 0 var(--wow-plum), 0 16px 34px rgba(0,0,0,.3);
+  animation: wowFloat 3.2s ease-in-out infinite;
+}
+
+/* Hero gets the reference's 3D/extruded punch. */
+.wowRoot h1 {
+  text-shadow:
+    4px 5px 0 rgba(91,49,72,.96),
+    8px 10px 26px rgba(0,0,0,.24);
+}
+
+.wowRoot h1::after {
+  content: "✦";
+  display: inline-block;
+  margin-left: .08em;
+  color: var(--wow-neon);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .2em;
+  line-height: 1;
+  vertical-align: top;
+  transform: rotate(12deg) translateY(.15em);
+  text-shadow: none;
+}
+
+/* 3D pills: same visual trick as the reference, but reserved for conversion CTAs */
+.wowRoot section[id] article > a[href*="instagram.com"],
+.wowRoot section:last-of-type a[href*="instagram.com"] {
+  box-shadow: 0 7px 0 var(--wow-plum), 0 13px 28px rgba(0,0,0,.12);
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+
+.wowRoot section[id] article > a[href*="instagram.com"]:hover,
+.wowRoot section:last-of-type a[href*="instagram.com"]:hover,
+.wowRoot section[id] article > a[href*="instagram.com"]:focus-visible,
+.wowRoot section:last-of-type a[href*="instagram.com"]:focus-visible {
+  transform: translateY(-3px);
+  filter: saturate(1.08);
+  box-shadow: 0 10px 0 var(--wow-plum), 0 17px 34px rgba(0,0,0,.16);
+}
+
+.wowRoot section[id] article > a[href*="instagram.com"]:active,
+.wowRoot section:last-of-type a[href*="instagram.com"]:active {
+  transform: translateY(5px);
+  box-shadow: 0 2px 0 var(--wow-plum), 0 7px 18px rgba(0,0,0,.12);
+}
+
+/* Starburst micro-signature on section labels */
+.wowRoot section[id] article > div:first-child b {
+  display: inline-flex;
+  align-items: center;
+  gap: .7em;
+}
+
+.wowRoot section[id] article > div:first-child b::before {
+  content: "✦";
+  color: var(--wow-neon);
+  font-size: 1.35em;
+  line-height: 1;
+  transform: rotate(10deg);
+}
+
+/* Reference-style framed Saturday block: one strong card, not cards everywhere */
+.wowRoot :global(#saturday) article > div:nth-of-type(3) {
+  border: 2px solid var(--wow-neon);
+  box-shadow: 0 8px 0 var(--wow-plum);
+}
+
+/* Dynamic framed imagery */
+.wowRoot figure {
+  transform: translateZ(0);
+}
+
+.wowRoot figure img,
+.wowRoot figure video {
+  transition: transform .7s cubic-bezier(.2,.7,.2,1), filter .5s ease;
+}
+
+@media (hover: hover) {
+  .wowRoot figure:hover img,
+  .wowRoot figure:hover video {
+    transform: scale(1.025);
+  }
+
+  .wowRoot :global(#night) figure:hover img,
+  .wowRoot :global(#night) figure:hover video {
+    filter: saturate(1.02) contrast(1.08);
+  }
+}
+
+/* Marquees actually move. */
+.wowRoot > div[aria-hidden="true"] {
+  position: relative;
+  mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+}
+
+.wowRoot > div[aria-hidden="true"] > * {
+  animation: wowTicker 24s linear infinite;
+}
+
+.wowRoot > div[aria-hidden="true"]:last-of-type > * {
+  animation-direction: reverse;
+  animation-duration: 28s;
+}
+
+/* Selected graphic strips borrow the lime accent without taking over the palette */
+.wowRoot :global(#taste) article > div:nth-of-type(3),
+.wowRoot :global(#night) article > div:nth-of-type(3) {
+  position: relative;
+  padding-left: 2.1em;
+}
+
+.wowRoot :global(#taste) article > div:nth-of-type(3)::before,
+.wowRoot :global(#night) article > div:nth-of-type(3)::before {
+  content: "✦";
+  position: absolute;
+  left: .15em;
+  top: 50%;
+  color: var(--wow-neon);
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: normal;
+  transform: translateY(-50%) rotate(14deg);
+}
+
+/* === Reference hero === */
+.referenceHeader {
+  min-height: 112px !important;
+  padding: 24px clamp(24px, 5vw, 72px) !important;
+  background: rgba(45, 28, 19, .98) !important;
+  border-bottom: 1px solid rgba(243, 238, 229, .09);
+  backdrop-filter: blur(18px);
+}
+
+.referenceWordmark {
+  color: var(--wow-cream) !important;
+  font-family: "Syncopate", "Arial Black", Arial, sans-serif !important;
+  font-size: clamp(24px, 2.6vw, 38px) !important;
+  font-weight: 700 !important;
+  letter-spacing: -.08em !important;
+  text-shadow: none !important;
+}
+
+.referenceWordmark span { color: var(--wow-neon) !important; }
+
+.referenceMenu > summary {
+  width: 66px !important;
+  height: 66px !important;
+  border: 1px solid rgba(243,238,229,.14) !important;
+  border-radius: 22px !important;
+  background: rgba(255,255,255,.025) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.025) !important;
+}
+
+.referenceMenu > summary i {
+  width: 30px !important;
+  height: 3px !important;
+  border-radius: 999px;
+}
+
+.heroReference {
+  min-height: calc(100svh - 112px) !important;
+  margin-top: 112px;
+  padding: clamp(56px, 7vw, 100px) clamp(24px, 6vw, 90px) clamp(64px, 8vw, 110px) !important;
+  align-items: center !important;
+  text-align: center;
+}
+
+.heroReference > div:first-of-type {
+  background:
+    linear-gradient(180deg, rgba(44,26,16,.20), rgba(48,28,17,.50) 44%, rgba(39,21,13,.80) 100%) !important;
+}
+
+.heroReferenceContent {
+  display: flex;
+  width: min(920px, 100%) !important;
+  margin-inline: auto;
+  align-items: center;
+  flex-direction: column;
+}
+
+.referenceTitle {
+  display: grid;
+  width: 100%;
+  margin: 0 !important;
+  color: var(--wow-cream);
+  font-family: "Syncopate", "Arial Black", Arial, sans-serif !important;
+  font-size: clamp(54px, 8.2vw, 126px) !important;
+  font-weight: 700 !important;
+  letter-spacing: -.085em !important;
+  line-height: .84 !important;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow:
+    .055em .072em 0 rgba(91,49,72,.98),
+    0 20px 48px rgba(0,0,0,.34) !important;
+}
+
+.referenceTitle::after { display: none !important; content: none !important; }
+.referenceTitle span { display: block; }
+
+.referenceHeroCopy {
+  max-width: 790px !important;
+  margin-top: clamp(34px, 4vw, 54px) !important;
+  color: rgba(255,255,255,.94) !important;
+  font-family: "Space Grotesk", Arial, sans-serif !important;
+  font-size: clamp(19px, 2vw, 28px) !important;
+  font-weight: 400;
+  line-height: 1.72 !important;
+  letter-spacing: -.018em;
+  text-align: center;
+}
+
+.referenceHeroActions {
+  width: 100%;
+  margin-top: clamp(38px, 5vw, 62px) !important;
+  justify-content: center;
+}
+
+.referencePrimaryCta {
+  width: min(620px, 100%);
+  min-height: 78px !important;
+  padding-inline: 36px !important;
+  border: 0 !important;
+  background: var(--wow-neon) !important;
+  color: #1b120d !important;
+  box-shadow: 0 9px 0 var(--wow-plum), 0 18px 34px rgba(0,0,0,.18) !important;
+  font-family: "Syncopate", "Arial Black", Arial, sans-serif !important;
+  font-size: clamp(11px, 1.2vw, 15px) !important;
+  font-weight: 700 !important;
+  letter-spacing: .1em !important;
+  justify-content: center !important;
+}
+
+.referencePrimaryCta:hover,
+.referencePrimaryCta:focus-visible {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 12px 0 var(--wow-plum), 0 22px 40px rgba(0,0,0,.20) !important;
+}
+
+.referencePrimaryCta:active {
+  transform: translateY(6px) !important;
+  box-shadow: 0 3px 0 var(--wow-plum), 0 10px 20px rgba(0,0,0,.16) !important;
+}
+
+/* Exact reference-style moving strip, using the reference's own section names. */
+.referenceMarquee {
+  background: var(--wow-cream) !important;
+  color: #28180f !important;
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+  mask-image: none !important;
+}
+
+.referenceMarqueeTrack {
+  display: flex !important;
+  width: max-content !important;
+  padding: 0 !important;
+  animation: referenceTicker 32s linear infinite !important;
+  will-change: transform;
+}
+
+.referenceMarqueeTrack span {
+  display: block;
+  flex: 0 0 auto;
+  padding: 21px 28px;
+  font-family: "Syncopate", "Arial Black", Arial, sans-serif !important;
+  font-size: clamp(24px, 3.8vw, 58px) !important;
+  font-weight: 700 !important;
+  letter-spacing: -.04em !important;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Pull the reference font into the editorial system without replacing its layout. */
+.wowRoot section[id] article > h2,
+.wowRoot section:not([id]) h2,
+.wowRoot section h3 {
+  font-family: "Syncopate", "Arial Black", Arial, sans-serif !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  letter-spacing: -.055em !important;
+  line-height: 1.02 !important;
+}
+
+.wowRoot section[id] article > p,
+.wowRoot section:not([id]) > p,
+.wowRoot section div > p {
+  font-family: "Space Grotesk", Arial, Helvetica, sans-serif;
+}
+
+/* Scroll-based reveal: progressive enhancement, zero JS */
+@supports (animation-timeline: view()) {
+  .wowRoot section[id] article > h2,
+  .wowRoot section[id] article > p,
+  .wowRoot section[id] figure,
+  .wowRoot section:not([id]) h2 {
+    animation: wowReveal linear both;
+    animation-timeline: view();
+    animation-range: entry 6% cover 32%;
+  }
+
+  .wowRoot section[id] figure {
+    animation-name: wowImageReveal;
+    animation-range: entry 4% cover 28%;
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  .wowRoot > header:not(.referenceHeader) {
+    animation: wowHeader linear both;
+    animation-timeline: scroll();
+    animation-range: 0 260px;
+  }
+}
+
+@keyframes wowTicker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-24%); }
+}
+
+@keyframes referenceTicker {
+  from { transform: translate3d(0,0,0); }
+  to { transform: translate3d(-50%,0,0); }
+}
+
+@keyframes wowFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(2deg); }
+}
+
+@keyframes wowReveal {
+  from { opacity: 0; transform: translateY(34px); filter: blur(5px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+@keyframes wowImageReveal {
+  from { opacity: .25; transform: translateY(26px) scale(.965); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes wowHeader {
+  from {
+    background: linear-gradient(180deg, rgba(6,6,6,.12), transparent);
+    border-bottom-color: transparent;
+    backdrop-filter: blur(0);
+  }
+  to {
+    background: rgba(20,13,10,.82);
+    border-bottom-color: rgba(255,255,255,.1);
+    backdrop-filter: blur(18px);
+  }
+}
+
+@media (max-width: 820px) {
+  .referenceHeader {
+    min-height: 104px !important;
+    padding: 18px 22px !important;
+  }
+
+  .referenceWordmark {
+    font-size: 25px !important;
+  }
+
+  .referenceMenu > summary {
+    width: 64px !important;
+    height: 64px !important;
+  }
+
+  .heroReference {
+    min-height: calc(100svh - 104px) !important;
+    margin-top: 104px;
+    padding: 52px 20px 62px !important;
+    align-items: start !important;
+  }
+
+  .heroReferenceContent {
+    justify-content: flex-start;
+  }
+
+  .referenceTitle {
+    font-size: clamp(48px, 15.8vw, 76px) !important;
+    line-height: .89 !important;
+    text-shadow: .055em .07em 0 rgba(91,49,72,.98), 0 14px 30px rgba(0,0,0,.30) !important;
+  }
+
+  .referenceHeroCopy {
+    max-width: 92% !important;
+    margin-top: 38px !important;
+    font-size: clamp(18px, 5.25vw, 23px) !important;
+    line-height: 1.65 !important;
+  }
+
+  .referenceHeroActions {
+    margin-top: 42px !important;
+  }
+
+  .referencePrimaryCta {
+    min-height: 72px !important;
+    font-size: 11px !important;
+    letter-spacing: .08em !important;
+  }
+
+  .referenceMarqueeTrack span {
+    padding: 17px 18px;
+    font-size: clamp(25px, 8vw, 42px) !important;
+  }
+
+  .wowRoot h1:not(.referenceTitle) {
+    text-shadow: 3px 4px 0 rgba(91,49,72,.94), 6px 8px 18px rgba(0,0,0,.2);
+  }
+
+  .wowRoot section[id] article > a[href*="instagram.com"],
+  .wowRoot section:last-of-type a[href*="instagram.com"] {
+    box-shadow: 0 6px 0 var(--wow-plum), 0 12px 24px rgba(0,0,0,.13);
+  }
+
+  .wowRoot > div[aria-hidden="true"]:not(.referenceMarquee) > * {
+    animation-duration: 18s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wowRoot *,
+  .wowRoot *::before,
+  .wowRoot *::after {
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "piscina/", priority: 0.8 },
     { path: "eventi/", priority: 0.9 },
     { path: "wedding/", priority: 0.9 },
+    { path: "culto/", priority: 0.9 },
     { path: "contatti/", priority: 0.7 },
   ];
 

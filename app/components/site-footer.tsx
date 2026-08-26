@@ -18,7 +18,7 @@ export function SiteFooter() {
           <Link className="brand-logo-link footer-logo-link" href="/" aria-label="Playa Luna, torna alla homepage">
             <Image className="brand-logo footer-brand-logo" src="/playaluna-logo.svg" alt="" width={524} height={344} unoptimized />
           </Link>
-          <p>Beach club · Restaurant · Events</p>
+          <p>Beach club · Restaurant · Events · CULTO</p>
         </div>
         <div>
           <p className="footer-label">Dove siamo</p>
@@ -34,7 +34,8 @@ export function SiteFooter() {
         </div>
         <div>
           <p className="footer-label">Seguici</p>
-          <a href="https://www.instagram.com/lidoplayaluna/" target="_blank" rel="noreferrer" data-event="instagram_click">Instagram ↗</a>
+          <a href="https://www.instagram.com/lidoplayaluna/" target="_blank" rel="noreferrer" data-event="instagram_click">Playa Luna · Instagram ↗</a>
+          <a href="https://www.instagram.com/culto.ent/" target="_blank" rel="noreferrer" data-event="instagram_culto_click">CULTO · Instagram ↗</a>
           <a href="https://www.facebook.com/Complesso.Playa.Luna/" target="_blank" rel="noreferrer" data-event="facebook_click">Facebook ↗</a>
         </div>
       </div>
