@@ -47,9 +47,11 @@ function mediaAttr(base: string, video?: ManagedFile) {
   return sanityImageAttribute("cultoMedia", "cultoMedia", mediaPath(base, video));
 }
 
+const marqueeCopy = "MORE THAN A BEACH · CULTOLAND · SUN & SOUND SPOT · IL TUO EVENTO SUL MARE · EXPERIENCE THE FEELING · ";
+
 export default async function CultoPage() {
   const media = await getMediaDocument<CultoMedia & Record<string, unknown>>("cultoMedia");
-  const hero = mediaUrl(media.hero, "/images/playa-luna/beach-day.webp");
+  const hero = mediaUrl(media.hero, "/images/playa-luna/pool-family.webp");
 
   const schema = {
     "@context": "https://schema.org",
@@ -72,11 +74,11 @@ export default async function CultoPage() {
 
   return (
     <main className={`${styles.page} ${wow.wowRoot}`}>
-      <header className={styles.cultoHeader}>
-        <Link className={styles.wordmark} href="/" aria-label="Torna a Playa Luna">
+      <header className={`${styles.cultoHeader} ${wow.referenceHeader}`}>
+        <Link className={`${styles.wordmark} ${wow.referenceWordmark}`} href="/" aria-label="Torna a Playa Luna">
           CULT<span>O</span>
         </Link>
-        <details className={styles.menu}>
+        <details className={`${styles.menu} ${wow.referenceMenu}`}>
           <summary aria-label="Apri menu CULTO"><i /><i /><i /></summary>
           <nav aria-label="Navigazione CULTO">
             <a href="#day">Day</a>
@@ -90,33 +92,39 @@ export default async function CultoPage() {
 
       <a className={styles.floatingCta} href={cultoInstagram} target="_blank" rel="noreferrer" aria-label="Apri Instagram CULTO">@</a>
 
-      <section className={styles.hero} aria-labelledby="culto-title">
+      <section className={`${styles.hero} ${wow.heroReference}`} aria-labelledby="culto-title">
         <CmsMedia
           image={media.hero}
           video={media.heroVideo}
-          fallback="/images/playa-luna/beach-day.webp"
-          altFallback="Beach club CULTO a Playa Luna, Marina di Varcaturo"
+          fallback="/images/playa-luna/pool-family.webp"
+          altFallback="Culto Beach, area premium di Playa Luna sul mare di Varcaturo"
           sizes="100vw"
           fill
           priority
           className={styles.coverMedia}
-          imagePositionFallback="50% 62%"
+          imagePositionFallback="50% 54%"
           dataSanity={mediaAttr("hero", media.heroVideo)}
         />
         <div className={styles.heroShade} />
-        <div className={styles.heroContent}>
-          <p className={styles.eyebrow}>Inside Playa Luna · Varcaturo</p>
-          <h1 id="culto-title">CULTO</h1>
-          <p className={styles.heroCopy}>Dalla luce piena del giorno alla tensione della notte. Beach culture, cucina fusion e un sabato che cambia il volto del luogo.</p>
-          <div className={styles.heroActions}>
-            <a className={styles.limeButton} href="#day">Scopri CULTO <span>↓</span></a>
-            <a className={styles.ghostButton} href={cultoInstagram} target="_blank" rel="noreferrer">Prenotazioni <span>↗</span></a>
+        <div className={`${styles.heroContent} ${wow.heroReferenceContent}`}>
+          <h1 id="culto-title" className={wow.referenceTitle}>
+            <span>MORE</span>
+            <span>THAN</span>
+            <span>A</span>
+            <span>BEACH</span>
+          </h1>
+          <p className={`${styles.heroCopy} ${wow.referenceHeroCopy}`}>Culto Beach è l’area premium del Lido Playa Luna, affacciata sul mare di Varcaturo. Balneazione, relax, piscine idromassaggio, eventi privati e appuntamenti esclusivi in un’unica esperienza sul mare.</p>
+          <div className={`${styles.heroActions} ${wow.referenceHeroActions}`}>
+            <a className={`${styles.limeButton} ${wow.referencePrimaryCta}`} href={cultoInstagram} target="_blank" rel="noreferrer">JOIN THE COMMUNITY</a>
           </div>
         </div>
       </section>
 
-      <div className={styles.marquee} aria-hidden="true">
-        <div>DAY · DINING · SATURDAY · NIGHT · DAY · DINING · SATURDAY · NIGHT ·</div>
+      <div className={`${styles.marquee} ${wow.referenceMarquee}`} aria-hidden="true">
+        <div className={wow.referenceMarqueeTrack}>
+          <span>{marqueeCopy}</span>
+          <span>{marqueeCopy}</span>
+        </div>
       </div>
 
       <section className={styles.intro}>
