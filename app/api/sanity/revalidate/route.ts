@@ -4,6 +4,7 @@ import type { NextRequest } from "next/server";
 const pathsByType: Record<string, string[]> = {
   homeMedia: ["/"],
   beachMedia: ["/beach-club"],
+  beachFoodMedia: ["/beach-club"],
   restaurantMedia: ["/ristorante-sul-mare"],
   poolMedia: ["/piscina"],
   eventsMedia: ["/eventi"],
