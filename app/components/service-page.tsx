@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { createDataAttribute } from "next-sanity";
@@ -31,6 +32,7 @@ type ServicePageProps = {
   detailVideoObjectPosition?: string;
   sanityDocumentId?: string;
   sanityDocumentType?: string;
+  children?: ReactNode;
 };
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "";
@@ -79,6 +81,7 @@ export function ServicePage({
   detailVideoObjectPosition = "50% 50%",
   sanityDocumentId,
   sanityDocumentType,
+  children,
 }: ServicePageProps) {
   const structuredImage = image.startsWith("http") ? image : `${siteUrl}${image}`;
 
@@ -196,6 +199,8 @@ export function ServicePage({
           )}
         </figure>
       </section>
+
+      {children}
 
       <section className="service-cta">
         <div className="shell">
