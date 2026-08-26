@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import { ExperienceVideo } from "../components/experience-video";
+import { CmsMedia } from "../components/cms-media";
 import { ServicePage } from "../components/service-page";
 import { beachPhoneNumber } from "../lib/site";
 import {
@@ -24,6 +23,15 @@ type BeachMedia = {
   detailVideo?: ManagedFile;
 };
 
+type BeachFoodMedia = {
+  buffet?: ManagedImage;
+  pasta?: ManagedImage;
+  counter?: ManagedImage;
+  service?: ManagedImage;
+  serviceVideo?: ManagedFile;
+  detailVideo?: ManagedFile;
+};
+
 export const metadata: Metadata = {
   title: "Beach Club a Varcaturo",
   description:
@@ -39,9 +47,11 @@ export const metadata: Metadata = {
 };
 
 export default async function BeachClubPage() {
-  const media = await getMediaDocument<BeachMedia & Record<string, unknown>>(
-    "beachMedia",
-  );
+  const [media, foodMedia] = await Promise.all([
+    getMediaDocument<BeachMedia & Record<string, unknown>>("beachMedia"),
+    getMediaDocument<BeachFoodMedia & Record<string, unknown>>("beachFoodMedia"),
+  ]);
+
   const heroVideo = mediaFileUrl(media.heroVideo);
   const detailVideo = mediaFileUrl(media.detailVideo);
 
@@ -101,50 +111,67 @@ export default async function BeachClubPage() {
 
           <div className={styles.gallery} aria-label="Tavola calda e fredda Playa Luna">
             <figure className={`${styles.tile} ${styles.main}`}>
-              <Image
-                src="/images/playa-luna/beach-food/buffet.webp"
-                alt="Banco della tavola calda e fredda del Playa Luna con primi, verdure e contorni"
+              <CmsMedia
+                image={foodMedia.buffet}
+                fallback="/images/playa-luna/food-pasta.webp"
+                altFallback="Banco della tavola calda e fredda del Playa Luna con primi, verdure e contorni"
+                sizes="(max-width: 620px) 82vw, (max-width: 900px) 100vw, 58vw"
                 fill
-                sizes="(max-width: 620px) 82vw, (max-width: 900px) 50vw, 58vw"
               />
               <figcaption className={styles.caption}><span>Beach Food</span><span>Playa Luna</span></figcaption>
             </figure>
 
             <figure className={`${styles.tile} ${styles.video}`}>
-              <ExperienceVideo
-                src="/videos/playa-luna/beach-food-service.mp4"
+              <CmsMedia
+                video={foodMedia.serviceVideo}
+                fallback="/images/playa-luna/food-fish.webp"
+                altFallback="Servizio al banco della tavola calda e fredda Playa Luna"
+                sizes="(max-width: 620px) 82vw, (max-width: 900px) 50vw, 42vw"
                 fill
-                objectPosition="50% 50%"
               />
-              <figcaption className={styles.caption}><span>Servizio</span><span>Ogni giorno</span></figcaption>
+              <figcaption className={styles.caption}><span>Servizio</span><span>Durante il Beach</span></figcaption>
             </figure>
 
             <figure className={`${styles.tile} ${styles.secondary}`}>
-              <Image
-                src="/images/playa-luna/beach-food/pasta.webp"
-                alt="Selezione di insalate di pasta e primi freddi disponibili durante il servizio Beach"
-                fill
+              <CmsMedia
+                image={foodMedia.pasta}
+                fallback="/images/playa-luna/food-pasta.webp"
+                altFallback="Selezione di insalate di pasta e primi freddi disponibili durante il servizio Beach"
                 sizes="(max-width: 620px) 82vw, (max-width: 900px) 50vw, 42vw"
+                fill
               />
             </figure>
 
             <figure className={`${styles.tile} ${styles.small}`}>
-              <Image
-                src="/images/playa-luna/beach-food/counter.webp"
-                alt="Banco interno del Playa Luna con esposizione della tavola fredda"
-                fill
+              <CmsMedia
+                image={foodMedia.counter}
+                fallback="/images/playa-luna/restaurant.webp"
+                altFallback="Banco interno del Playa Luna con esposizione della tavola calda e fredda"
                 sizes="(max-width: 620px) 82vw, (max-width: 900px) 50vw, 33vw"
+                fill
               />
             </figure>
 
             <figure className={`${styles.tile} ${styles.service}`}>
-              <Image
-                src="/images/playa-luna/beach-food/service.webp"
-                alt="Servizio al banco della tavola fredda del Playa Luna durante la giornata in spiaggia"
-                fill
+              <CmsMedia
+                image={foodMedia.service}
+                fallback="/images/playa-luna/food-tartare.webp"
+                altFallback="Servizio al banco della tavola fredda del Playa Luna durante la giornata in spiaggia"
                 sizes="(max-width: 620px) 82vw, (max-width: 900px) 100vw, 67vw"
+                fill
               />
               <figcaption className={styles.caption}><span>Scegli al banco</span><span>Torna al mare</span></figcaption>
+            </figure>
+
+            <figure className={`${styles.tile} ${styles.videoDetail}`}>
+              <CmsMedia
+                video={foodMedia.detailVideo}
+                fallback="/images/playa-luna/food-pasta.webp"
+                altFallback="Dettaglio di una proposta calda servita al banco del Playa Luna"
+                sizes="(max-width: 620px) 82vw, (max-width: 900px) 50vw, 33vw"
+                fill
+              />
+              <figcaption className={styles.caption}><span>Caldo & freddo</span><span>Ogni giornata</span></figcaption>
             </figure>
           </div>
 
