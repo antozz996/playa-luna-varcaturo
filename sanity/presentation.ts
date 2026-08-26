@@ -27,6 +27,12 @@ export const playaLunaPresentationResolve: PresentationPluginOptions["resolve"] 
       select: { _id: "_id" },
       resolve: () => ({ locations: [{ title: "Beach Club", href: "/beach-club/" }] }),
     }),
+    beachFoodMedia: defineLocations({
+      select: { _id: "_id" },
+      resolve: () => ({
+        locations: [{ title: "Beach Food · Tavola calda e fredda", href: "/beach-club/" }],
+      }),
+    }),
     restaurantMedia: defineLocations({
       select: { _id: "_id" },
       resolve: () => ({
