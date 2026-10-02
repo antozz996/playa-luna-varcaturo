@@ -1,36 +1,9 @@
 import "server-only";
 
-import { createImageUrlBuilder, type SanityImageSource } from "@sanity/image-url";
-import { createClient } from "next-sanity";
-import { draftMode } from "next/headers";
-
-const configuredProjectId =
-  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || process.env.SANITY_PROJECT_ID || "";
-const configuredDataset =
-  process.env.NEXT_PUBLIC_SANITY_DATASET || process.env.SANITY_DATASET || "production";
-const readToken =
-  process.env.SANITY_API_READ_TOKEN || process.env.SANITY_API_TOKEN || "";
-
-export const isSanityConfigured = Boolean(configuredProjectId);
-
-const publishedClient = createClient({
-  projectId: configuredProjectId || "preview0",
-  dataset: configuredDataset,
-  apiVersion: "2026-08-23",
-  useCdn: true,
-  perspective: "published",
-});
-
-const previewClient = publishedClient.withConfig({
-  useCdn: false,
-  token: readToken || undefined,
-  perspective: "drafts",
-});
-
-const builder = createImageUrlBuilder(publishedClient);
+export const isSanityConfigured = false;
 
 export type ManagedImage = {
-  asset?: SanityImageSource;
+  asset?: unknown;
   alt?: string;
   caption?: string;
   focusX?: number;
@@ -40,39 +13,13 @@ export type ManagedImage = {
 };
 
 export async function getMediaDocument<T extends Record<string, unknown>>(
-  type: string,
+  _type: string,
 ): Promise<Partial<T>> {
-  if (!isSanityConfigured) return {};
-
-  try {
-    const { isEnabled } = await draftMode();
-    const canPreviewDrafts = isEnabled && Boolean(readToken);
-    const activeClient = canPreviewDrafts ? previewClient : publishedClient;
-
-    const result = await activeClient.fetch<Partial<T> | null>(
-      "*[_type == $type][0]",
-      { type },
-      canPreviewDrafts
-        ? { cache: "no-store" }
-        : { next: { revalidate: 30, tags: [`sanity:${type}`] } },
-    );
-
-    return result || {};
-  } catch {
-    return {};
-  }
+  return {};
 }
 
-export function mediaUrl(image: ManagedImage | undefined, fallback: string) {
-  if (!image?.asset) return fallback;
-
-  return builder
-    .image(image)
-    .width(1920)
-    .fit("max")
-    .auto("format")
-    .quality(84)
-    .url();
+export function mediaUrl(_image: ManagedImage | undefined, fallback: string) {
+  return fallback;
 }
 
 export function mediaObjectPosition(
@@ -81,18 +28,12 @@ export function mediaObjectPosition(
 ) {
   const explicitX = image?.focusX;
   const explicitY = image?.focusY;
-
   if (typeof explicitX === "number" || typeof explicitY === "number") {
     const x = Math.min(100, Math.max(0, explicitX ?? 50));
     const y = Math.min(100, Math.max(0, explicitY ?? 50));
     return `${x}% ${y}%`;
   }
-
-  if (!image?.hotspot) return fallback;
-
-  const x = Math.round(image.hotspot.x * 1000) / 10;
-  const y = Math.round(image.hotspot.y * 1000) / 10;
-  return `${x}% ${y}%`;
+  return fallback;
 }
 
 export function mediaAlt(image: ManagedImage | undefined, fallback: string) {
