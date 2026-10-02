@@ -14,7 +14,7 @@ const readToken =
 export const isSanityConfigured = Boolean(configuredProjectId);
 
 const publishedClient = createClient({
-  projectId: configuredProjectId || "00000000",
+  projectId: configuredProjectId || "preview0",
   dataset: configuredDataset,
   apiVersion: "2026-08-23",
   useCdn: true,
