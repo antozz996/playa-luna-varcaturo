@@ -7,7 +7,7 @@ import { playaLunaStructure } from "./sanity/structure";
 import { playaLunaPresentationResolve } from "./sanity/presentation";
 
 const projectId =
-  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "00000000";
+  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "preview0";
 
 const dataset =
   process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
