@@ -3,6 +3,7 @@
 import { FormEvent, useCallback, useEffect, useState } from "react";
 
 const API_BASE = "https://rbbwwqmnlgqlzadbbebp.supabase.co/functions/v1/leads-os";
+const RECOVERY_API = "https://rbbwwqmnlgqlzadbbebp.supabase.co/functions/v1/meta-recovery";
 const TOKEN_KEY = "playa-leads-session";
 
 type Lead = {
@@ -62,6 +63,7 @@ export default function LeadsOSPage() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [ready, setReady] = useState(false);
+  const [recoveryConfigured, setRecoveryConfigured] = useState<boolean | null>(null);
 
   const api = useCallback(async (path: string, init: RequestInit = {}, authToken = token) => {
     const headers = new Headers(init.headers);
@@ -101,6 +103,11 @@ export default function LeadsOSPage() {
     setToken(saved);
     setReady(true);
     if (saved) void load(saved);
+
+    void fetch(`${RECOVERY_API}/health`, { cache: "no-store" })
+      .then((response) => response.json())
+      .then((payload) => setRecoveryConfigured(Boolean(payload.configured)))
+      .catch(() => setRecoveryConfigured(null));
   }, [load]);
 
   async function login(event: FormEvent<HTMLFormElement>) {
@@ -162,6 +169,30 @@ export default function LeadsOSPage() {
       await load();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Aggiornamento non riuscito.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function runRecovery() {
+    if (!token) return;
+    setBusy(true);
+    setError("");
+    try {
+      const response = await fetch(RECOVERY_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({ lookback_hours: 168 }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || "Recovery non riuscito.");
+      await load();
+      setError(`Recovery completato: ${payload.inserted} recuperati, ${payload.duplicates} già presenti.`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Recovery non riuscito.");
     } finally {
       setBusy(false);
     }
@@ -287,11 +318,25 @@ export default function LeadsOSPage() {
             <p className="eyebrow">RECOVERY</p>
             <h2>Salute sincronizzazione</h2>
           </div>
-          <p>
-            {lastRun
-              ? `${lastRun.run_type} · ${lastRun.status} · inseriti ${lastRun.inserted_count} · duplicati ${lastRun.duplicate_count}`
-              : "Nessuna sincronizzazione Meta ancora eseguita."}
-          </p>
+          <div className="recovery-actions">
+            <p>
+              {lastRun
+                ? `${lastRun.run_type} · ${lastRun.status} · inseriti ${lastRun.inserted_count} · duplicati ${lastRun.duplicate_count}`
+                : recoveryConfigured === false
+                  ? "Backend pronto · connessione Meta ancora da autorizzare."
+                  : recoveryConfigured === true
+                    ? "Connessione Meta configurata · recovery pronto."
+                    : "Stato connessione Meta non disponibile."}
+            </p>
+            <button
+              className="lead-ghost"
+              type="button"
+              disabled={busy || recoveryConfigured !== true}
+              onClick={() => void runRecovery()}
+            >
+              Esegui recovery Meta
+            </button>
+          </div>
         </div>
       </section>
 
