@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Lead OS — Multi Workspace</title>
+<style>
+:root{
+  --bg:#f3efe6;--panel:#fffdf8;--ink:#25221d;--muted:#777064;--line:#ded6c8;
+  --accent:#1d4f4a;--soft:#ece5d9;--ok:#0f6b46;--warn:#9a5c00;--bad:#a52a2a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.shell{width:min(1500px,calc(100% - 28px));margin:auto;padding:24px 0 64px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:18px}
+.brand small,.eyebrow{display:block;font-size:11px;font-weight:800;letter-spacing:.15em;color:var(--muted);text-transform:uppercase}
+h1{font-size:clamp(42px,7vw,76px);line-height:.92;letter-spacing:-.055em;margin:6px 0 0}
+h2{font-size:28px;margin:4px 0 0}
+h3{margin:0 0 12px}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+select,input,textarea{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:10px;background:white;color:var(--ink)}
+button,.btn{border:0;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.primary{background:var(--accent);color:white}
+.ghost{background:white;color:var(--ink);border:1px solid var(--line)}
+.danger{background:#fff1f1;color:var(--bad);border:1px solid #e9c8c8}
+button:disabled{opacity:.45;cursor:not-allowed}
+.workspace-select{min-width:220px}
+.metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:9px}
+.metric{min-height:102px;padding:16px;border-radius:16px;background:var(--ink);color:white;display:flex;flex-direction:column;justify-content:space-between}
+.metric span{font-size:10px;letter-spacing:.08em;text-transform:uppercase;opacity:.68}
+.metric b{font-size:34px}
+.grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
+.panel{margin-top:14px;padding:20px;background:var(--panel);border:1px solid var(--line);border-radius:19px;box-shadow:0 10px 30px rgba(40,35,25,.04)}
+.panel-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;margin-bottom:18px}
+.panel-head>p{margin:0;color:var(--muted);max-width:620px}
+.form-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.form-grid.two{grid-template-columns:repeat(2,1fr)}
+label{display:flex;flex-direction:column;gap:6px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.wide{grid-column:1/-1}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.status{display:inline-flex;align-items:center;gap:7px;padding:6px 9px;border-radius:999px;background:var(--soft);font-size:12px;font-weight:800}
+.dot{width:8px;height:8px;border-radius:50%;background:#999}
+.status.ok .dot{background:var(--ok)}
+.status.warn .dot{background:var(--warn)}
+.status.bad .dot{background:var(--bad)}
+.notice{margin-bottom:12px;padding:11px 13px;border:1px solid #decba5;background:#fff7e8;border-radius:11px}
+.notice.error{color:var(--bad);border-color:#e4bcbc;background:#fff1f1}
+.codebox{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;background:#f7f3ec;border:1px dashed var(--line);padding:10px;border-radius:10px;word-break:break-all}
+details{border-top:1px solid var(--line);margin-top:16px;padding-top:14px}
+summary{cursor:pointer;font-weight:800}
+.assets{display:grid;gap:8px;margin-top:12px}
+.asset{display:flex;gap:10px;align-items:flex-start;padding:11px;border:1px solid var(--line);border-radius:11px;background:#fff}
+.asset input{width:auto;margin-top:2px}
+.asset-main{flex:1}
+.asset-main b,.asset-main small{display:block}
+.asset-main small{color:var(--muted);margin-top:3px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:13px}
+table{width:100%;min-width:940px;border-collapse:collapse;background:white}
+th,td{padding:14px;text-align:left;vertical-align:top;border-bottom:1px solid #eee8de}
+th{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);background:#faf7f1}
+td b,td small{display:block}
+td small{color:var(--muted);margin-top:4px}
+.wa{display:inline-block;background:#edf7f0;color:#12663b;padding:8px 10px;border-radius:999px;text-decoration:none;font-weight:800}
+.badge{display:inline-block;margin-left:6px;background:#fff0d9;padding:3px 6px;border-radius:999px;font-size:9px}
+.login{min-height:100vh;display:grid;place-items:center;padding:22px}
+.card{width:min(440px,100%);padding:28px;border:1px solid var(--line);border-radius:20px;background:var(--panel);box-shadow:0 20px 70px rgba(40,35,25,.08)}
+.card p{color:var(--muted)}
+.card button{width:100%;margin-top:14px}
+.muted{color:var(--muted)}
+.sep{height:1px;background:var(--line);margin:18px 0}
+@media(max-width:1050px){.metrics{grid-template-columns:repeat(3,1fr)}.grid2{grid-template-columns:1fr}.form-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:680px){.shell{width:min(100% - 18px,1500px)}.top,.panel-head{flex-direction:column;align-items:flex-start}.toolbar{justify-content:flex-start;width:100%}.workspace-select{min-width:0}.metrics{grid-template-columns:repeat(2,1fr)}.form-grid,.form-grid.two{grid-template-columns:1fr}.panel{padding:14px}}
+</style>
+</head>
+<body>
+<main id="login" class="login">
+  <form id="loginForm" class="card">
+    <span class="eyebrow">LEAD OS · INTERNAL</span>
+    <h1>Lead OS</h1>
+    <p>Piattaforma multi-attività per lead, Meta e pipeline commerciale.</p>
+    <label>Password
+      <input id="password" type="password" required autofocus autocomplete="current-password">
+    </label>
+    <p id="loginError" style="color:#a52a2a"></p>
+    <button class="primary" type="submit">Entra</button>
+  </form>
+</main>
+
+<main id="app" class="shell hidden">
+  <header class="top">
+    <div class="brand">
+      <small>LEAD OS · MULTI WORKSPACE</small>
+      <h1>Control Center</h1>
+    </div>
+    <div class="toolbar">
+      <select id="workspaceSelect" class="workspace-select"></select>
+      <button id="newWorkspaceBtn" class="ghost" type="button">+ Nuova attività</button>
+      <button id="logoutBtn" class="ghost" type="button">Esci</button>
+    </div>
+  </header>
+
+  <div id="notice" class="notice hidden"></div>
+
+  <section class="metrics">
+    <article class="metric"><span>Lead</span><b id="mTotal">0</b></article>
+    <article class="metric"><span>Da contattare</span><b id="mNew">0</b></article>
+    <article class="metric"><span>Preventivi</span><b id="mQuote">0</b></article>
+    <article class="metric"><span>Sopralluoghi</span><b id="mVisit">0</b></article>
+    <article class="metric"><span>Prenotati</span><b id="mBooked">0</b></article>
+    <article class="metric"><span>Recuperati</span><b id="mRecovered">0</b></article>
+  </section>
+
+  <section id="newWorkspacePanel" class="panel hidden">
+    <div class="panel-head">
+      <div><span class="eyebrow">WORKSPACE</span><h2>Nuova attività</h2></div>
+      <p>Ogni attività mantiene lead, account Meta, form e statistiche separati.</p>
+    </div>
+    <form id="workspaceForm" class="form-grid two">
+      <label>Nome attività<input name="name" placeholder="es. Damai Event Garden" required></label>
+      <label>Slug facoltativo<input name="slug" placeholder="damai-event-garden"></label>
+      <div class="wide row">
+        <button class="primary" type="submit">Crea workspace</button>
+        <button id="cancelWorkspaceBtn" class="ghost" type="button">Annulla</button>
+      </div>
+    </form>
+  </section>
+
+  <div class="grid2">
+    <section class="panel">
+      <div class="panel-head">
+        <div><span class="eyebrow">INTEGRAZIONE</span><h2>Meta Lead Ads</h2></div>
+        <span id="metaStatus" class="status warn"><span class="dot"></span><span>Non collegato</span></span>
+      </div>
+
+      <div class="row">
+        <button id="connectMetaBtn" class="primary" type="button" disabled>Connetti Meta</button>
+        <button id="refreshAssetsBtn" class="ghost" type="button">Aggiorna asset</button>
+        <button id="disconnectMetaBtn" class="danger" type="button">Disconnetti</button>
+      </div>
+
+      <p class="muted" style="margin-top:12px">
+        Il login avviene sul sito ufficiale Meta. Lead OS non salva la password Facebook.
+      </p>
+
+      <details>
+        <summary>Configurazione tecnica Meta App</summary>
+        <form id="metaSetupForm" class="form-grid two" style="margin-top:14px">
+          <label>App ID<input id="metaAppId" name="app_id" placeholder="Meta App ID"></label>
+          <label>App Secret
+            <input id="metaAppSecret" name="app_secret" type="password" placeholder="Lascia vuoto per non modificarlo">
+          </label>
+          <label>Configuration ID
+            <input id="metaConfigId" name="oauth_config_id" placeholder="Facebook Login for Business config_id">
+          </label>
+          <label>Graph version<input id="metaGraphVersion" name="graph_version" value="v25.0"></label>
+          <label class="wide">OAuth scopes
+            <textarea id="metaScopes" rows="3"></textarea>
+          </label>
+          <div class="wide">
+            <span class="eyebrow">Valid OAuth Redirect URI</span>
+            <div id="callbackUrl" class="codebox"></div>
+          </div>
+          <div class="wide">
+            <span class="eyebrow">Webhook Callback URL</span>
+            <div id="webhookUrl" class="codebox"></div>
+          </div>
+          <div class="wide">
+            <span class="eyebrow">Webhook Verify Token</span>
+            <div id="webhookVerifyToken" class="codebox"></div>
+          </div>
+          <div class="wide row">
+            <button class="primary" type="submit">Salva configurazione Meta</button>
+            <span id="secretConfigured" class="muted"></span>
+          </div>
+          <div class="wide row">
+            <button id="activateWebhookBtn" class="ghost" type="button">Attiva webhook leadgen</button>
+            <span id="webhookConfigured" class="muted"></span>
+          </div>
+        </form>
+      </details>
+
+      <details>
+        <summary>Collegamento manuale avanzato</summary>
+        <form id="manualMetaForm" class="form-grid two" style="margin-top:14px">
+          <label class="wide">Page Access Token
+            <textarea name="page_access_token" rows="3" placeholder="EAA..."></textarea>
+          </label>
+          <label>Page ID facoltativo<input name="page_id"></label>
+          <label>Nome Pagina facoltativo<input name="page_name"></label>
+          <div class="wide row"><button class="ghost" type="submit">Collega con token</button></div>
+        </form>
+      </details>
+
+      <div class="sep"></div>
+      <span class="eyebrow">ASSET AUTORIZZATI</span>
+      <div id="assets" class="assets"><p class="muted">Nessun asset caricato.</p></div>
+      <div class="row" style="margin-top:12px">
+        <button id="saveAssetsBtn" class="ghost" type="button">Salva selezione</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div><span class="eyebrow">RECOVERY</span><h2>Zero lost leads</h2></div>
+      </div>
+      <p id="recoveryStatus" class="muted">Verifica configurazione…</p>
+      <div class="row">
+        <button id="runRecoveryBtn" class="primary" type="button" disabled>Esegui recovery Meta</button>
+      </div>
+      <p class="muted" style="margin-top:12px">
+        Confronta i Lead Form selezionati con il database del workspace e importa soltanto gli ID mancanti.
+      </p>
+      <div class="codebox" style="margin-top:12px">
+        Recovery automatico: ATTIVO · controllo ogni 10 minuti
+      </div>
+    </section>
+  </div>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div><span class="eyebrow">INGRESSO MANUALE</span><h2>Nuovo lead</h2></div>
+      <p>Il lead viene salvato esclusivamente nel workspace selezionato.</p>
+    </div>
+    <form id="leadForm" class="form-grid">
+      <label>Nome<input name="name" required></label>
+      <label>Telefono<input name="phone" inputmode="tel"></label>
+      <label>Email<input name="email" type="email"></label>
+      <label>Evento
+        <select name="event_type"><option>Laurea</option><option>18 anni</option><option>Compleanno</option><option>Cerimonia</option><option>Corporate</option><option>Wedding</option><option>Altro</option></select>
+      </label>
+      <label>Data evento<input name="event_date" type="date"></label>
+      <label>Invitati<input name="guests" type="number" min="1"></label>
+      <label>Formula
+        <select name="package_interest"><option value="">Da definire</option><option>Aperitivo</option><option>Cena</option><option>Cena + party</option><option>Solo party</option></select>
+      </label>
+      <label>Sorgente
+        <select name="source"><option value="manual">Manuale</option><option value="meta">Meta</option><option value="website">Sito</option><option value="whatsapp">WhatsApp</option></select>
+      </label>
+      <label>Campagna<input name="campaign_name"></label>
+      <label>Ad<input name="ad_name"></label>
+      <label class="wide">Note<textarea name="notes" rows="2"></textarea></label>
+      <button class="primary" type="submit">Salva lead</button>
+    </form>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div><span class="eyebrow">PIPELINE</span><h2>Lead recenti</h2></div>
+      <p id="pendingText"></p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Lead</th><th>Evento</th><th>Fonte</th><th>Stato</th><th>Azioni</th></tr></thead>
+        <tbody id="leadRows"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script>
+const LEADS_API='https://rbbwwqmnlgqlzadbbebp.supabase.co/functions/v1/leads-os';
+const PLATFORM_API='https://rbbwwqmnlgqlzadbbebp.supabase.co/functions/v1/platform-api';
+const RECOVERY_API='https://rbbwwqmnlgqlzadbbebp.supabase.co/functions/v1/meta-recovery';
+const TOKEN_KEY='leados-session';
+const WORKSPACE_KEY='leados-workspace';
+const labels={new:'Nuovo',contacted:'Contattato',qualified:'Qualificato',quote:'Preventivo',visit:'Sopralluogo',booked:'Prenotato',lost:'Perso'};
+let token=sessionStorage.getItem(TOKEN_KEY)||'';
+let workspaces=[];
+let workspaceId=localStorage.getItem(WORKSPACE_KEY)||'';
+let currentAssets=[];
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+
+function showLogin(){ $('login').classList.remove('hidden'); $('app').classList.add('hidden'); }
+function showApp(){ $('login').classList.add('hidden'); $('app').classList.remove('hidden'); }
+function notice(text,error=false){
+  $('notice').textContent=text||'';
+  $('notice').classList.toggle('hidden',!text);
+  $('notice').classList.toggle('error',!!error);
+}
+function authHeaders(){return {'Content-Type':'application/json','Authorization':'Bearer '+token}}
+async function call(base,path,opt={},auth=true){
+  const headers={'Content-Type':'application/json',...(opt.headers||{})};
+  if(auth&&token)headers.Authorization='Bearer '+token;
+  const res=await fetch(base+path,{...opt,headers,cache:'no-store'});
+  const data=await res.json().catch(()=>({}));
+  if(!res.ok){
+    if(res.status===401&&auth){sessionStorage.removeItem(TOKEN_KEY);token='';showLogin()}
+    throw new Error(data.error||'Errore di comunicazione');
+  }
+  return data;
+}
+function statusBadge(status){
+  const el=$('metaStatus');
+  el.className='status '+(status==='connected'?'ok':status==='error'?'bad':'warn');
+  el.innerHTML='<span class="dot"></span><span>'+({
+    connected:'Collegato',connecting:'Connessione in corso',configured:'Configurato',
+    disconnected:'Non collegato',error:'Errore'
+  }[status]||status)+'</span>';
+}
+function whatsapp(phone){
+  if(!phone)return null;
+  let d=String(phone).replace(/\D/g,'');if(!d)return null;if(!d.startsWith('39'))d='39'+d;
+  return 'https://wa.me/'+d;
+}
+
+async function login(e){
+  e.preventDefault();$('loginError').textContent='';
+  try{
+    const data=await call(LEADS_API,'/login',{method:'POST',body:JSON.stringify({password:$('password').value})},false);
+    token=data.token;sessionStorage.setItem(TOKEN_KEY,token);
+    await boot();
+  }catch(err){$('loginError').textContent=err.message}
+}
+
+async function loadWorkspaces(){
+  const data=await call(PLATFORM_API,'/workspaces',{method:'GET'});
+  workspaces=data.workspaces||[];
+  if(!workspaces.length)throw new Error('Nessun workspace disponibile.');
+  if(!workspaceId||!workspaces.some(w=>w.id===workspaceId))workspaceId=workspaces[0].id;
+  localStorage.setItem(WORKSPACE_KEY,workspaceId);
+  $('workspaceSelect').innerHTML=workspaces.map(w=>'<option value="'+esc(w.id)+'">'+esc(w.name)+'</option>').join('');
+  $('workspaceSelect').value=workspaceId;
+}
+
+async function loadDashboard(){
+  const data=await call(LEADS_API,'/dashboard?workspace_id='+encodeURIComponent(workspaceId),{method:'GET'});
+  $('mTotal').textContent=data.stats.total||0;
+  $('mNew').textContent=data.stats.new||0;
+  $('mQuote').textContent=data.stats.quote||0;
+  $('mVisit').textContent=data.stats.visit||0;
+  $('mBooked').textContent=data.stats.booked||0;
+  $('mRecovered').textContent=data.stats.recovered||0;
+  $('pendingText').textContent=(data.stats.new||0)+' contatti richiedono il primo contatto.';
+  $('leadRows').innerHTML=data.leads.length?data.leads.map(l=>{
+    const wa=whatsapp(l.phone);
+    const opts=Object.entries(labels).map(([v,n])=>'<option value="'+v+'" '+(l.status===v?'selected':'')+'>'+n+'</option>').join('');
+    return '<tr>'+
+      '<td><b>'+esc(l.name)+'</b><small>'+esc(l.phone||l.email||'Nessun recapito')+'</small><small>'+new Date(l.created_at).toLocaleString('it-IT')+'</small></td>'+
+      '<td><b>'+esc(l.event_type||'Da definire')+'</b><small>'+(l.guests?esc(l.guests)+' invitati':'Invitati da definire')+'</small><small>'+esc(l.event_date||'Data da definire')+'</small></td>'+
+      '<td><b>'+esc(l.source)+(l.recovered?' <span class="badge">RECOVERED</span>':'')+'</b><small>'+esc(l.campaign_name||'—')+'</small><small>'+esc(l.ad_name||'—')+'</small></td>'+
+      '<td><select data-status="'+esc(l.id)+'">'+opts+'</select></td>'+
+      '<td>'+(wa?'<a class="wa" target="_blank" rel="noreferrer" href="'+wa+'">WhatsApp ↗</a>':'—')+'</td>'+
+    '</tr>';
+  }).join(''):'<tr><td colspan="5" class="muted">Nessun lead nel workspace.</td></tr>';
+
+  document.querySelectorAll('[data-status]').forEach(el=>{
+    el.addEventListener('change',async e=>{
+      try{
+        await call(LEADS_API,'/status',{method:'POST',body:JSON.stringify({id:e.target.dataset.status,status:e.target.value})});
+        await loadDashboard();
+      }catch(err){notice(err.message,true)}
+    });
+  });
+}
+
+async function loadMetaSetup(){
+  const s=await call(PLATFORM_API,'/meta/setup',{method:'GET'});
+  $('metaAppId').value=s.app_id||'';
+  $('metaConfigId').value=s.oauth_config_id||'';
+  $('metaGraphVersion').value=s.graph_version||'v25.0';
+  $('metaScopes').value=(s.oauth_scopes||[]).join(', ');
+  $('callbackUrl').textContent=s.callback_url||'';
+  $('webhookUrl').textContent=s.webhook_callback_url||'';
+  $('webhookVerifyToken').textContent=s.webhook_verify_token||'';
+  $('webhookConfigured').textContent=s.webhook_configured_at
+    ? 'Webhook Meta configurato ✓'
+    : 'Webhook non ancora attivato';
+  $('secretConfigured').textContent=s.app_secret_configured?'App Secret protetto in Vault ✓':'App Secret non configurato';
+  $('connectMetaBtn').disabled=!(s.app_id&&s.app_secret_configured);
+}
+
+async function loadMetaAssets(){
+  const data=await call(PLATFORM_API,'/meta/assets?workspace_id='+encodeURIComponent(workspaceId),{method:'GET'});
+  statusBadge(data.integration.status);
+  currentAssets=data.assets||[];
+  $('assets').innerHTML=currentAssets.length?currentAssets.map(a=>
+    '<label class="asset">'+
+      '<input type="checkbox" data-asset="'+esc(a.asset_type)+'" value="'+esc(a.external_id)+'" '+(a.selected?'checked':'')+'>'+
+      '<span class="asset-main"><b>'+esc(a.name||a.external_id)+'</b><small>'+esc(a.asset_type)+' · '+esc(a.external_id)+'</small></span>'+
+    '</label>'
+  ).join(''):'<p class="muted">Nessuna Pagina/Form ancora autorizzato.</p>';
+}
+
+async function loadRecovery(){
+  const res=await fetch(RECOVERY_API+'/health?workspace_id='+encodeURIComponent(workspaceId),{cache:'no-store'});
+  const data=await res.json();
+  $('recoveryStatus').textContent=data.configured
+    ? 'Pronto · '+data.forms+' Lead Form selezionati · Graph '+data.version
+    : (data.reason||'Non configurato');
+  $('runRecoveryBtn').disabled=!data.configured;
+}
+
+async function boot(){
+  await loadWorkspaces();
+  await Promise.all([loadDashboard(),loadMetaSetup(),loadMetaAssets(),loadRecovery()]);
+  showApp();
+}
+
+$('loginForm').addEventListener('submit',login);
+
+$('workspaceSelect').addEventListener('change',async e=>{
+  workspaceId=e.target.value;localStorage.setItem(WORKSPACE_KEY,workspaceId);notice('');
+  await Promise.all([loadDashboard(),loadMetaAssets(),loadRecovery()]);
+});
+
+$('newWorkspaceBtn').onclick=()=>{$('newWorkspacePanel').classList.remove('hidden')};
+$('cancelWorkspaceBtn').onclick=()=>{$('newWorkspacePanel').classList.add('hidden')};
+
+$('workspaceForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  try{
+    const body=Object.fromEntries(new FormData(e.target).entries());
+    const out=await call(PLATFORM_API,'/workspaces',{method:'POST',body:JSON.stringify(body)});
+    workspaceId=out.workspace.id;localStorage.setItem(WORKSPACE_KEY,workspaceId);
+    e.target.reset();$('newWorkspacePanel').classList.add('hidden');
+    await loadWorkspaces();await Promise.all([loadDashboard(),loadMetaAssets(),loadRecovery()]);
+    notice('Workspace creato.');
+  }catch(err){notice(err.message,true)}
+});
+
+$('metaSetupForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  try{
+    const scopes=$('metaScopes').value.split(',').map(x=>x.trim()).filter(Boolean);
+    const body={
+      app_id:$('metaAppId').value.trim(),
+      app_secret:$('metaAppSecret').value.trim(),
+      oauth_config_id:$('metaConfigId').value.trim(),
+      graph_version:$('metaGraphVersion').value.trim(),
+      oauth_scopes:scopes
+    };
+    await call(PLATFORM_API,'/meta/setup',{method:'POST',body:JSON.stringify(body)});
+    $('metaAppSecret').value='';
+    await loadMetaSetup();
+    notice('Configurazione Meta salvata. L’App Secret è cifrato in Vault.');
+  }catch(err){notice(err.message,true)}
+});
+
+$('connectMetaBtn').addEventListener('click',async()=>{
+  try{
+    const returnUrl=(location.protocol==='http:'||location.protocol==='https:')?location.href.split('?')[0]:null;
+    const data=await call(PLATFORM_API,'/meta/connect/start',{
+      method:'POST',body:JSON.stringify({workspace_id:workspaceId,return_url:returnUrl})
+    });
+    location.href=data.auth_url;
+  }catch(err){notice(err.message,true)}
+});
+
+$('manualMetaForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  try{
+    const body=Object.fromEntries(new FormData(e.target).entries());
+    body.workspace_id=workspaceId;
+    await call(PLATFORM_API,'/meta/manual-connect',{method:'POST',body:JSON.stringify(body)});
+    e.target.reset();
+    await Promise.all([loadMetaAssets(),loadRecovery()]);
+    notice('Pagina Meta collegata tramite token.');
+  }catch(err){notice(err.message,true)}
+});
+
+$('refreshAssetsBtn').onclick=async()=>{try{await Promise.all([loadMetaAssets(),loadRecovery()]);notice('Asset aggiornati.')}catch(err){notice(err.message,true)}};
+
+$('activateWebhookBtn').onclick=async()=>{
+  try{
+    notice('Configurazione webhook Meta in corso…');
+    const out=await call(PLATFORM_API,'/meta/webhook/setup',{
+      method:'POST',
+      body:JSON.stringify({workspace_id:workspaceId})
+    });
+    await Promise.all([loadMetaSetup(),loadMetaAssets(),loadRecovery()]);
+    const okPages=(out.pages||[]).filter(x=>x.ok).length;
+    notice('Webhook leadgen attivato su '+okPages+' Pagina/e.');
+  }catch(err){notice(err.message,true)}
+};
+
+$('saveAssetsBtn').onclick=async()=>{
+  try{
+    const page_ids=[],ad_account_ids=[],form_ids=[];
+    document.querySelectorAll('[data-asset]:checked').forEach(el=>{
+      if(el.dataset.asset==='page')page_ids.push(el.value);
+      if(el.dataset.asset==='ad_account')ad_account_ids.push(el.value);
+      if(el.dataset.asset==='lead_form')form_ids.push(el.value);
+    });
+    await call(PLATFORM_API,'/meta/assets/select',{method:'POST',body:JSON.stringify({workspace_id:workspaceId,page_ids,ad_account_ids,form_ids})});
+    await loadRecovery();notice('Selezione Meta salvata.');
+  }catch(err){notice(err.message,true)}
+};
+
+$('disconnectMetaBtn').onclick=async()=>{
+  if(!confirm('Disconnettere Meta da questo workspace? I token salvati verranno eliminati.'))return;
+  try{
+    await call(PLATFORM_API,'/meta/disconnect',{method:'POST',body:JSON.stringify({workspace_id:workspaceId})});
+    await Promise.all([loadMetaAssets(),loadRecovery()]);
+    notice('Meta disconnesso dal workspace.');
+  }catch(err){notice(err.message,true)}
+};
+
+$('runRecoveryBtn').onclick=async()=>{
+  try{
+    notice('Recovery in corso…');
+    const data=await call(RECOVERY_API,'',{method:'POST',body:JSON.stringify({workspace_id:workspaceId,lookback_hours:168})});
+    await Promise.all([loadDashboard(),loadRecovery()]);
+    notice('Recovery completato: '+data.inserted+' recuperati, '+data.duplicates+' già presenti.');
+  }catch(err){notice(err.message,true)}
+};
+
+$('leadForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  try{
+    const body=Object.fromEntries(new FormData(e.target).entries());
+    body.workspace_id=workspaceId;
+    await call(LEADS_API,'/leads',{method:'POST',body:JSON.stringify(body)});
+    e.target.reset();await loadDashboard();notice('Lead salvato nel workspace.');
+  }catch(err){notice(err.message,true)}
+});
+
+$('logoutBtn').onclick=async()=>{
+  try{await call(LEADS_API,'/logout',{method:'POST',body:'{}'})}catch{}
+  sessionStorage.removeItem(TOKEN_KEY);token='';showLogin();
+};
+
+const qs=new URLSearchParams(location.search);
+if(qs.get('meta')==='connected')notice('Meta collegato. Aggiorna gli asset per completare la configurazione.');
+if(qs.get('meta')==='error')notice('Errore Meta: '+(qs.get('message')||'autorizzazione non completata'),true);
+
+if(token)boot().catch(err=>{console.error(err);showLogin()});else showLogin();
+</script>
+</body>
+</html>
