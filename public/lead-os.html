@@ -29,7 +29,7 @@ button,.btn{border:0;border-radius:999px;padding:10px 14px;font-weight:800;text-
 .danger{background:#fff1f1;color:var(--bad);border:1px solid #e9c8c8}
 button:disabled{opacity:.45;cursor:not-allowed}
 .workspace-select{min-width:220px}
-.metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:9px}
+.metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
 .metric{min-height:102px;padding:16px;border-radius:16px;background:var(--ink);color:white;display:flex;flex-direction:column;justify-content:space-between}
 .metric span{font-size:10px;letter-spacing:.08em;text-transform:uppercase;opacity:.68}
 .metric b{font-size:34px}
@@ -107,11 +107,15 @@ td small{color:var(--muted);margin-top:4px}
 
   <section class="metrics">
     <article class="metric"><span>Lead</span><b id="mTotal">0</b></article>
-    <article class="metric"><span>Da contattare</span><b id="mNew">0</b></article>
+    <article class="metric"><span>Nuovi</span><b id="mNew">0</b></article>
+    <article class="metric"><span>Fuori SLA</span><b id="mOverdue">0</b></article>
+    <article class="metric"><span>Follow-up oggi</span><b id="mFollowups">0</b></article>
     <article class="metric"><span>Preventivi</span><b id="mQuote">0</b></article>
     <article class="metric"><span>Sopralluoghi</span><b id="mVisit">0</b></article>
     <article class="metric"><span>Prenotati</span><b id="mBooked">0</b></article>
     <article class="metric"><span>Recuperati</span><b id="mRecovered">0</b></article>
+    <article class="metric"><span>Pipeline €</span><b id="mQuoteValue">0</b></article>
+    <article class="metric"><span>Fatturato €</span><b id="mRevenue">0</b></article>
   </section>
 
   <section id="newWorkspacePanel" class="panel hidden">
@@ -222,6 +226,21 @@ td small{color:var(--muted);margin-top:4px}
 
   <section class="panel">
     <div class="panel-head">
+      <div><span class="eyebrow">TEAM</span><h2>Operatori commerciali</h2></div>
+      <p>I lead possono essere assegnati a un operatore diverso per ogni workspace.</p>
+    </div>
+    <form id="memberForm" class="form-grid">
+      <label>Nome<input name="name" required placeholder="Nome operatore"></label>
+      <label>Ruolo<input name="role" placeholder="es. Commerciale"></label>
+      <label>Email<input name="email" type="email"></label>
+      <label>Telefono<input name="phone"></label>
+      <button class="primary" type="submit">Aggiungi operatore</button>
+    </form>
+    <div id="memberList" class="assets" style="margin-top:14px"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
       <div><span class="eyebrow">INGRESSO MANUALE</span><h2>Nuovo lead</h2></div>
       <p>Il lead viene salvato esclusivamente nel workspace selezionato.</p>
     </div>
@@ -244,6 +263,25 @@ td small{color:var(--muted);margin-top:4px}
       <label>Ad<input name="ad_name"></label>
       <label class="wide">Note<textarea name="notes" rows="2"></textarea></label>
       <button class="primary" type="submit">Salva lead</button>
+    </form>
+  </section>
+
+  <section id="commercialPanel" class="panel hidden">
+    <div class="panel-head">
+      <div><span class="eyebrow">SCHEDA COMMERCIALE</span><h2 id="commercialTitle">Lead</h2></div>
+      <button id="closeCommercialBtn" class="ghost" type="button">Chiudi</button>
+    </div>
+    <form id="commercialForm" class="form-grid">
+      <input id="commercialLeadId" name="id" type="hidden">
+      <label>Assegnato a
+        <select id="assignedTo" name="assigned_to"><option value="">Non assegnato</option></select>
+      </label>
+      <label>Prossimo follow-up<input id="nextFollowUp" name="next_follow_up_at" type="datetime-local"></label>
+      <label>Valore preventivo €<input id="quoteValue" name="quote_value" type="number" min="0" step="0.01"></label>
+      <label>Valore prenotato €<input id="bookedValue" name="booked_value" type="number" min="0" step="0.01"></label>
+      <label class="wide">Motivo perso<input id="lostReason" name="lost_reason" placeholder="Compila se il lead viene perso"></label>
+      <label class="wide">Note<textarea id="commercialNotes" name="notes" rows="3"></textarea></label>
+      <button class="primary" type="submit">Salva scheda</button>
     </form>
   </section>
 
@@ -272,6 +310,7 @@ let token=sessionStorage.getItem(TOKEN_KEY)||'';
 let workspaces=[];
 let workspaceId=localStorage.getItem(WORKSPACE_KEY)||'';
 let currentAssets=[];
+let dashboardData=null;
 
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
@@ -330,22 +369,28 @@ async function loadWorkspaces(){
 
 async function loadDashboard(){
   const data=await call(LEADS_API,'/dashboard?workspace_id='+encodeURIComponent(workspaceId),{method:'GET'});
+  dashboardData=data;
   $('mTotal').textContent=data.stats.total||0;
   $('mNew').textContent=data.stats.new||0;
+  $('mOverdue').textContent=data.stats.overdue||0;
+  $('mFollowups').textContent=data.stats.followups_today||0;
   $('mQuote').textContent=data.stats.quote||0;
   $('mVisit').textContent=data.stats.visit||0;
   $('mBooked').textContent=data.stats.booked||0;
   $('mRecovered').textContent=data.stats.recovered||0;
-  $('pendingText').textContent=(data.stats.new||0)+' contatti richiedono il primo contatto.';
+  $('mQuoteValue').textContent=Math.round(Number(data.stats.quote_pipeline||0)).toLocaleString('it-IT');
+  $('mRevenue').textContent=Math.round(Number(data.stats.booked_revenue||0)).toLocaleString('it-IT');
+  $('pendingText').textContent=(data.stats.new||0)+' nuovi · '+(data.stats.overdue||0)+' fuori SLA · SLA '+(data.workspace?.response_sla_minutes||15)+' min.';
+  renderMembers(data.members||[]);
   $('leadRows').innerHTML=data.leads.length?data.leads.map(l=>{
     const wa=whatsapp(l.phone);
     const opts=Object.entries(labels).map(([v,n])=>'<option value="'+v+'" '+(l.status===v?'selected':'')+'>'+n+'</option>').join('');
     return '<tr>'+
       '<td><b>'+esc(l.name)+'</b><small>'+esc(l.phone||l.email||'Nessun recapito')+'</small><small>'+new Date(l.created_at).toLocaleString('it-IT')+'</small></td>'+
       '<td><b>'+esc(l.event_type||'Da definire')+'</b><small>'+(l.guests?esc(l.guests)+' invitati':'Invitati da definire')+'</small><small>'+esc(l.event_date||'Data da definire')+'</small></td>'+
-      '<td><b>'+esc(l.source)+(l.recovered?' <span class="badge">RECOVERED</span>':'')+'</b><small>'+esc(l.campaign_name||'—')+'</small><small>'+esc(l.ad_name||'—')+'</small></td>'+
+      '<td><b>'+esc(l.source)+(l.recovered?' <span class="badge">RECOVERED</span>':'')+'</b><small>'+esc(l.campaign_name||'—')+'</small><small>'+esc(l.ad_name||'—')+'</small><small>Priorità '+esc(l.priority||'normal')+' · score '+esc(l.score||0)+'</small></td>'+
       '<td><select data-status="'+esc(l.id)+'">'+opts+'</select></td>'+
-      '<td>'+(wa?'<a class="wa" target="_blank" rel="noreferrer" href="'+wa+'">WhatsApp ↗</a>':'—')+'</td>'+
+      '<td><div class="row">'+(wa?'<a class="wa" target="_blank" rel="noreferrer" href="'+wa+'">WhatsApp ↗</a>':'')+'<button class="ghost" type="button" data-manage="'+esc(l.id)+'">Gestisci</button></div></td>'+
     '</tr>';
   }).join(''):'<tr><td colspan="5" class="muted">Nessun lead nel workspace.</td></tr>';
 
@@ -356,6 +401,9 @@ async function loadDashboard(){
         await loadDashboard();
       }catch(err){notice(err.message,true)}
     });
+  });
+  document.querySelectorAll('[data-manage]').forEach(el=>{
+    el.addEventListener('click',()=>openCommercial(el.dataset.manage));
   });
 }
 
@@ -395,6 +443,64 @@ async function loadRecovery(){
     : (data.reason||'Non configurato');
   $('runRecoveryBtn').disabled=!data.configured;
 }
+
+
+function renderMembers(members){
+  $('memberList').innerHTML=members.length
+    ? members.map(m=>'<div class="asset"><span class="asset-main"><b>'+esc(m.name)+'</b><small>'+esc(m.role||'Operatore')+(m.phone?' · '+esc(m.phone):'')+'</small></span></div>').join('')
+    : '<p class="muted">Nessun operatore configurato.</p>';
+  const options='<option value="">Non assegnato</option>'+members.map(m=>'<option value="'+esc(m.id)+'">'+esc(m.name)+'</option>').join('');
+  $('assignedTo').innerHTML=options;
+}
+
+function localDateTime(value){
+  if(!value)return '';
+  const d=new Date(value);
+  if(Number.isNaN(d.getTime()))return '';
+  const local=new Date(d.getTime()-d.getTimezoneOffset()*60000);
+  return local.toISOString().slice(0,16);
+}
+
+function openCommercial(id){
+  if(!dashboardData)return;
+  const lead=(dashboardData.leads||[]).find(x=>x.id===id);
+  if(!lead)return;
+  $('commercialLeadId').value=lead.id;
+  $('commercialTitle').textContent=lead.name+' · '+(lead.event_type||'Evento');
+  $('assignedTo').value=lead.assigned_to||'';
+  $('nextFollowUp').value=localDateTime(lead.next_follow_up_at);
+  $('quoteValue').value=lead.quote_value??'';
+  $('bookedValue').value=lead.booked_value??'';
+  $('lostReason').value=lead.lost_reason||'';
+  $('commercialNotes').value=lead.notes||'';
+  $('commercialPanel').classList.remove('hidden');
+  $('commercialPanel').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+$('closeCommercialBtn').onclick=()=>{$('commercialPanel').classList.add('hidden')};
+
+$('memberForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  try{
+    const body=Object.fromEntries(new FormData(e.target).entries());
+    body.workspace_id=workspaceId;
+    await call(PLATFORM_API,'/members',{method:'POST',body:JSON.stringify(body)});
+    e.target.reset();
+    await loadDashboard();
+    notice('Operatore aggiunto.');
+  }catch(err){notice(err.message,true)}
+});
+
+$('commercialForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  try{
+    const body=Object.fromEntries(new FormData(e.target).entries());
+    await call(LEADS_API,'/commercial',{method:'POST',body:JSON.stringify(body)});
+    await loadDashboard();
+    $('commercialPanel').classList.add('hidden');
+    notice('Scheda commerciale aggiornata.');
+  }catch(err){notice(err.message,true)}
+});
 
 async function boot(){
   await loadWorkspaces();
