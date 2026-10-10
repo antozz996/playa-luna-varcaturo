@@ -239,7 +239,7 @@ export default async function Home() {
               sizes="18vw"
               width={960}
               height={1200}
-              srcOverride={blobMedia.beachDetail}
+              srcOverride={blobMedia.beachDetail ?? "/images/playa-luna/beach-detail-2f8a3953.jpg"}
               fill={Boolean(media.beachDetailVideo?.asset?._ref)}
               dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("beachDetail", media.beachDetailVideo))}
             />
