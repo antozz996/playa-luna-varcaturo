@@ -26,6 +26,7 @@ type CmsMediaProps = {
   imagePositionFallback?: string;
   dataSanity?: string;
   videoZIndex?: number;
+  srcOverride?: string;
 };
 
 export function CmsMedia({
@@ -42,10 +43,11 @@ export function CmsMedia({
   imagePositionFallback = "50% 50%",
   dataSanity,
   videoZIndex,
+  srcOverride,
 }: CmsMediaProps) {
   const videoUrl = mediaFileUrl(video);
 
-  if (videoUrl) {
+  if (videoUrl && !srcOverride) {
     return (
       <ExperienceVideo
         src={videoUrl}
@@ -60,7 +62,7 @@ export function CmsMedia({
   }
 
   const common = {
-    src: mediaUrl(image, fallback),
+    src: srcOverride || mediaUrl(image, fallback),
     alt: mediaAlt(image, altFallback),
     sizes,
     priority,
