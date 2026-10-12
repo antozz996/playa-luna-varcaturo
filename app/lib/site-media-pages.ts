@@ -59,6 +59,7 @@ export type SiteMediaPage = keyof typeof SITE_MEDIA_PAGES;
 // from the media assets makes the change reversible without deleting source files.
 export const HIDDEN_SITE_MEDIA_SLOTS: Partial<Record<SiteMediaPage, readonly string[]>> = {
   eventi: ["gallery03", "gallery04", "gallery05"],
+  wedding: ["gallery04"],
 };
 
 export function isSiteMediaPage(value: string): value is SiteMediaPage {

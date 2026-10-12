@@ -12,7 +12,7 @@ import {
 } from "../lib/sanity";
 import { type ManagedFile } from "../lib/sanity-file";
 import { sanityImageAttribute } from "../lib/sanity-visual";
-import { getPageBlobMedia, getPageBlobVideos } from "../lib/site-media-pages";
+import { getPageBlobMedia, getPageBlobVideos, isSiteMediaSlotHidden } from "../lib/site-media-pages";
 
 export const metadata: Metadata = {
   title: "Ricevimento di matrimonio sul mare a Napoli",
@@ -115,7 +115,7 @@ export default async function WeddingPage() {
           <h2>La bellezza<br /><em>dei dettagli.</em></h2>
           <p>Materiali naturali, colori morbidi e composizioni leggere dialogano con il paesaggio. La scenografia non copre il luogo: lo rende vostro.</p>
         </div>
-        {weddingGallery.map((item, index) => {
+        {weddingGallery.filter((item) => !isSiteMediaSlotHidden("wedding", item.slot)).map((item, index) => {
           const image = media[item.slot] as ManagedImage | undefined;
           const video = media[`${item.slot}Video`] as ManagedFile | undefined;
           return (
