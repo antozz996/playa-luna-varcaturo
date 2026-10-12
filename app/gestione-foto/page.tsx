@@ -3,7 +3,7 @@ import { isMediaAdminAuthenticated } from "@/app/lib/media-admin";
 import { HOME_MEDIA_PRESENTATION } from "@/app/lib/site-media-presentation";
 import { getMediaDocument, mediaUrl, type ManagedImage } from "@/app/lib/sanity";
 import { mediaFileUrl, type ManagedFile } from "@/app/lib/sanity-file";
-import { SITE_MEDIA_PAGES, getPageBlobMedia, getPageBlobVideos, siteMediaPath, type SiteMediaPage } from "@/app/lib/site-media-pages";
+import { SITE_MEDIA_PAGES, getPageBlobMedia, getPageBlobVideos, isSiteMediaSlotHidden, siteMediaPath, type SiteMediaPage } from "@/app/lib/site-media-pages";
 import { PhotoManager } from "./photo-manager";
 
 type HomeMedia = Partial<Record<keyof typeof HOME_MEDIA_SLOTS, ManagedImage>> & Record<string, unknown>;
@@ -45,7 +45,7 @@ export default async function PhotoManagerPage() {
       const [blobImages, blobVideos, document] = await Promise.all([
         getPageBlobMedia(id), getPageBlobVideos(id), getMediaDocument<Record<string, unknown>>(config.documentType),
       ]);
-      const cards = Object.entries(config.slots).map(([slot, item]) => {
+      const cards = Object.entries(config.slots).filter(([slot]) => !isSiteMediaSlotHidden(id, slot)).map(([slot, item]) => {
         const image = document[slot] as ManagedImage | undefined;
         const video = mediaFileUrl(document[`${slot}Video`] as ManagedFile | undefined);
         const blobVideo = blobVideos[slot];

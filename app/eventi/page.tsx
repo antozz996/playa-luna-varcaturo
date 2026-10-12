@@ -12,7 +12,7 @@ import {
 } from "../lib/sanity";
 import { type ManagedFile } from "../lib/sanity-file";
 import { sanityImageAttribute } from "../lib/sanity-visual";
-import { getPageBlobMedia, getPageBlobVideos } from "../lib/site-media-pages";
+import { getPageBlobMedia, getPageBlobVideos, isSiteMediaSlotHidden } from "../lib/site-media-pages";
 
 export const metadata: Metadata = {
   title: "Eventi sul mare a Varcaturo",
@@ -115,7 +115,7 @@ export default async function EventsPage() {
       </section>
 
       <section className="shell events-gallery-v2" aria-label="Atmosfere degli eventi Playa Luna">
-        {eventGallery.map((item) => {
+        {eventGallery.filter((item) => !isSiteMediaSlotHidden("eventi", item.slot)).map((item) => {
           const image = media[item.slot] as ManagedImage | undefined;
           const video = media[`${item.slot}Video`] as ManagedFile | undefined;
           return (

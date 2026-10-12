@@ -55,12 +55,22 @@ export const SITE_MEDIA_PAGES = {
 
 export type SiteMediaPage = keyof typeof SITE_MEDIA_PAGES;
 
+// Cards intentionally removed from the public site. Keeping this list separate
+// from the media assets makes the change reversible without deleting source files.
+export const HIDDEN_SITE_MEDIA_SLOTS: Partial<Record<SiteMediaPage, readonly string[]>> = {
+  eventi: ["gallery03", "gallery04", "gallery05"],
+};
+
 export function isSiteMediaPage(value: string): value is SiteMediaPage {
   return Object.hasOwn(SITE_MEDIA_PAGES, value);
 }
 
 export function isSiteMediaSlot(page: SiteMediaPage, slot: string) {
   return Object.hasOwn(SITE_MEDIA_PAGES[page].slots, slot);
+}
+
+export function isSiteMediaSlotHidden(page: SiteMediaPage, slot: string) {
+  return HIDDEN_SITE_MEDIA_SLOTS[page]?.includes(slot) ?? false;
 }
 
 export function siteMediaPath(page: SiteMediaPage, slot: string, type: "image" | "video" = "image") {
