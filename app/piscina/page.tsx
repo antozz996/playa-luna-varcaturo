@@ -13,6 +13,7 @@ import {
   mediaFileUrl,
   type ManagedFile,
 } from "../lib/sanity-file";
+import { getPageBlobMedia, getPageBlobVideos } from "../lib/site-media-pages";
 
 type PoolMedia = {
   hero?: ManagedImage;
@@ -35,11 +36,9 @@ export const metadata: Metadata = {
 };
 
 export default async function PoolPage() {
-  const media = await getMediaDocument<PoolMedia & Record<string, unknown>>(
-    "poolMedia",
-  );
-  const heroVideo = mediaFileUrl(media.heroVideo);
-  const detailVideo = mediaFileUrl(media.detailVideo);
+  const [media, blobMedia, blobVideos] = await Promise.all([getMediaDocument<PoolMedia & Record<string, unknown>>("poolMedia"), getPageBlobMedia("piscina"), getPageBlobVideos("piscina")]);
+  const heroVideo = blobVideos.hero ?? (blobMedia.hero ? undefined : mediaFileUrl(media.heroVideo));
+  const detailVideo = blobVideos.detail ?? (blobMedia.detail ? undefined : mediaFileUrl(media.detailVideo));
 
   return (
     <ServicePage
@@ -49,12 +48,12 @@ export default async function PoolPage() {
       emphasis="nell’estate."
       intro="La piscina appartiene alla struttura Playa Luna e completa la giornata al mare con uno spazio dedicato alle famiglie."
       body="È un ambiente interno a Playa Luna, distinto da qualsiasi altra struttura, dove i bambini possono divertirsi e gli adulti rilassarsi restando all’interno della stessa esperienza."
-      image={mediaUrl(media.hero, "/images/playa-luna/pool-family.webp")}
+      image={blobMedia.hero ?? mediaUrl(media.hero, "/images/playa-luna/pool-family.webp")}
       imageAlt={mediaAlt(media.hero, "Bambini e famiglie nella piscina interna di Playa Luna")}
       heroObjectPosition={mediaObjectPosition(media.hero, "50% 55%")}
       heroVideo={heroVideo}
       heroVideoObjectPosition={mediaFileObjectPosition(media.heroVideo)}
-      detailImage={mediaUrl(media.detail, "/images/playa-luna/pool-chair.webp")}
+      detailImage={blobMedia.detail ?? mediaUrl(media.detail, "/images/playa-luna/pool-chair.webp")}
       detailAlt={mediaAlt(media.detail, "Lettino davanti alla piscina Playa Luna con il logo della struttura")}
       detailObjectPosition={mediaObjectPosition(media.detail)}
       detailVideo={detailVideo}

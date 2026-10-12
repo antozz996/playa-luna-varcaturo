@@ -13,6 +13,7 @@ import {
   mediaFileUrl,
   type ManagedFile,
 } from "../lib/sanity-file";
+import { getPageBlobMedia, getPageBlobVideos } from "../lib/site-media-pages";
 
 type BeachMedia = {
   hero?: ManagedImage;
@@ -35,11 +36,9 @@ export const metadata: Metadata = {
 };
 
 export default async function BeachClubPage() {
-  const media = await getMediaDocument<BeachMedia & Record<string, unknown>>(
-    "beachMedia",
-  );
-  const heroVideo = mediaFileUrl(media.heroVideo);
-  const detailVideo = mediaFileUrl(media.detailVideo);
+  const [media, blobMedia, blobVideos] = await Promise.all([getMediaDocument<BeachMedia & Record<string, unknown>>("beachMedia"), getPageBlobMedia("beachClub"), getPageBlobVideos("beachClub")]);
+  const heroVideo = blobVideos.hero ?? (blobMedia.hero ? undefined : mediaFileUrl(media.heroVideo));
+  const detailVideo = blobVideos.detail ?? (blobMedia.detail ? undefined : mediaFileUrl(media.detailVideo));
 
   return (
     <ServicePage
@@ -49,12 +48,12 @@ export default async function BeachClubPage() {
       emphasis="senza orari."
       intro="Una giornata sul litorale di Varcaturo con spiaggia attrezzata, servizi e il mare sempre davanti."
       body="Playa Luna è pensato per chi vuole vivere il mare con semplicità, senza rinunciare ai servizi. Puoi prenotare la tua postazione, fermarti per pranzo e alternare la spiaggia agli altri spazi della struttura."
-      image={mediaUrl(media.hero, "/images/playa-luna/beach-day.webp")}
+      image={blobMedia.hero ?? mediaUrl(media.hero, "/images/playa-luna/beach-day.webp")}
       imageAlt={mediaAlt(media.hero, "Spiaggia attrezzata del beach club Playa Luna a Varcaturo")}
       heroObjectPosition={mediaObjectPosition(media.hero, "50% 55%")}
       heroVideo={heroVideo}
       heroVideoObjectPosition={mediaFileObjectPosition(media.heroVideo)}
-      detailImage={mediaUrl(media.detail, "/images/playa-luna/sunset-view.webp")}
+      detailImage={blobMedia.detail ?? mediaUrl(media.detail, "/images/playa-luna/sunset-view.webp")}
       detailAlt={mediaAlt(media.detail, "Vista del mare dagli spazi mediterranei di Playa Luna")}
       detailObjectPosition={mediaObjectPosition(media.detail)}
       detailVideo={detailVideo}

@@ -1,6 +1,7 @@
 import { handleUpload } from "@vercel/blob/client";
 import { isMediaAdminAuthenticated } from "@/app/lib/media-admin";
 import { HOME_MEDIA_SLOTS, homeMediaVideoPath, isHomeMediaSlot } from "@/app/lib/site-media";
+import { isSiteMediaPage, isSiteMediaSlot, siteMediaPath } from "@/app/lib/site-media-pages";
 
 export async function POST(request: Request): Promise<Response> {
   if (!(await isMediaAdminAuthenticated())) {
@@ -14,13 +15,15 @@ export async function POST(request: Request): Promise<Response> {
       body,
       request,
       onBeforeGenerateToken: async (pathname, clientPayload) => {
-        const payload = JSON.parse(clientPayload || "{}") as { slot?: string; type?: "image" | "video" };
-        if (!payload.slot || !isHomeMediaSlot(payload.slot)) {
+        const payload = JSON.parse(clientPayload || "{}") as { page?: string; slot?: string; type?: "image" | "video" };
+        if (!payload.slot) {
           throw new Error("Slot contenuto non valido.");
         }
 
         const isVideo = payload.type === "video";
-        const expectedPathname = isVideo ? homeMediaVideoPath(payload.slot) : HOME_MEDIA_SLOTS[payload.slot].pathname;
+        const expectedPathname = !payload.page || payload.page === "home"
+          ? (isHomeMediaSlot(payload.slot) ? (isVideo ? homeMediaVideoPath(payload.slot) : HOME_MEDIA_SLOTS[payload.slot].pathname) : undefined)
+          : (isSiteMediaPage(payload.page) && isSiteMediaSlot(payload.page, payload.slot) ? siteMediaPath(payload.page, payload.slot, isVideo ? "video" : "image") : undefined);
         if (pathname !== expectedPathname) {
           throw new Error("Percorso contenuto non valido.");
         }

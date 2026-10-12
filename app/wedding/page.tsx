@@ -12,6 +12,7 @@ import {
 } from "../lib/sanity";
 import { type ManagedFile } from "../lib/sanity-file";
 import { sanityImageAttribute } from "../lib/sanity-visual";
+import { getPageBlobMedia, getPageBlobVideos } from "../lib/site-media-pages";
 
 export const metadata: Metadata = {
   title: "Ricevimento di matrimonio sul mare a Napoli",
@@ -61,7 +62,7 @@ function mediaPath(slot: string, video?: ManagedFile) {
 }
 
 export default async function WeddingPage() {
-  const media = await getMediaDocument<Record<string, unknown>>("weddingMedia");
+  const [media, blobMedia, blobVideos] = await Promise.all([getMediaDocument<Record<string, unknown>>("weddingMedia"), getPageBlobMedia("wedding"), getPageBlobVideos("wedding")]);
   const heroImage = media.hero as ManagedImage | undefined;
   const heroVideo = media.heroVideo as ManagedFile | undefined;
   const closingImage = media.closing as ManagedImage | undefined;
@@ -83,6 +84,8 @@ export default async function WeddingPage() {
           fill
           priority
           className="wedding-hero-image-v2"
+          srcOverride={blobMedia.hero}
+          videoOverride={blobVideos.hero}
           dataSanity={sanityImageAttribute("weddingMedia", "weddingMedia", mediaPath("hero", heroVideo))}
         />
         <div className="wedding-hero-shade-v2" />
@@ -128,6 +131,8 @@ export default async function WeddingPage() {
                 altFallback={item.alt}
                 fill
                 sizes={index < 2 ? "(max-width: 800px) 100vw, 58vw" : "(max-width: 800px) 100vw, 33vw"}
+                srcOverride={blobMedia[item.slot]}
+                videoOverride={blobVideos[item.slot]}
                 dataSanity={sanityImageAttribute("weddingMedia", "weddingMedia", mediaPath(item.slot, video))}
               />
               <figcaption>{mediaCaption(image, item.caption)}</figcaption>
@@ -160,6 +165,8 @@ export default async function WeddingPage() {
             altFallback="Dettagli e cadeaux preparati per un ricevimento al Playa Luna"
             fill
             sizes="(max-width: 800px) 100vw, 52vw"
+            srcOverride={blobMedia.closing}
+            videoOverride={blobVideos.closing}
             dataSanity={sanityImageAttribute("weddingMedia", "weddingMedia", mediaPath("closing", closingVideo))}
           />
         </div>

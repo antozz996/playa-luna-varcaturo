@@ -169,6 +169,11 @@ img {
   color: rgba(39, 37, 31, 0.72);
 }
 
+.media-page-nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 24px; }
+.media-page-nav button, .media-page-nav a { padding: 10px 12px; border: 1px solid rgba(39, 37, 31, 0.25); background: #fffdf8; color: #27251f; font: inherit; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
+.media-page-nav button.is-active { border-color: #27251f; background: #27251f; color: #fffdf8; }
+.media-page-nav a { margin-left: auto; text-decoration: none; }
+
 .media-status {
   margin: 0 0 24px;
   padding: 13px 16px;

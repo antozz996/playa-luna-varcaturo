@@ -16,6 +16,7 @@ import {
   mediaFileUrl,
   type ManagedFile,
 } from "../lib/sanity-file";
+import { getPageBlobMedia, getPageBlobVideos } from "../lib/site-media-pages";
 
 type RestaurantMedia = {
   hero?: ManagedImage;
@@ -38,11 +39,9 @@ export const metadata: Metadata = {
 };
 
 export default async function RestaurantPage() {
-  const media = await getMediaDocument<RestaurantMedia & Record<string, unknown>>(
-    "restaurantMedia",
-  );
-  const heroVideo = mediaFileUrl(media.heroVideo);
-  const detailVideo = mediaFileUrl(media.detailVideo);
+  const [media, blobMedia, blobVideos] = await Promise.all([getMediaDocument<RestaurantMedia & Record<string, unknown>>("restaurantMedia"), getPageBlobMedia("ristorante"), getPageBlobVideos("ristorante")]);
+  const heroVideo = blobVideos.hero ?? (blobMedia.hero ? undefined : mediaFileUrl(media.heroVideo));
+  const detailVideo = blobVideos.detail ?? (blobMedia.detail ? undefined : mediaFileUrl(media.detailVideo));
 
   return (
     <ServicePage
@@ -52,12 +51,12 @@ export default async function RestaurantPage() {
       emphasis="del mare."
       intro="Il ristorante è parte della giornata Playa Luna: una sala aperta sulla luce, cucina mediterranea e tavoli da condividere."
       body="La proposta accompagna il ritmo del lido, dal pranzo agli aperitivi. Il mare resta il filo conduttore, insieme a ingredienti mediterranei, piatti curati e un ambiente informale ma attento ai dettagli."
-      image={mediaUrl(media.hero, "/images/playa-luna/restaurant/hero.webp")}
+      image={blobMedia.hero ?? mediaUrl(media.hero, "/images/playa-luna/restaurant/hero.webp")}
       imageAlt={mediaAlt(media.hero, "La sala luminosa del ristorante Playa Luna durante il servizio")}
       heroObjectPosition={mediaObjectPosition(media.hero, "50% 35%")}
       heroVideo={heroVideo}
       heroVideoObjectPosition={mediaFileObjectPosition(media.heroVideo)}
-      detailImage={mediaUrl(media.detail, "/images/playa-luna/food-pasta.webp")}
+      detailImage={blobMedia.detail ?? mediaUrl(media.detail, "/images/playa-luna/food-pasta.webp")}
       detailAlt={mediaAlt(media.detail, "Piatto di pasta mediterranea preparato al ristorante Playa Luna")}
       detailObjectPosition={mediaObjectPosition(media.detail)}
       detailVideo={detailVideo}

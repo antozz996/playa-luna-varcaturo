@@ -1,0 +1,79 @@
+import "server-only";
+
+import { head } from "@vercel/blob";
+
+export const SITE_MEDIA_PAGES = {
+  beachClub: {
+    title: "Beach Club", href: "/beach-club/", documentType: "beachMedia",
+    slots: {
+      hero: { label: "Hero", location: "Immagine grande di apertura.", fallback: "/images/playa-luna/beach-day.webp" },
+      detail: { label: "Foto dettaglio", location: "Foto verticale nella sezione informazioni.", fallback: "/images/playa-luna/sunset-view.webp" },
+    },
+  },
+  ristorante: {
+    title: "Ristorante", href: "/ristorante-sul-mare/", documentType: "restaurantMedia",
+    slots: {
+      hero: { label: "Hero", location: "Immagine grande di apertura.", fallback: "/images/playa-luna/restaurant/hero.webp" },
+      detail: { label: "Foto dettaglio", location: "Foto verticale nella sezione informazioni.", fallback: "/images/playa-luna/food-pasta.webp" },
+    },
+  },
+  piscina: {
+    title: "Piscina", href: "/piscina/", documentType: "poolMedia",
+    slots: {
+      hero: { label: "Hero", location: "Immagine grande di apertura.", fallback: "/images/playa-luna/pool-family.webp" },
+      detail: { label: "Foto dettaglio", location: "Foto verticale nella sezione informazioni.", fallback: "/images/playa-luna/pool-chair.webp" },
+    },
+  },
+  eventi: {
+    title: "Eventi", href: "/eventi/", documentType: "eventsMedia",
+    slots: {
+      hero: { label: "Hero", location: "Immagine grande di apertura.", fallback: "/images/playa-luna/events/hero.webp" },
+      gallery01: { label: "Gallery 01", location: "Prima foto grande della gallery.", fallback: "/images/playa-luna/events/gathering.webp" },
+      gallery02: { label: "Gallery 02", location: "Seconda foto della gallery.", fallback: "/images/playa-luna/events/night-01.webp" },
+      gallery03: { label: "Gallery 03", location: "Terza foto della gallery.", fallback: "/images/playa-luna/events/night-02.webp" },
+      gallery04: { label: "Gallery 04", location: "Quarta foto della gallery.", fallback: "/images/playa-luna/events/night-03.webp" },
+      gallery05: { label: "Gallery 05", location: "Quinta foto della gallery.", fallback: "/images/playa-luna/events/night-04.webp" },
+      gallery06: { label: "Gallery 06", location: "Sesta foto della gallery.", fallback: "/images/playa-luna/events/night-05.webp" },
+      gallery07: { label: "Gallery 07", location: "Foto grande del buffet.", fallback: "/images/playa-luna/events/buffet.webp" },
+      gallery08: { label: "Gallery 08", location: "Ottava foto della gallery.", fallback: "/images/playa-luna/events/night-06.webp" },
+      gallery09: { label: "Gallery 09", location: "Foto grande finale della gallery.", fallback: "/images/playa-luna/events/corporate.webp" },
+    },
+  },
+  wedding: {
+    title: "Wedding", href: "/wedding/", documentType: "weddingMedia",
+    slots: {
+      hero: { label: "Hero", location: "Immagine grande di apertura.", fallback: "/images/playa-luna/wedding/hero.webp" },
+      gallery01: { label: "Gallery 01", location: "Primo dettaglio wedding.", fallback: "/images/playa-luna/wedding/place-setting.webp" },
+      gallery02: { label: "Gallery 02", location: "Secondo dettaglio wedding.", fallback: "/images/playa-luna/wedding/flowers.webp" },
+      gallery03: { label: "Gallery 03", location: "Terzo dettaglio wedding.", fallback: "/images/playa-luna/wedding/sea-table.webp" },
+      gallery04: { label: "Gallery 04", location: "Quarto dettaglio wedding.", fallback: "/images/playa-luna/wedding/table-by-sea.webp" },
+      gallery05: { label: "Gallery 05", location: "Quinto dettaglio wedding.", fallback: "/images/playa-luna/wedding/white-table.webp" },
+      closing: { label: "Immagine finale", location: "Foto accanto alla CTA finale.", fallback: "/images/playa-luna/wedding/favors.webp" },
+    },
+  },
+} as const;
+
+export type SiteMediaPage = keyof typeof SITE_MEDIA_PAGES;
+
+export function isSiteMediaPage(value: string): value is SiteMediaPage {
+  return Object.hasOwn(SITE_MEDIA_PAGES, value);
+}
+
+export function isSiteMediaSlot(page: SiteMediaPage, slot: string) {
+  return Object.hasOwn(SITE_MEDIA_PAGES[page].slots, slot);
+}
+
+export function siteMediaPath(page: SiteMediaPage, slot: string, type: "image" | "video" = "image") {
+  return `playa-luna/pages/${page}/${slot}.${type === "video" ? "mp4" : "webp"}`;
+}
+
+async function getPageAssets(page: SiteMediaPage, type: "image" | "video") {
+  if (!process.env.BLOB_READ_WRITE_TOKEN) return {};
+  const entries = await Promise.all(Object.keys(SITE_MEDIA_PAGES[page].slots).map(async (slot) => {
+    try { return [slot, (await head(siteMediaPath(page, slot, type))).url] as const; } catch { return null; }
+  }));
+  return Object.fromEntries(entries.filter((entry): entry is readonly [string, string] => entry !== null));
+}
+
+export const getPageBlobMedia = (page: SiteMediaPage) => getPageAssets(page, "image");
+export const getPageBlobVideos = (page: SiteMediaPage) => getPageAssets(page, "video");

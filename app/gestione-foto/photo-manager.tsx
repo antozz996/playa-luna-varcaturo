@@ -4,15 +4,10 @@ import Image from "next/image";
 import { useRef, useState, type ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import { upload } from "@vercel/blob/client";
-import { HOME_MEDIA_PRESENTATION } from "@/app/lib/site-media-presentation";
-import type { HOME_MEDIA_SLOTS, HomeMediaSlot } from "@/app/lib/site-media";
-
-type Slots = typeof HOME_MEDIA_SLOTS;
 
 type PhotoManagerProps = {
   authenticated: boolean;
-  slots: Slots;
-  previews: Record<HomeMediaSlot, { src: string; kind: "image" | "video"; source: string }>;
+  sections: Array<{ id: string; title: string; href: string; cards: Array<{ id: string; label: string; location: string; area: string; src: string; kind: "image" | "video"; source: string }> }>;
 };
 
 async function toWebp(file: File) {
@@ -31,11 +26,12 @@ async function toWebp(file: File) {
   return new File([blob], `${file.name.replace(/\.[^.]+$/, "") || "foto"}.webp`, { type: "image/webp" });
 }
 
-export function PhotoManager({ authenticated, slots, previews }: PhotoManagerProps) {
+export function PhotoManager({ authenticated, sections }: PhotoManagerProps) {
   const router = useRouter();
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
-  const [activeSlot, setActiveSlot] = useState<HomeMediaSlot | null>(null);
+  const [activeSlot, setActiveSlot] = useState<string | null>(null);
+  const [activePage, setActivePage] = useState("home");
   const [activeType, setActiveType] = useState<"image" | "video">("image");
   const [status, setStatus] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -56,7 +52,7 @@ export function PhotoManager({ authenticated, slots, previews }: PhotoManagerPro
     router.refresh();
   }
 
-  function chooseAsset(slot: HomeMediaSlot, type: "image" | "video") {
+  function chooseAsset(slot: string, type: "image" | "video") {
     setActiveSlot(slot);
     setActiveType(type);
     setStatus("");
@@ -80,11 +76,13 @@ export function PhotoManager({ authenticated, slots, previews }: PhotoManagerPro
     try {
       setStatus(activeType === "image" ? "Ottimizzo e carico la foto…" : "Carico il video…");
       const asset = activeType === "image" ? await toWebp(file) : file;
-      const pathname = activeType === "image" ? slots[slot].pathname : slots[slot].pathname.replace(/\.webp$/, ".mp4");
+      const pathname = activePage === "home"
+        ? `playa-luna/home/${slot}.${activeType === "image" ? "webp" : "mp4"}`
+        : `playa-luna/pages/${activePage}/${slot}.${activeType === "image" ? "webp" : "mp4"}`;
       const result = await upload(pathname, asset, {
         access: "public",
         handleUploadUrl: "/api/media/upload",
-        clientPayload: JSON.stringify({ slot, type: activeType }),
+        clientPayload: JSON.stringify({ page: activePage, slot, type: activeType }),
       });
       setStatus(`${activeType === "image" ? "Foto" : "Video"} salvato. L’aggiornamento sarà visibile entro un minuto.`);
       router.refresh();
@@ -114,6 +112,8 @@ export function PhotoManager({ authenticated, slots, previews }: PhotoManagerPro
     );
   }
 
+  const section = sections.find((item) => item.id === activePage) || sections[0];
+
   return (
     <main className="media-admin">
       <header className="media-admin-header">
@@ -123,29 +123,33 @@ export function PhotoManager({ authenticated, slots, previews }: PhotoManagerPro
         </div>
         <a href="/" target="_blank" rel="noreferrer">Vedi il sito ↗</a>
       </header>
-      <p className="media-intro">Ogni card mostra il contenuto attualmente visibile sul sito, con la sua posizione precisa. Puoi sostituirlo con una foto o un video; le foto vengono ottimizzate automaticamente.</p>
+      <p className="media-intro">Scegli una pagina: ogni card mostra il contenuto attualmente visibile sul sito, con la sua posizione precisa. Puoi sostituirlo con una foto o un video; le foto vengono ottimizzate automaticamente.</p>
+      <nav className="media-page-nav" aria-label="Pagine del sito">
+        {sections.map((item) => <button className={item.id === section.id ? "is-active" : ""} type="button" key={item.id} onClick={() => { setActivePage(item.id); setStatus(""); }}>{item.title}</button>)}
+        <a href={section.href} target="_blank" rel="noreferrer">Apri pagina ↗</a>
+      </nav>
       <input ref={inputRef} className="sr-only" type="file" accept={activeType === "image" ? "image/jpeg,image/png,image/webp" : "video/mp4"} onChange={uploadAsset} />
       {status && <p className="media-status" role="status">{status}</p>}
       <section className="media-grid" aria-label="Foto homepage">
-        {(Object.entries(slots) as [HomeMediaSlot, Slots[HomeMediaSlot]][]).map(([slot, item]) => (
-          <article className="media-card" key={slot}>
+        {section.cards.map((item) => (
+          <article className="media-card" key={item.id}>
             <div className="media-preview">
-              {previews[slot].kind === "video" ? <video src={previews[slot].src} muted autoPlay loop playsInline /> : <Image src={previews[slot].src} alt={`Anteprima ${item.label}`} fill sizes="(max-width: 700px) 100vw, 33vw" />}
+              {item.kind === "video" ? <video src={item.src} muted autoPlay loop playsInline /> : <Image src={item.src} alt={`Anteprima ${item.label}`} fill sizes="(max-width: 700px) 100vw, 33vw" />}
               <div className="media-badges">
-                <span className="media-type">{previews[slot].kind === "video" ? "VIDEO ATTIVO" : "FOTO ATTIVA"}</span>
-                <span className="media-origin">{previews[slot].source}</span>
+                <span className="media-type">{item.kind === "video" ? "VIDEO ATTIVO" : "FOTO ATTIVA"}</span>
+                <span className="media-origin">{item.source}</span>
               </div>
             </div>
             <div className="media-card-copy">
-              <p className="media-area">{HOME_MEDIA_PRESENTATION[slot].area} · {HOME_MEDIA_PRESENTATION[slot].format}</p>
+              <p className="media-area">{item.area}</p>
               <h2>{item.label}</h2>
-              <p>{HOME_MEDIA_PRESENTATION[slot].location}</p>
+              <p>{item.location}</p>
               <div className="media-actions">
-                <button type="button" onClick={() => chooseAsset(slot, "image")} disabled={Boolean(activeSlot)}>
-                  {activeSlot === slot && activeType === "image" ? "Attendi…" : "Cambia foto"}
+                <button type="button" onClick={() => chooseAsset(item.id, "image")} disabled={Boolean(activeSlot)}>
+                  {activeSlot === item.id && activeType === "image" ? "Attendi…" : "Cambia foto"}
                 </button>
-                <button className="media-video-button" type="button" onClick={() => chooseAsset(slot, "video")} disabled={Boolean(activeSlot)}>
-                  {activeSlot === slot && activeType === "video" ? "Attendi…" : previews[slot].kind === "video" ? "Cambia video" : "Carica video"}
+                <button className="media-video-button" type="button" onClick={() => chooseAsset(item.id, "video")} disabled={Boolean(activeSlot)}>
+                  {activeSlot === item.id && activeType === "video" ? "Attendi…" : item.kind === "video" ? "Cambia video" : "Carica video"}
                 </button>
               </div>
             </div>
