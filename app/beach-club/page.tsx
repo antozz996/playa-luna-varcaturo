@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Beach Club Playa Luna a Varcaturo",
     description: "Vivi la spiaggia di Playa Luna sul litorale di Varcaturo.",
-    url: "/beach-club/",
+    url: "/beach-club",
     images: ["/og.png"],
   },
 };
