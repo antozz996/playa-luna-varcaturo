@@ -71,6 +71,12 @@ export function PhotoManager({ authenticated, sections }: PhotoManagerProps) {
       setStatus("Scegli un video MP4.");
       return;
     }
+    // The upload first reaches the site function. Keep videos below its request limit
+    // so the user receives an actionable message instead of a gateway error.
+    if (activeType === "video" && file.size > 4 * 1024 * 1024) {
+      setStatus("Il video supera 4 MB. Esportalo in MP4 più leggero (720p è ideale) e riprova.");
+      return;
+    }
 
     try {
       setStatus(activeType === "image" ? "Ottimizzo e carico la foto…" : "Carico il video…");
@@ -81,8 +87,16 @@ export function PhotoManager({ authenticated, sections }: PhotoManagerProps) {
       form.set("page", activePage);
       form.set("type", activeType);
       const response = await fetch("/api/media/direct-upload", { method: "POST", body: form });
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(result.error || "Caricamento non riuscito.");
+      const responseText = await response.text();
+      let result: { error?: string } = {};
+      try {
+        result = responseText ? JSON.parse(responseText) as { error?: string } : {};
+      } catch {
+        // A proxy error can be HTML rather than JSON; retain the HTTP status below.
+      }
+      if (!response.ok) {
+        throw new Error(result.error || `Caricamento non riuscito (errore ${response.status}).`);
+      }
       setStatus(`${activeType === "image" ? "Foto" : "Video"} salvato. L’aggiornamento sarà visibile entro un minuto.`);
       router.refresh();
       void result;
@@ -122,7 +136,7 @@ export function PhotoManager({ authenticated, sections }: PhotoManagerProps) {
         </div>
         <a href="/" target="_blank" rel="noreferrer">Vedi il sito ↗</a>
       </header>
-      <p className="media-intro">Scegli una pagina: ogni card mostra il contenuto attualmente visibile sul sito, con la sua posizione precisa. Puoi sostituirlo con una foto o un video; le foto vengono ottimizzate automaticamente.</p>
+      <p className="media-intro">Scegli una pagina: ogni card mostra il contenuto attualmente visibile sul sito, con la sua posizione precisa. Puoi sostituirlo con una foto o un video; le foto vengono ottimizzate automaticamente. Per i video usa MP4 fino a 4 MB (720p è ideale).</p>
       <nav className="media-page-nav" aria-label="Pagine del sito">
         {sections.map((item) => <button className={item.id === section.id ? "is-active" : ""} type="button" key={item.id} onClick={() => { setActivePage(item.id); setStatus(""); }}>{item.title}</button>)}
         <a href={section.href} target="_blank" rel="noreferrer">Apri pagina ↗</a>

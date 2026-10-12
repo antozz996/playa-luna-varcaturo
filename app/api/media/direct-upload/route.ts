@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     if (!pathname) throw new Error("Destinazione non valida.");
     if (type === "image" && file.type !== "image/webp") throw new Error("La foto non è stata ottimizzata correttamente.");
     if (type === "video" && file.type !== "video/mp4") throw new Error("Il video deve essere in formato MP4.");
-    if (file.size > (type === "video" ? 75 : 10) * 1024 * 1024) throw new Error(type === "video" ? "Il video supera 75 MB." : "La foto supera 10 MB.");
+    if (file.size > (type === "video" ? 4 : 10) * 1024 * 1024) throw new Error(type === "video" ? "Il video supera 4 MB. Esportalo in MP4 più leggero (720p è ideale)." : "La foto supera 10 MB.");
 
     const blob = await put(pathname, file, { access: "public", addRandomSuffix: false, allowOverwrite: true, cacheControlMaxAge: 60 });
     return Response.json({ url: blob.url });
