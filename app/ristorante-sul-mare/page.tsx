@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Ristorante Playa Luna sul mare",
     description: "Cucina mediterranea e pranzo sul mare a Varcaturo.",
-    url: "/ristorante-sul-mare/",
+    url: "/ristorante-sul-mare",
     images: ["/og.png"],
   },
 };
