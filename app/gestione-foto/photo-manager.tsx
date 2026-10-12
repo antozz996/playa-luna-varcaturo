@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useRef, useState, type ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
-import { upload } from "@vercel/blob/client";
 
 type PhotoManagerProps = {
   authenticated: boolean;
@@ -76,14 +75,14 @@ export function PhotoManager({ authenticated, sections }: PhotoManagerProps) {
     try {
       setStatus(activeType === "image" ? "Ottimizzo e carico la foto…" : "Carico il video…");
       const asset = activeType === "image" ? await toWebp(file) : file;
-      const pathname = activePage === "home"
-        ? `playa-luna/home/${slot}.${activeType === "image" ? "webp" : "mp4"}`
-        : `playa-luna/pages/${activePage}/${slot}.${activeType === "image" ? "webp" : "mp4"}`;
-      const result = await upload(pathname, asset, {
-        access: "public",
-        handleUploadUrl: "/api/media/upload",
-        clientPayload: JSON.stringify({ page: activePage, slot, type: activeType }),
-      });
+      const form = new FormData();
+      form.set("file", asset);
+      form.set("slot", slot);
+      form.set("page", activePage);
+      form.set("type", activeType);
+      const response = await fetch("/api/media/direct-upload", { method: "POST", body: form });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || "Caricamento non riuscito.");
       setStatus(`${activeType === "image" ? "Foto" : "Video"} salvato. L’aggiornamento sarà visibile entro un minuto.`);
       router.refresh();
       void result;
