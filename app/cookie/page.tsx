@@ -17,7 +17,7 @@ export default function CookiePage() {
       <article className="legal-page shell">
         <p className="eyebrow">Preferenze</p>
         <h1>Cookie Policy</h1>
-        <p className="legal-updated">Ultimo aggiornamento: 22 agosto 2026</p>
+        <p className="legal-updated">Ultimo aggiornamento: 12 ottobre 2026</p>
         <h2>Cookie necessari</h2>
         <p>Il sito utilizza strumenti tecnici indispensabili al funzionamento e memorizza sul dispositivo la scelta espressa nel banner privacy. Questi elementi non richiedono consenso.</p>
         <h2>Strumenti di analisi</h2>
