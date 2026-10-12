@@ -32,7 +32,9 @@ export function AnalyticsConsent() {
     analyticsWindow.dataLayer = analyticsWindow.dataLayer ?? [];
     analyticsWindow.gtag =
       analyticsWindow.gtag ??
-      ((...args: unknown[]) => analyticsWindow.dataLayer?.push(args));
+      function gtag(...args: unknown[]) {
+        analyticsWindow.dataLayer?.push(arguments as unknown as unknown[]);
+      };
 
     if (gaId && !document.querySelector(`script[data-ga-id="${gaId}"]`)) {
       const script = document.createElement("script");
@@ -40,6 +42,12 @@ export function AnalyticsConsent() {
       script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`;
       script.dataset.gaId = gaId;
       document.head.appendChild(script);
+      analyticsWindow.gtag("consent", "update", {
+        analytics_storage: "granted",
+        ad_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+      });
       analyticsWindow.gtag("js", new Date());
       analyticsWindow.gtag("config", gaId, {
         anonymize_ip: true,
