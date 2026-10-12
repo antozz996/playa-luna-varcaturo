@@ -14,6 +14,9 @@ export async function POST(request: Request): Promise<Response> {
     const response = await handleUpload({
       body,
       request,
+      // Vercel Blob must receive the project token explicitly in this route.
+      // This avoids relying on runtime environment discovery during client-token issuance.
+      token: process.env.BLOB_READ_WRITE_TOKEN?.trim(),
       onBeforeGenerateToken: async (pathname, clientPayload) => {
         const payload = JSON.parse(clientPayload || "{}") as { page?: string; slot?: string; type?: "image" | "video" };
         if (!payload.slot) {
@@ -40,6 +43,7 @@ export async function POST(request: Request): Promise<Response> {
 
     return Response.json(response);
   } catch (error) {
+    console.error("Media upload token error", error);
     return Response.json(
       { error: error instanceof Error ? error.message : "Impossibile preparare il caricamento." },
       { status: 400 },
