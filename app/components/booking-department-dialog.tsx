@@ -56,7 +56,7 @@ export function BookingDepartmentDialog({ mobile = false }: { mobile?: boolean }
     <>
       <button
         type="button"
-        className={mobile ? styles.mobileTrigger : "header-cta"}
+        className={mobile ? styles.mobileTrigger : `header-cta ${styles.desktopTrigger}`}
         aria-haspopup="dialog"
         aria-controls={id}
         onClick={() => dialogRef.current?.showModal()}
