@@ -3,10 +3,11 @@
 import Image from "next/image";
 import { useRef, useState, type ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
+import { uploadPresigned } from "@vercel/blob/client";
 
 type PhotoManagerProps = {
   authenticated: boolean;
-  sections: Array<{ id: string; title: string; href: string; cards: Array<{ id: string; label: string; location: string; area: string; src: string; kind: "image" | "video"; source: string }> }>;
+  sections: Array<{ id: string; title: string; href: string; cards: Array<{ id: string; label: string; location: string; area: string; videoPath: string; src: string; kind: "image" | "video"; source: string }> }>;
 };
 
 async function toWebp(file: File) {
@@ -71,16 +72,29 @@ export function PhotoManager({ authenticated, sections }: PhotoManagerProps) {
       setStatus("Scegli un video MP4.");
       return;
     }
-    // The upload first reaches the site function. Keep videos below its request limit
-    // so the user receives an actionable message instead of a gateway error.
-    if (activeType === "video" && file.size > 4 * 1024 * 1024) {
-      setStatus("Il video supera 4 MB. Esportalo in MP4 più leggero (720p è ideale) e riprova.");
+    if (activeType === "video" && file.size > 100 * 1024 * 1024) {
+      setStatus("Il video supera 100 MB. Esportalo in MP4 più leggero e riprova.");
       return;
     }
 
     try {
-      setStatus(activeType === "image" ? "Ottimizzo e carico la foto…" : "Carico il video…");
-      const asset = activeType === "image" ? await toWebp(file) : file;
+      setStatus(activeType === "image" ? "Ottimizzo e carico la foto…" : "Preparo il video originale…");
+      if (activeType === "video") {
+        const card = section.cards.find((item) => item.id === slot);
+        if (!card) throw new Error("Destinazione del video non trovata.");
+        await uploadPresigned(card.videoPath, file, {
+          access: "public",
+          handleUploadUrl: "/api/media/presigned-upload",
+          clientPayload: JSON.stringify({ page: activePage, slot, type: "video" }),
+          multipart: true,
+          onUploadProgress: ({ percentage }) => setStatus(`Carico il video originale… ${Math.round(percentage)}%`),
+        });
+        setStatus("Video salvato senza compressione. L’aggiornamento sarà visibile entro un minuto.");
+        router.refresh();
+        return;
+      }
+
+      const asset = await toWebp(file);
       const form = new FormData();
       form.set("file", asset);
       form.set("slot", slot);
@@ -97,7 +111,7 @@ export function PhotoManager({ authenticated, sections }: PhotoManagerProps) {
       if (!response.ok) {
         throw new Error(result.error || `Caricamento non riuscito (errore ${response.status}).`);
       }
-      setStatus(`${activeType === "image" ? "Foto" : "Video"} salvato. L’aggiornamento sarà visibile entro un minuto.`);
+      setStatus("Foto salvata. L’aggiornamento sarà visibile entro un minuto.");
       router.refresh();
       void result;
     } catch (error) {
@@ -136,7 +150,7 @@ export function PhotoManager({ authenticated, sections }: PhotoManagerProps) {
         </div>
         <a href="/" target="_blank" rel="noreferrer">Vedi il sito ↗</a>
       </header>
-      <p className="media-intro">Scegli una pagina: ogni card mostra il contenuto attualmente visibile sul sito, con la sua posizione precisa. Puoi sostituirlo con una foto o un video; le foto vengono ottimizzate automaticamente. Per i video usa MP4 fino a 4 MB (720p è ideale).</p>
+      <p className="media-intro">Scegli una pagina: ogni card mostra il contenuto attualmente visibile sul sito, con la sua posizione precisa. Puoi sostituirlo con una foto o un video; le foto vengono ottimizzate automaticamente. I video MP4 fino a 100 MB vengono caricati direttamente, senza compressione e senza perdita di qualità.</p>
       <nav className="media-page-nav" aria-label="Pagine del sito">
         {sections.map((item) => <button className={item.id === section.id ? "is-active" : ""} type="button" key={item.id} onClick={() => { setActivePage(item.id); setStatus(""); }}>{item.title}</button>)}
         <a href={section.href} target="_blank" rel="noreferrer">Apri pagina ↗</a>

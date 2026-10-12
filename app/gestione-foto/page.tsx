@@ -1,9 +1,9 @@
-import { HOME_MEDIA_SLOTS, getHomeBlobMedia, getHomeBlobVideos } from "@/app/lib/site-media";
+import { HOME_MEDIA_SLOTS, getHomeBlobMedia, getHomeBlobVideos, homeMediaVideoPath } from "@/app/lib/site-media";
 import { isMediaAdminAuthenticated } from "@/app/lib/media-admin";
 import { HOME_MEDIA_PRESENTATION } from "@/app/lib/site-media-presentation";
 import { getMediaDocument, mediaUrl, type ManagedImage } from "@/app/lib/sanity";
 import { mediaFileUrl, type ManagedFile } from "@/app/lib/sanity-file";
-import { SITE_MEDIA_PAGES, getPageBlobMedia, getPageBlobVideos, type SiteMediaPage } from "@/app/lib/site-media-pages";
+import { SITE_MEDIA_PAGES, getPageBlobMedia, getPageBlobVideos, siteMediaPath, type SiteMediaPage } from "@/app/lib/site-media-pages";
 import { PhotoManager } from "./photo-manager";
 
 type HomeMedia = Partial<Record<keyof typeof HOME_MEDIA_SLOTS, ManagedImage>> & Record<string, unknown>;
@@ -57,7 +57,7 @@ export default async function PhotoManagerPage() {
             : video
               ? { src: video, kind: "video" as const, source: "Sanity" }
               : { src: mediaUrl(image, item.fallback), kind: "image" as const, source: image?.asset ? "Sanity" : "Immagine standard" };
-        return { id: slot, label: item.label, location: item.location, ...active };
+        return { id: slot, label: item.label, location: item.location, videoPath: siteMediaPath(id, slot, "video"), ...active };
       });
       return { id, title: config.title, href: config.href, cards };
     }),
@@ -65,7 +65,7 @@ export default async function PhotoManagerPage() {
 
   const sections = [{
     id: "home", title: "Home", href: "/", cards: (Object.entries(HOME_MEDIA_SLOTS) as [keyof typeof HOME_MEDIA_SLOTS, (typeof HOME_MEDIA_SLOTS)[keyof typeof HOME_MEDIA_SLOTS]][]).map(([id, item]) => ({
-      id, label: item.label, location: HOME_MEDIA_PRESENTATION[id].location, area: `${HOME_MEDIA_PRESENTATION[id].area} · ${HOME_MEDIA_PRESENTATION[id].format}`, ...previews[id],
+      id, label: item.label, location: HOME_MEDIA_PRESENTATION[id].location, area: `${HOME_MEDIA_PRESENTATION[id].area} · ${HOME_MEDIA_PRESENTATION[id].format}`, videoPath: homeMediaVideoPath(id), ...previews[id],
     })),
   }, ...extraPages.map((page) => ({ ...page, cards: page.cards.map((card) => ({ ...card, area: page.title })) }))];
 
