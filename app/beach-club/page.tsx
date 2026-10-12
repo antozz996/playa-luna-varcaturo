@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   title: "Beach Club a Varcaturo",
   description:
     "Spiaggia attrezzata, lettini, ombrelloni, bar e servizi family al Playa Luna di Marina di Varcaturo. Contattaci per disponibilità e prenotazioni.",
-  alternates: { canonical: "/beach-club/" },
+  alternates: { canonical: "/beach-club" },
   openGraph: {
     title: "Beach Club Playa Luna a Varcaturo",
     description: "Vivi la spiaggia di Playa Luna sul litorale di Varcaturo.",
