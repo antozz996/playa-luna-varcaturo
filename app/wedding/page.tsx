@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Wedding sul mare · Playa Luna",
     description: "Un ricevimento mediterraneo, intimo e personale, davanti al mare.",
-    url: "/wedding/",
+    url: "/wedding",
     images: ["/images/playa-luna/wedding/hero.webp"],
   },
 };
