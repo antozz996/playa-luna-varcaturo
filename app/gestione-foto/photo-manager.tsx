@@ -12,8 +12,7 @@ type Slots = typeof HOME_MEDIA_SLOTS;
 type PhotoManagerProps = {
   authenticated: boolean;
   slots: Slots;
-  media: Partial<Record<HomeMediaSlot, string>>;
-  videos: Partial<Record<HomeMediaSlot, string>>;
+  previews: Record<HomeMediaSlot, { src: string; kind: "image" | "video"; source: string }>;
 };
 
 async function toWebp(file: File) {
@@ -32,7 +31,7 @@ async function toWebp(file: File) {
   return new File([blob], `${file.name.replace(/\.[^.]+$/, "") || "foto"}.webp`, { type: "image/webp" });
 }
 
-export function PhotoManager({ authenticated, slots, media, videos }: PhotoManagerProps) {
+export function PhotoManager({ authenticated, slots, previews }: PhotoManagerProps) {
   const router = useRouter();
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
@@ -124,15 +123,18 @@ export function PhotoManager({ authenticated, slots, media, videos }: PhotoManag
         </div>
         <a href="/" target="_blank" rel="noreferrer">Vedi il sito ↗</a>
       </header>
-      <p className="media-intro">Ogni card corrisponde a un punto preciso della homepage. Guarda l’anteprima e la posizione, poi scegli se sostituire la foto o il video. Le foto vengono ottimizzate automaticamente.</p>
+      <p className="media-intro">Ogni card mostra il contenuto attualmente visibile sul sito, con la sua posizione precisa. Puoi sostituirlo con una foto o un video; le foto vengono ottimizzate automaticamente.</p>
       <input ref={inputRef} className="sr-only" type="file" accept={activeType === "image" ? "image/jpeg,image/png,image/webp" : "video/mp4"} onChange={uploadAsset} />
       {status && <p className="media-status" role="status">{status}</p>}
       <section className="media-grid" aria-label="Foto homepage">
         {(Object.entries(slots) as [HomeMediaSlot, Slots[HomeMediaSlot]][]).map(([slot, item]) => (
           <article className="media-card" key={slot}>
             <div className="media-preview">
-              {videos[slot] ? <video src={videos[slot]} muted autoPlay loop playsInline /> : <Image src={media[slot] || HOME_MEDIA_PRESENTATION[slot].fallback} alt="" fill sizes="(max-width: 700px) 100vw, 33vw" />}
-              <span className="media-type">{videos[slot] ? "VIDEO ATTIVO" : "FOTO ATTIVA"}</span>
+              {previews[slot].kind === "video" ? <video src={previews[slot].src} muted autoPlay loop playsInline /> : <Image src={previews[slot].src} alt={`Anteprima ${item.label}`} fill sizes="(max-width: 700px) 100vw, 33vw" />}
+              <div className="media-badges">
+                <span className="media-type">{previews[slot].kind === "video" ? "VIDEO ATTIVO" : "FOTO ATTIVA"}</span>
+                <span className="media-origin">{previews[slot].source}</span>
+              </div>
             </div>
             <div className="media-card-copy">
               <p className="media-area">{HOME_MEDIA_PRESENTATION[slot].area} · {HOME_MEDIA_PRESENTATION[slot].format}</p>
@@ -143,7 +145,7 @@ export function PhotoManager({ authenticated, slots, media, videos }: PhotoManag
                   {activeSlot === slot && activeType === "image" ? "Attendi…" : "Cambia foto"}
                 </button>
                 <button className="media-video-button" type="button" onClick={() => chooseAsset(slot, "video")} disabled={Boolean(activeSlot)}>
-                  {activeSlot === slot && activeType === "video" ? "Attendi…" : videos[slot] ? "Cambia video" : "Carica video"}
+                  {activeSlot === slot && activeType === "video" ? "Attendi…" : previews[slot].kind === "video" ? "Cambia video" : "Carica video"}
                 </button>
               </div>
             </div>
