@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { beachWhatsapp, mainNavigation } from "../lib/site";
+import { mainNavigation } from "../lib/site";
+import { BookingDepartmentDialog } from "./booking-department-dialog";
 
 export function SiteHeader() {
   return (
@@ -15,15 +16,7 @@ export function SiteHeader() {
         ))}
       </nav>
 
-      <a
-        className="header-cta"
-        href={beachWhatsapp}
-        target="_blank"
-        rel="noreferrer"
-        data-event="whatsapp_beach"
-      >
-        Prenota <span aria-hidden="true">↗</span>
-      </a>
+      <BookingDepartmentDialog />
 
       <details className="mobile-menu">
         <summary aria-label="Apri il menu">Menu</summary>
@@ -31,6 +24,7 @@ export function SiteHeader() {
           {mainNavigation.map((item) => (
             <Link href={item.href} key={item.href}>{item.label}</Link>
           ))}
+          <BookingDepartmentDialog mobile />
         </nav>
       </details>
     </header>

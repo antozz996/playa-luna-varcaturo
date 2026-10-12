@@ -1,9 +1,12 @@
 export const siteUrl = "https://playaluna.it";
 
-export const beachPhoneNumber = "+39 327 191 542";
-export const beachPhoneHref = "tel:+39327191542";
+export const beachPhoneNumber = "+39 327 191 5427";
+export const beachPhoneHref = "tel:+393271915427";
 export const beachWhatsapp =
-  "https://wa.me/39327191542?text=Ciao%20Playa%20Luna%2C%20vorrei%20prenotare%20una%20giornata%20al%20mare.";
+  "https://wa.me/393271915427?text=Ciao%20Playa%20Luna%2C%20vorrei%20prenotare%20una%20giornata%20al%20mare.";
+
+export const poolWhatsapp =
+  "https://wa.me/393271915427?text=Ciao%20Playa%20Luna%2C%20vorrei%20conoscere%20la%20disponibilita%20della%20piscina.";
 
 export const restaurantPhoneNumber = "+39 392 405 3169";
 export const restaurantPhoneHref = "tel:+393924053169";
