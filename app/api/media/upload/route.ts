@@ -1,6 +1,6 @@
 import { handleUpload } from "@vercel/blob/client";
 import { isMediaAdminAuthenticated } from "@/app/lib/media-admin";
-import { HOME_MEDIA_SLOTS, isHomeMediaSlot } from "@/app/lib/site-media";
+import { HOME_MEDIA_SLOTS, homeMediaVideoPath, isHomeMediaSlot } from "@/app/lib/site-media";
 
 export async function POST(request: Request): Promise<Response> {
   if (!(await isMediaAdminAuthenticated())) {
@@ -14,19 +14,20 @@ export async function POST(request: Request): Promise<Response> {
       body,
       request,
       onBeforeGenerateToken: async (pathname, clientPayload) => {
-        const payload = JSON.parse(clientPayload || "{}") as { slot?: string };
+        const payload = JSON.parse(clientPayload || "{}") as { slot?: string; type?: "image" | "video" };
         if (!payload.slot || !isHomeMediaSlot(payload.slot)) {
-          throw new Error("Slot immagine non valido.");
+          throw new Error("Slot contenuto non valido.");
         }
 
-        const expectedPathname = HOME_MEDIA_SLOTS[payload.slot].pathname;
+        const isVideo = payload.type === "video";
+        const expectedPathname = isVideo ? homeMediaVideoPath(payload.slot) : HOME_MEDIA_SLOTS[payload.slot].pathname;
         if (pathname !== expectedPathname) {
-          throw new Error("Percorso immagine non valido.");
+          throw new Error("Percorso contenuto non valido.");
         }
 
         return {
-          allowedContentTypes: ["image/webp"],
-          maximumSizeInBytes: 10 * 1024 * 1024,
+          allowedContentTypes: isVideo ? ["video/mp4"] : ["image/webp"],
+          maximumSizeInBytes: isVideo ? 75 * 1024 * 1024 : 10 * 1024 * 1024,
           addRandomSuffix: false,
           allowOverwrite: true,
           cacheControlMaxAge: 60,

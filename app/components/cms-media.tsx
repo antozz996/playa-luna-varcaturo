@@ -27,6 +27,7 @@ type CmsMediaProps = {
   dataSanity?: string;
   videoZIndex?: number;
   srcOverride?: string;
+  videoOverride?: string;
 };
 
 export function CmsMedia({
@@ -44,8 +45,23 @@ export function CmsMedia({
   dataSanity,
   videoZIndex,
   srcOverride,
+  videoOverride,
 }: CmsMediaProps) {
   const videoUrl = mediaFileUrl(video);
+
+  if (videoOverride) {
+    return (
+      <ExperienceVideo
+        src={videoOverride}
+        objectPosition={imagePositionFallback}
+        fill={fill}
+        priority={priority}
+        className={className}
+        dataSanity={dataSanity}
+        zIndex={videoZIndex}
+      />
+    );
+  }
 
   if (videoUrl && !srcOverride) {
     return (

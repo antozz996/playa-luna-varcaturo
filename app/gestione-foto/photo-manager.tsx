@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRef, useState, type ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import { upload } from "@vercel/blob/client";
+import { HOME_MEDIA_PRESENTATION } from "@/app/lib/site-media-presentation";
 import type { HOME_MEDIA_SLOTS, HomeMediaSlot } from "@/app/lib/site-media";
 
 type Slots = typeof HOME_MEDIA_SLOTS;
@@ -12,6 +13,7 @@ type PhotoManagerProps = {
   authenticated: boolean;
   slots: Slots;
   media: Partial<Record<HomeMediaSlot, string>>;
+  videos: Partial<Record<HomeMediaSlot, string>>;
 };
 
 async function toWebp(file: File) {
@@ -30,11 +32,12 @@ async function toWebp(file: File) {
   return new File([blob], `${file.name.replace(/\.[^.]+$/, "") || "foto"}.webp`, { type: "image/webp" });
 }
 
-export function PhotoManager({ authenticated, slots, media }: PhotoManagerProps) {
+export function PhotoManager({ authenticated, slots, media, videos }: PhotoManagerProps) {
   const router = useRouter();
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const [activeSlot, setActiveSlot] = useState<HomeMediaSlot | null>(null);
+  const [activeType, setActiveType] = useState<"image" | "video">("image");
   const [status, setStatus] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -54,31 +57,37 @@ export function PhotoManager({ authenticated, slots, media }: PhotoManagerProps)
     router.refresh();
   }
 
-  function choosePhoto(slot: HomeMediaSlot) {
+  function chooseAsset(slot: HomeMediaSlot, type: "image" | "video") {
     setActiveSlot(slot);
+    setActiveType(type);
     setStatus("");
     inputRef.current?.click();
   }
 
-  async function uploadPhoto(event: ChangeEvent<HTMLInputElement>) {
+  async function uploadAsset(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     const slot = activeSlot;
     event.target.value = "";
     if (!file || !slot) return;
-    if (!file.type.startsWith("image/")) {
+    if (activeType === "image" && !file.type.startsWith("image/")) {
       setStatus("Scegli una foto in formato immagine.");
+      return;
+    }
+    if (activeType === "video" && !file.type.startsWith("video/")) {
+      setStatus("Scegli un video MP4.");
       return;
     }
 
     try {
-      setStatus("Ottimizzo e carico la foto…");
-      const optimized = await toWebp(file);
-      const result = await upload(slots[slot].pathname, optimized, {
+      setStatus(activeType === "image" ? "Ottimizzo e carico la foto…" : "Carico il video…");
+      const asset = activeType === "image" ? await toWebp(file) : file;
+      const pathname = activeType === "image" ? slots[slot].pathname : slots[slot].pathname.replace(/\.webp$/, ".mp4");
+      const result = await upload(pathname, asset, {
         access: "public",
         handleUploadUrl: "/api/media/upload",
-        clientPayload: JSON.stringify({ slot }),
+        clientPayload: JSON.stringify({ slot, type: activeType }),
       });
-      setStatus(`Foto salvata. L’aggiornamento sarà visibile entro un minuto.`);
+      setStatus(`${activeType === "image" ? "Foto" : "Video"} salvato. L’aggiornamento sarà visibile entro un minuto.`);
       router.refresh();
       void result;
     } catch (error) {
@@ -94,7 +103,7 @@ export function PhotoManager({ authenticated, slots, media }: PhotoManagerProps)
         <form className="media-login-card" onSubmit={login}>
           <p className="media-kicker">Playa Luna</p>
           <h1>Gestione foto</h1>
-          <p>Carica le immagini della homepage in pochi secondi, senza Sanity e senza GitHub.</p>
+          <p>Gestisci foto e video della homepage in pochi secondi, senza Sanity e senza GitHub.</p>
           <label>
             Password
             <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" required />
@@ -115,21 +124,28 @@ export function PhotoManager({ authenticated, slots, media }: PhotoManagerProps)
         </div>
         <a href="/" target="_blank" rel="noreferrer">Vedi il sito ↗</a>
       </header>
-      <p className="media-intro">Scegli un riquadro, carica la foto e salva. Le immagini sono ottimizzate automaticamente per il sito.</p>
-      <input ref={inputRef} className="sr-only" type="file" accept="image/jpeg,image/png,image/webp" onChange={uploadPhoto} />
+      <p className="media-intro">Ogni card corrisponde a un punto preciso della homepage. Guarda l’anteprima e la posizione, poi scegli se sostituire la foto o il video. Le foto vengono ottimizzate automaticamente.</p>
+      <input ref={inputRef} className="sr-only" type="file" accept={activeType === "image" ? "image/jpeg,image/png,image/webp" : "video/mp4"} onChange={uploadAsset} />
       {status && <p className="media-status" role="status">{status}</p>}
       <section className="media-grid" aria-label="Foto homepage">
         {(Object.entries(slots) as [HomeMediaSlot, Slots[HomeMediaSlot]][]).map(([slot, item]) => (
           <article className="media-card" key={slot}>
             <div className="media-preview">
-              {media[slot] ? <Image src={media[slot]} alt="" fill sizes="(max-width: 700px) 100vw, 33vw" /> : <span>Nessuna foto caricata qui</span>}
+              {videos[slot] ? <video src={videos[slot]} muted autoPlay loop playsInline /> : <Image src={media[slot] || HOME_MEDIA_PRESENTATION[slot].fallback} alt="" fill sizes="(max-width: 700px) 100vw, 33vw" />}
+              <span className="media-type">{videos[slot] ? "VIDEO ATTIVO" : "FOTO ATTIVA"}</span>
             </div>
             <div className="media-card-copy">
+              <p className="media-area">{HOME_MEDIA_PRESENTATION[slot].area} · {HOME_MEDIA_PRESENTATION[slot].format}</p>
               <h2>{item.label}</h2>
-              <p>{item.description}</p>
-              <button type="button" onClick={() => choosePhoto(slot)} disabled={Boolean(activeSlot)}>
-                {activeSlot === slot ? "Attendi…" : media[slot] ? "Sostituisci foto" : "Carica foto"}
-              </button>
+              <p>{HOME_MEDIA_PRESENTATION[slot].location}</p>
+              <div className="media-actions">
+                <button type="button" onClick={() => chooseAsset(slot, "image")} disabled={Boolean(activeSlot)}>
+                  {activeSlot === slot && activeType === "image" ? "Attendi…" : "Cambia foto"}
+                </button>
+                <button className="media-video-button" type="button" onClick={() => chooseAsset(slot, "video")} disabled={Boolean(activeSlot)}>
+                  {activeSlot === slot && activeType === "video" ? "Attendi…" : videos[slot] ? "Cambia video" : "Carica video"}
+                </button>
+              </div>
             </div>
           </article>
         ))}
