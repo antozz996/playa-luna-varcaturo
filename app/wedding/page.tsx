@@ -18,11 +18,11 @@ export const metadata: Metadata = {
   title: "Ricevimento di matrimonio sul mare a Napoli",
   description:
     "Ricevimenti di matrimonio sul mare al Playa Luna di Marina di Varcaturo, tra luce naturale, cucina e allestimenti personalizzati.",
-  alternates: { canonical: "/wedding/" },
+  alternates: { canonical: "/wedding" },
   openGraph: {
     title: "Wedding sul mare · Playa Luna",
     description: "Un ricevimento mediterraneo, intimo e personale, davanti al mare.",
-    url: "/wedding/",
+    url: "/wedding",
     images: ["/images/playa-luna/wedding/hero.webp"],
   },
 };

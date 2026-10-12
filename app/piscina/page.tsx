@@ -26,11 +26,11 @@ export const metadata: Metadata = {
   title: "Piscina Playa Luna a Varcaturo",
   description:
     "Scopri la piscina interna alla struttura Playa Luna a Marina di Varcaturo, pensata per il divertimento dei bambini e il relax delle famiglie.",
-  alternates: { canonical: "/piscina/" },
+  alternates: { canonical: "/piscina" },
   openGraph: {
     title: "Piscina Playa Luna a Varcaturo",
     description: "La piscina interna alla struttura Playa Luna per famiglie e bambini.",
-    url: "/piscina/",
+    url: "/piscina",
     images: ["/og.png"],
   },
 };
