@@ -16,7 +16,7 @@ export default function PrivacyPage() {
       <article className="legal-page shell">
         <p className="eyebrow">Informativa</p>
         <h1>Privacy Policy</h1>
-        <p className="legal-updated">Ultimo aggiornamento: 22 agosto 2026</p>
+        <p className="legal-updated">Ultimo aggiornamento: 12 ottobre 2026</p>
         <h2>Titolare e contatti</h2>
         <p>Il titolare del trattamento è il gestore di Playa Luna, Via Marina di Varcaturo 42, Giugliano in Campania (NA). Per richieste relative ai dati personali puoi scrivere a <a href="mailto:info@playaluna.it">info@playaluna.it</a>.</p>
         <h2>Dati trattati</h2>
