@@ -5,7 +5,7 @@ import { SiteHeader } from "../components/site-header";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description: "Informativa sul trattamento dei dati personali del sito Playa Luna.",
-  alternates: { canonical: "/privacy/" },
+  alternates: { canonical: "/privacy" },
   robots: { index: false, follow: true },
 };
 
@@ -22,9 +22,9 @@ export default function PrivacyPage() {
         <h2>Dati trattati</h2>
         <p>Il sito può trattare dati tecnici di navigazione, preferenze relative ai cookie e le informazioni che scegli volontariamente di inviare tramite telefono, email o WhatsApp. Non raccogliamo dati attraverso moduli proprietari presenti sul sito.</p>
         <h2>Finalità e basi giuridiche</h2>
-        <p>I dati vengono utilizzati per rispondere alle richieste, gestire prenotazioni e informazioni commerciali, garantire sicurezza e funzionamento del sito e, solo con consenso, misurare in forma aggregata l’utilizzo delle pagine.</p>
+        <p>I dati vengono utilizzati per rispondere alle richieste, gestire prenotazioni e informazioni commerciali, garantire sicurezza e funzionamento del sito e, solo con consenso, analizzare le visite e le interazioni tramite Google Analytics 4 e Microsoft Clarity.</p>
         <h2>Conservazione e destinatari</h2>
-        <p>I dati vengono conservati per il tempo necessario alla finalità per cui sono stati raccolti e agli eventuali obblighi di legge. Alcuni servizi esterni, come WhatsApp, Google Maps o gli strumenti di misurazione autorizzati, applicano le proprie informative.</p>
+        <p>I dati vengono conservati per il tempo necessario alla finalità per cui sono stati raccolti e agli eventuali obblighi di legge. Google Analytics 4 e Microsoft Clarity sono servizi esterni che trattano i dati secondo le proprie informative; i collegamenti a WhatsApp e Google Maps portano ai rispettivi servizi.</p>
         <h2>I tuoi diritti</h2>
         <p>Puoi chiedere accesso, rettifica, cancellazione, limitazione o opposizione al trattamento e, quando applicabile, la portabilità dei dati. Puoi inoltre revocare il consenso in qualsiasi momento.</p>
       </article>
