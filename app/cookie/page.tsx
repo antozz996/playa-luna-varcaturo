@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
+import { CookiePreferencesButton } from "../components/cookie-preferences-button";
 
 export const metadata: Metadata = {
   title: "Cookie Policy",
   description: "Informazioni sui cookie utilizzati dal sito Playa Luna.",
-  alternates: { canonical: "/cookie/" },
+  alternates: { canonical: "/cookie" },
   robots: { index: false, follow: true },
 };
 
@@ -19,10 +20,11 @@ export default function CookiePage() {
         <p className="legal-updated">Ultimo aggiornamento: 22 agosto 2026</p>
         <h2>Cookie necessari</h2>
         <p>Il sito utilizza strumenti tecnici indispensabili al funzionamento e memorizza sul dispositivo la scelta espressa nel banner privacy. Questi elementi non richiedono consenso.</p>
-        <h2>Misurazione anonima</h2>
-        <p>Gli strumenti di analytics vengono attivati solo dopo l’accettazione. Servono a comprendere quali pagine vengono visitate e quali azioni, come click su WhatsApp, telefono, email e indicazioni stradali, aiutano maggiormente gli utenti.</p>
+        <h2>Strumenti di analisi</h2>
+        <p>Dopo il consenso, il sito può caricare Google Analytics 4 e Microsoft Clarity per misurare le visite e le interazioni con le pagine e i collegamenti. Questi servizi sono forniti da terze parti e trattano i dati secondo le rispettive informative.</p>
         <h2>Come cambiare scelta</h2>
-        <p>Puoi cancellare la voce “playaluna-analytics-consent” dalla memoria locale del browser per visualizzare nuovamente il banner e scegliere una preferenza diversa.</p>
+        <p>Puoi rivedere la scelta in qualsiasi momento usando il pulsante qui sotto. La pagina ricaricherà il banner e gli strumenti di analisi resteranno disattivati finché non darai nuovamente il consenso.</p>
+        <CookiePreferencesButton />
         <h2>Servizi esterni</h2>
         <p>I collegamenti verso WhatsApp, Google Maps, Instagram e Facebook portano a servizi esterni che applicano cookie e informative proprie dopo l’apertura del relativo sito o applicazione.</p>
       </article>
