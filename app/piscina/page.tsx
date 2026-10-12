@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Piscina Playa Luna a Varcaturo",
     description: "La piscina interna alla struttura Playa Luna per famiglie e bambini.",
-    url: "/piscina/",
+    url: "/piscina",
     images: ["/og.png"],
   },
 };
