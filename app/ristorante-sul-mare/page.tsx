@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   title: "Ristorante sul mare a Varcaturo",
   description:
     "Cucina mediterranea, piatti di mare e pranzo vista mare al ristorante Playa Luna di Marina di Varcaturo.",
-  alternates: { canonical: "/ristorante-sul-mare/" },
+  alternates: { canonical: "/ristorante-sul-mare" },
   openGraph: {
     title: "Ristorante Playa Luna sul mare",
     description: "Cucina mediterranea e pranzo sul mare a Varcaturo.",
