@@ -121,6 +121,27 @@ export function PhotoManager({ authenticated, sections }: PhotoManagerProps) {
     }
   }
 
+  async function removeUploadedContent(slot: string, label: string) {
+    if (!window.confirm(`Rimuovere il contenuto caricato per “${label}”? Verrà ripristinata l'immagine standard della pagina.`)) return;
+    try {
+      setActiveSlot(slot);
+      setStatus("Rimuovo il contenuto caricato…");
+      const response = await fetch("/api/media/remove", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ page: activePage, slot }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || "Rimozione non riuscita.");
+      setStatus("Contenuto rimosso. È tornata l’immagine standard.");
+      router.refresh();
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Rimozione non riuscita.");
+    } finally {
+      setActiveSlot(null);
+    }
+  }
+
   if (!authenticated) {
     return (
       <main className="media-login">
@@ -178,6 +199,11 @@ export function PhotoManager({ authenticated, sections }: PhotoManagerProps) {
                 <button className="media-video-button" type="button" onClick={() => chooseAsset(item.id, "video")} disabled={Boolean(activeSlot)}>
                   {activeSlot === item.id && activeType === "video" ? "Attendi…" : item.kind === "video" ? "Cambia video" : "Carica video"}
                 </button>
+                {item.source === "Vercel Blob" && (
+                  <button className="media-remove-button" type="button" onClick={() => removeUploadedContent(item.id, item.label)} disabled={Boolean(activeSlot)}>
+                    Rimuovi contenuto
+                  </button>
+                )}
               </div>
             </div>
           </article>
