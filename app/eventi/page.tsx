@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Eventi sul mare · Playa Luna",
     description: "Una scenografia sul mare per feste, cerimonie ed eventi che hanno qualcosa da raccontare.",
-    url: "/eventi/",
+    url: "/eventi",
     images: ["/images/playa-luna/events/hero.webp"],
   },
 };
