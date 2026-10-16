@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { CmsMedia } from "./components/cms-media";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
@@ -47,6 +48,12 @@ type HomeMedia = {
   eventsFeatureVideo?: ManagedFile;
   finalCta?: ManagedImage;
   finalCtaVideo?: ManagedFile;
+};
+
+export const metadata: Metadata = {
+  title: "Lido a Varcaturo sul mare | Playa Luna",
+  description: "Lido a Varcaturo con spiaggia attrezzata, piscina family, ristorante sul mare e sala eventi. Scopri Playa Luna e contattaci per prenotare.",
+  alternates: { canonical: "/" },
 };
 
 const experienceDefaults = [
