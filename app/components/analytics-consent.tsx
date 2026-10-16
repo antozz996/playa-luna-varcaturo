@@ -81,7 +81,21 @@ export function AnalyticsConsent() {
       const target = (event.target as Element | null)?.closest<HTMLElement>("[data-event]");
       const eventName = target?.dataset.event;
       if (!eventName) return;
-      analyticsWindow.gtag?.("event", eventName);
+
+      const isWhatsapp = eventName.startsWith("whatsapp_");
+      const isPhone = eventName.startsWith("phone_");
+      const normalizedEventName = isWhatsapp
+        ? "whatsapp_click"
+        : isPhone
+          ? "phone_click"
+          : eventName;
+
+      if (isWhatsapp || isPhone) {
+        const contactType = eventName.slice(eventName.indexOf("_") + 1);
+        analyticsWindow.gtag?.("event", normalizedEventName, { contact_type: contactType });
+      } else {
+        analyticsWindow.gtag?.("event", normalizedEventName);
+      }
       analyticsWindow.clarity?.("event", eventName);
     };
 
