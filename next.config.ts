@@ -13,6 +13,8 @@ const nextConfig: NextConfig = {
       ["/ristorante", "/ristorante-sul-mare"],
       ["/eventi-privati", "/eventi"],
       ["/sala-eventi", "/eventi"],
+      ["/en/event", "/eventi"],
+      ["/en/menuplaya-ristorante", "/ristorante-sul-mare"],
       ["/matrimoni", "/wedding"],
       ["/contatti-playa-luna", "/contatti"],
       ["/privacy-policy", "/privacy"],
