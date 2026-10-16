@@ -36,7 +36,11 @@ export function AnalyticsConsent() {
         analyticsWindow.dataLayer?.push(arguments as unknown as unknown[]);
       };
 
-    if (gaId && !document.querySelector(`script[data-ga-id="${gaId}"]`)) {
+    const isProductionHost =
+      window.location.hostname === "playaluna.it" ||
+      window.location.hostname === "www.playaluna.it";
+
+    if (isProductionHost && gaId && !document.querySelector(`script[data-ga-id="${gaId}"]`)) {
       const script = document.createElement("script");
       script.async = true;
       script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`;
@@ -55,7 +59,7 @@ export function AnalyticsConsent() {
       });
     }
 
-    if (clarityId && !document.querySelector(`script[data-clarity-id="${clarityId}"]`)) {
+    if (isProductionHost && clarityId && !document.querySelector(`script[data-clarity-id="${clarityId}"]`)) {
       if (!analyticsWindow.clarity) {
         const queue = ((...args: unknown[]) => {
           queue.q = queue.q ?? [];
@@ -81,7 +85,21 @@ export function AnalyticsConsent() {
       const target = (event.target as Element | null)?.closest<HTMLElement>("[data-event]");
       const eventName = target?.dataset.event;
       if (!eventName) return;
-      analyticsWindow.gtag?.("event", eventName);
+
+      const isWhatsapp = eventName.startsWith("whatsapp_");
+      const isPhone = eventName.startsWith("phone_");
+      const normalizedEventName = isWhatsapp
+        ? "whatsapp_click"
+        : isPhone
+          ? "phone_click"
+          : eventName;
+
+      if (isWhatsapp || isPhone) {
+        const contactType = eventName.slice(eventName.indexOf("_") + 1);
+        analyticsWindow.gtag?.("event", normalizedEventName, { contact_type: contactType });
+      } else {
+        analyticsWindow.gtag?.("event", normalizedEventName);
+      }
       analyticsWindow.clarity?.("event", eventName);
     };
 
