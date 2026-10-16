@@ -36,7 +36,11 @@ export function AnalyticsConsent() {
         analyticsWindow.dataLayer?.push(arguments as unknown as unknown[]);
       };
 
-    if (gaId && !document.querySelector(`script[data-ga-id="${gaId}"]`)) {
+    const isProductionHost =
+      window.location.hostname === "playaluna.it" ||
+      window.location.hostname === "www.playaluna.it";
+
+    if (isProductionHost && gaId && !document.querySelector(`script[data-ga-id="${gaId}"]`)) {
       const script = document.createElement("script");
       script.async = true;
       script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`;
@@ -55,7 +59,7 @@ export function AnalyticsConsent() {
       });
     }
 
-    if (clarityId && !document.querySelector(`script[data-clarity-id="${clarityId}"]`)) {
+    if (isProductionHost && clarityId && !document.querySelector(`script[data-clarity-id="${clarityId}"]`)) {
       if (!analyticsWindow.clarity) {
         const queue = ((...args: unknown[]) => {
           queue.q = queue.q ?? [];
