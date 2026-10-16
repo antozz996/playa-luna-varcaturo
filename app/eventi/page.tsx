@@ -12,7 +12,7 @@ import {
 } from "../lib/sanity";
 import { type ManagedFile } from "../lib/sanity-file";
 import { sanityImageAttribute } from "../lib/sanity-visual";
-import { getPageBlobMedia, getPageBlobVideos, isSiteMediaSlotHidden } from "../lib/site-media-pages";
+import { isSiteMediaSlotHidden } from "../lib/site-media-pages";
 
 export const metadata: Metadata = {
   title: "Eventi sul mare a Varcaturo",
@@ -66,7 +66,7 @@ function mediaPath(slot: string, video?: ManagedFile) {
 }
 
 export default async function EventsPage() {
-  const [media, blobMedia, blobVideos] = await Promise.all([getMediaDocument<Record<string, unknown>>("eventsMedia"), getPageBlobMedia("eventi"), getPageBlobVideos("eventi")]);
+  const media = await getMediaDocument<Record<string, unknown>>("eventsMedia");
   const heroImage = media.hero as ManagedImage | undefined;
   const heroVideo = media.heroVideo as ManagedFile | undefined;
   const hero = mediaUrl(heroImage, "/images/playa-luna/events/hero.webp");
@@ -86,8 +86,6 @@ export default async function EventsPage() {
           fill
           priority
           className="events-hero-image-v2"
-          srcOverride={blobMedia.hero}
-          videoOverride={blobVideos.hero}
           dataSanity={sanityImageAttribute("eventsMedia", "eventsMedia", mediaPath("hero", heroVideo))}
         />
         <div className="events-hero-shade-v2" />
@@ -131,8 +129,6 @@ export default async function EventsPage() {
                 altFallback={item.alt}
                 fill
                 sizes={item.wide ? "(max-width: 800px) 100vw, 66vw" : "(max-width: 800px) 100vw, 33vw"}
-                srcOverride={blobMedia[item.slot]}
-                videoOverride={blobVideos[item.slot]}
                 dataSanity={sanityImageAttribute("eventsMedia", "eventsMedia", mediaPath(item.slot, video))}
               />
               <figcaption>{mediaCaption(image, item.caption)}</figcaption>
