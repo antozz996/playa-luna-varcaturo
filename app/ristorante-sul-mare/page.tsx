@@ -67,6 +67,7 @@ export default async function RestaurantPage() {
         "Proposte da condividere",
         "Cocktail e aperitivo",
       ]}
+      menuHref="/menu-ristorante/"
       ctaLabel="Prenota un tavolo"
       ctaHref={restaurantPhoneHref}
       ctaEvent="phone_restaurant"

@@ -1,0 +1,29 @@
+.menu {
+  padding: 160px 0 64px;
+  background: var(--linen);
+}
+.menu nav { margin-bottom: 24px; }
+.title {
+  margin: 12px 0 20px;
+  font-size: clamp(48px, 8vw, 88px);
+  line-height: 1.05;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 28px 0;
+}
+.viewer {
+  display: block;
+  width: 100%;
+  height: 85vh;
+  min-height: 560px;
+  border: 1px solid var(--line);
+  background: var(--white);
+}
+.viewer a { text-decoration: underline; }
+@media (max-width: 600px) {
+  .menu { padding-top: 120px; }
+  .viewer { height: 75svh; min-height: 440px; }
+}

@@ -21,6 +21,7 @@ type ServicePageProps = {
   ctaLabel?: string;
   ctaHref?: string;
   ctaEvent?: string;
+  menuHref?: string;
   telephone?: string;
   schemaType?: "Beach" | "Restaurant" | "EventVenue" | "LocalBusiness";
   heroObjectPosition?: string;
@@ -69,6 +70,7 @@ export function ServicePage({
   ctaLabel = "Chiedi informazioni",
   ctaHref = beachWhatsapp,
   ctaEvent = "whatsapp_beach",
+  menuHref,
   telephone,
   schemaType = "LocalBusiness",
   heroObjectPosition = "center 55%",
@@ -163,9 +165,16 @@ export function ServicePage({
           <p className="eyebrow">Informazioni</p>
           <h2>Quello che<br /><em>trovi qui.</em></h2>
           <p>{body}</p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
           <a className="pill-button dark" href={ctaHref} target="_blank" rel="noreferrer" data-event={ctaEvent}>
             {ctaLabel} <span aria-hidden="true">↗</span>
           </a>
+            {menuHref ? (
+              <Link className="pill-button dark" href={menuHref}>
+                Consulta il menu <span aria-hidden="true">↗</span>
+              </Link>
+            ) : null}
+          </div>
         </div>
 
         <div className="service-facts" aria-label={`Caratteristiche ${eyebrow}`}>
