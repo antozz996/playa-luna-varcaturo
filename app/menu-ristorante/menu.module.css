@@ -27,3 +27,6 @@
   .menu { padding-top: 120px; }
   .viewer { height: 75svh; min-height: 440px; }
 }
+
+.page :global(.site-header) { background: var(--deep-sea); }
+.menu :global(.breadcrumbs) { color: var(--ink); }

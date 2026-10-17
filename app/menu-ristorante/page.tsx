@@ -14,7 +14,7 @@ const menuPdf = "/menus/Playa_Menu_ITA_2026_v11.pdf";
 
 export default function RestaurantMenuPage() {
   return (
-    <main>
+    <main className={styles.page}>
       <SiteHeader />
       <section className={styles.menu} aria-labelledby="menu-title">
         <div className="shell">
