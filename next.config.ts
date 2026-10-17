@@ -7,7 +7,6 @@ const nextConfig: NextConfig = {
       ["/lido", "/beach-club"],
       ["/fior-d-acqua-piscina-bambini-varcaturo", "/piscina"],
       ["/piscina-fior-d-acqua", "/piscina"],
-      ["/menu-ristorante", "/ristorante-sul-mare"],
       ["/menu-ristorante-playa-vecchio", "/ristorante-sul-mare"],
       ["/menu-ristorante-playa-v2", "/ristorante-sul-mare"],
       ["/ristorante", "/ristorante-sul-mare"],
