@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 export default async function BeachClubPage() {
   const [media, blobMedia, blobVideos] = await Promise.all([getMediaDocument<BeachMedia & Record<string, unknown>>("beachMedia"), getPageBlobMedia("beachClub"), getPageBlobVideos("beachClub")]);
   const heroVideo = blobVideos.hero ?? (blobMedia.hero ? undefined : mediaFileUrl(media.heroVideo));
-  const detailVideo = blobVideos.detail ?? (blobMedia.detail ? undefined : mediaFileUrl(media.detailVideo));
+  const detailVideo = undefined;
 
   return (
     <ServicePage
@@ -53,7 +53,7 @@ export default async function BeachClubPage() {
       heroObjectPosition={mediaObjectPosition(media.hero, "50% 55%")}
       heroVideo={heroVideo}
       heroVideoObjectPosition={mediaFileObjectPosition(media.heroVideo)}
-      detailImage={blobMedia.detail ?? mediaUrl(media.detail, "/images/playa-luna/sunset-view.webp")}
+      detailImage="/images/playa-luna/beachclub/detail-dsc00166.webp"
       detailAlt={mediaAlt(media.detail, "Vista del mare dagli spazi mediterranei di Playa Luna")}
       detailObjectPosition={mediaObjectPosition(media.detail)}
       detailVideo={detailVideo}

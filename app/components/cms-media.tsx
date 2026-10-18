@@ -28,6 +28,8 @@ type CmsMediaProps = {
   videoZIndex?: number;
   srcOverride?: string;
   videoOverride?: string;
+  localImage?: string;
+  localVideo?: string;
 };
 
 export function CmsMedia({
@@ -46,8 +48,24 @@ export function CmsMedia({
   videoZIndex,
   srcOverride,
   videoOverride,
+  localImage,
+  localVideo,
 }: CmsMediaProps) {
-  const videoUrl = mediaFileUrl(video);
+  const videoUrl = localVideo || mediaFileUrl(video);
+
+  if (localVideo) {
+    return (
+      <ExperienceVideo
+        src={localVideo}
+        objectPosition={imagePositionFallback}
+        fill={fill}
+        priority={priority}
+        className={className}
+        dataSanity={dataSanity}
+        zIndex={videoZIndex}
+      />
+    );
+  }
 
   if (videoOverride) {
     return (
@@ -78,7 +96,7 @@ export function CmsMedia({
   }
 
   const common = {
-    src: srcOverride || mediaUrl(image, fallback),
+    src: localImage || srcOverride || mediaUrl(image, fallback),
     alt: mediaAlt(image, altFallback),
     sizes,
     priority,
