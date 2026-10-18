@@ -16,13 +16,13 @@ export default function PrivacyPage() {
       <article className="legal-page shell">
         <p className="eyebrow">Informativa</p>
         <h1>Privacy Policy</h1>
-        <p className="legal-updated">Ultimo aggiornamento: 12 ottobre 2026</p>
+        <p className="legal-updated">Ultimo aggiornamento: 18 ottobre 2026</p>
         <h2>Titolare e contatti</h2>
         <p>Il titolare del trattamento è il gestore di Playa Luna, Via Marina di Varcaturo 42, Giugliano in Campania (NA). Per richieste relative ai dati personali puoi scrivere a <a href="mailto:info@playaluna.it">info@playaluna.it</a>.</p>
         <h2>Dati trattati</h2>
         <p>Il sito può trattare dati tecnici di navigazione, preferenze relative ai cookie e le informazioni che scegli volontariamente di inviare tramite telefono, email o WhatsApp. Non raccogliamo dati attraverso moduli proprietari presenti sul sito.</p>
         <h2>Finalità e basi giuridiche</h2>
-        <p>I dati vengono utilizzati per rispondere alle richieste, gestire prenotazioni e informazioni commerciali, garantire sicurezza e funzionamento del sito e, solo con consenso, analizzare le visite e le interazioni tramite Google Analytics 4 e Microsoft Clarity.</p>
+        <p>I dati vengono utilizzati per rispondere alle richieste, gestire prenotazioni e informazioni commerciali, garantire sicurezza e funzionamento del sito e analizzare l’utilizzo del sito: le statistiche aggregate e anonime sono raccolte senza cookie anche in assenza di consenso, mentre i cookie di misurazione di Google Analytics 4 e Microsoft Clarity sono attivati solo con consenso.</p>
         <h2>Conservazione e destinatari</h2>
         <p>I dati vengono conservati per il tempo necessario alla finalità per cui sono stati raccolti e agli eventuali obblighi di legge. Google Analytics 4 e Microsoft Clarity sono servizi esterni che trattano i dati secondo le proprie informative; i collegamenti a WhatsApp e Google Maps portano ai rispettivi servizi.</p>
         <h2>I tuoi diritti</h2>

@@ -14,6 +14,50 @@ const consentKey = "playaluna-analytics-consent";
 const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim();
 const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID?.trim();
 
+const analyticsCookieNames = [
+  "_ga",
+  gaId ? `_ga_${gaId.replace(/^G-/, "")}` : null,
+  "_gid",
+  "_clck",
+  "_clsk",
+].filter((name): name is string => Boolean(name));
+
+function deleteCookie(name: string) {
+  const base = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+  document.cookie = base;
+  document.cookie = `${base}; domain=.playaluna.it`;
+  document.cookie = `${base}; domain=playaluna.it`;
+}
+
+function clearAnalyticsCookies() {
+  for (const name of analyticsCookieNames) deleteCookie(name);
+}
+
+function isProductionHost() {
+  return (
+    window.location.hostname === "playaluna.it" ||
+    window.location.hostname === "www.playaluna.it"
+  );
+}
+
+function analyticsWindow() {
+  const target = window as AnalyticsWindow;
+  target.dataLayer = target.dataLayer ?? [];
+  target.gtag =
+    target.gtag ??
+    function gtag(...args: unknown[]) {
+      target.dataLayer?.push(args);
+    };
+  return target as AnalyticsWindow & { gtag: (...args: unknown[]) => void };
+}
+
+const deniedConsent = {
+  analytics_storage: "denied",
+  ad_storage: "denied",
+  ad_user_data: "denied",
+  ad_personalization: "denied",
+} as const;
+
 export function AnalyticsConsent() {
   const [consent, setConsent] = useState<Consent>(null);
   const pathname = usePathname();
@@ -26,46 +70,50 @@ export function AnalyticsConsent() {
   }, []);
 
   useEffect(() => {
-    if (consent !== "accepted") return;
+    if (!gaId || !isProductionHost()) return;
+    const ga = analyticsWindow();
 
-    const analyticsWindow = window as AnalyticsWindow;
-    analyticsWindow.dataLayer = analyticsWindow.dataLayer ?? [];
-    analyticsWindow.gtag =
-      analyticsWindow.gtag ??
-      function gtag(...args: unknown[]) {
-        analyticsWindow.dataLayer?.push(arguments as unknown as unknown[]);
-      };
+    ga.gtag("consent", "default", { ...deniedConsent, wait_for_update: 500 });
 
-    const isProductionHost =
-      window.location.hostname === "playaluna.it" ||
-      window.location.hostname === "www.playaluna.it";
-
-    if (isProductionHost && gaId && !document.querySelector(`script[data-ga-id="${gaId}"]`)) {
+    if (!document.querySelector(`script[data-ga-id="${gaId}"]`)) {
       const script = document.createElement("script");
       script.async = true;
       script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`;
       script.dataset.gaId = gaId;
       document.head.appendChild(script);
-      analyticsWindow.gtag("consent", "update", {
+    }
+
+    ga.gtag("js", new Date());
+    ga.gtag("config", gaId, {
+      cookie_flags: "SameSite=Lax;Secure",
+      send_page_view: false,
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!isProductionHost()) return;
+    const ga = analyticsWindow();
+
+    if (consent === "accepted" && gaId) {
+      ga.gtag("consent", "update", {
+        ...deniedConsent,
         analytics_storage: "granted",
-        ad_storage: "denied",
-        ad_user_data: "denied",
-        ad_personalization: "denied",
-      });
-      analyticsWindow.gtag("js", new Date());
-      analyticsWindow.gtag("config", gaId, {
-        anonymize_ip: true,
-        send_page_view: false,
       });
     }
 
-    if (isProductionHost && clarityId && !document.querySelector(`script[data-clarity-id="${clarityId}"]`)) {
-      if (!analyticsWindow.clarity) {
+    if (consent === "rejected") clearAnalyticsCookies();
+
+    if (
+      consent === "accepted" &&
+      clarityId &&
+      !document.querySelector(`script[data-clarity-id="${clarityId}"]`)
+    ) {
+      if (!ga.clarity) {
         const queue = ((...args: unknown[]) => {
           queue.q = queue.q ?? [];
           queue.q.push(args);
         }) as NonNullable<AnalyticsWindow["clarity"]>;
-        analyticsWindow.clarity = queue;
+        ga.clarity = queue;
       }
 
       const script = document.createElement("script");
@@ -74,12 +122,21 @@ export function AnalyticsConsent() {
       script.dataset.clarityId = clarityId;
       document.head.appendChild(script);
     }
+  }, [consent]);
 
-    analyticsWindow.gtag?.("event", "page_view", {
+  useEffect(() => {
+    if (!gaId || !isProductionHost()) return;
+    const ga = analyticsWindow();
+    ga.gtag("event", "page_view", {
       page_path: pathname,
       page_location: window.location.href,
       page_title: document.title,
     });
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!isProductionHost()) return;
+    const ga = analyticsWindow();
 
     const trackClick = (event: MouseEvent) => {
       const target = (event.target as Element | null)?.closest<HTMLElement>("[data-event]");
@@ -96,16 +153,16 @@ export function AnalyticsConsent() {
 
       if (isWhatsapp || isPhone) {
         const contactType = eventName.slice(eventName.indexOf("_") + 1);
-        analyticsWindow.gtag?.("event", normalizedEventName, { contact_type: contactType });
+        ga.gtag?.("event", normalizedEventName, { contact_type: contactType });
       } else {
-        analyticsWindow.gtag?.("event", normalizedEventName);
+        ga.gtag?.("event", normalizedEventName);
       }
-      analyticsWindow.clarity?.("event", eventName);
+      ga.clarity?.("event", eventName);
     };
 
     document.addEventListener("click", trackClick);
     return () => document.removeEventListener("click", trackClick);
-  }, [consent, pathname]);
+  }, []);
 
   const choose = (value: Exclude<Consent, null>) => {
     window.localStorage.setItem(consentKey, value);
@@ -119,8 +176,9 @@ export function AnalyticsConsent() {
       <div>
         <p className="cookie-title">La tua privacy</p>
         <p>
-          Usiamo strumenti di analisi, inclusi Google Analytics e Microsoft Clarity, solo con il tuo
-          consenso. Puoi proseguire con i soli cookie necessari.
+          Usiamo Google Analytics in modalità anonima, senza cookie, per statistiche aggregate sul
+          funzionamento del sito. Solo con il tuo consenso attiviamo cookie di misurazione e
+          Microsoft Clarity per capire come migliorare la navigazione.
         </p>
         <a href="/cookie/">Scopri di più</a>
       </div>
