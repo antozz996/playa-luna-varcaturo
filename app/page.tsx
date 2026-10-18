@@ -70,7 +70,7 @@ const experienceDefaults = [
     number: "02",
     title: "Beach Club",
     text: "Il mare davanti, l'isola all'orizzonte e tutto quello che serve per staccare davvero.",
-    image: "/images/playa-luna/beach-day.webp",
+    image: "/images/playa-luna/beach-card-2f8a3359.webp",
     slot: "experienceBeach",
     videoSlot: "experienceBeachVideo",
     href: "/beach-club/",
@@ -197,6 +197,7 @@ export default async function Home() {
                   fill
                   srcOverride={blobMedia[item.slot]}
                   videoOverride={blobVideos[item.slot]}
+                  localImage={item.slot === "experienceBeach" ? item.image : undefined}
                   dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath(item.slot, video))}
                 />
                 <span className="card-number">{item.number}</span>
@@ -252,6 +253,7 @@ export default async function Home() {
               height={1200}
               srcOverride={blobMedia.beachDetail ?? "/images/playa-luna/beach-detail-2f8a3953.jpg"}
               videoOverride={blobVideos.beachDetail}
+              localImage="/images/playa-luna/beach-detail-2f8a3953.webp"
               fill={Boolean(media.beachDetailVideo?.asset?._ref)}
               dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("beachDetail", media.beachDetailVideo))}
             />
@@ -277,7 +279,7 @@ export default async function Home() {
             <CmsMedia image={media.foodTwo} video={media.foodTwoVideo} fallback="/images/playa-luna/food-pasta.webp" altFallback="Pasta mediterranea servita in padella" sizes="(max-width: 800px) 78vw, 18vw" fill srcOverride={blobMedia.foodTwo} videoOverride={blobVideos.foodTwo} dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("foodTwo", media.foodTwoVideo))} />
           </figure>
           <figure style={{ position: "relative" }}>
-            <CmsMedia image={media.foodThree} video={media.foodThreeVideo} fallback="/images/playa-luna/food-fish.webp" altFallback="Secondo piatto di pesce con verdure" sizes="(max-width: 800px) 78vw, 18vw" fill srcOverride={blobMedia.foodThree} videoOverride={blobVideos.foodThree} dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("foodThree", media.foodThreeVideo))} />
+          <CmsMedia image={media.foodThree} video={media.foodThreeVideo} fallback="/images/playa-luna/food-fish.webp" altFallback="Secondo piatto di pesce con verdure" sizes="(max-width: 800px) 78vw, 18vw" fill srcOverride={blobMedia.foodThree} videoOverride={blobVideos.foodThree} localImage="/images/playa-luna/food-three-2f8a7368.webp" dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("foodThree", media.foodThreeVideo))} />
           </figure>
         </div>
 
@@ -293,7 +295,7 @@ export default async function Home() {
             <CmsMedia image={media.poolMain} video={media.poolMainVideo} fallback="/images/playa-luna/pool-family.webp" altFallback="Famiglie e bambini nella piscina di Playa Luna" sizes="(max-width: 800px) 100vw, 45vw" fill srcOverride={blobMedia.poolMain} videoOverride={blobVideos.poolMain} dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("poolMain", media.poolMainVideo))} />
           </div>
           <div style={{ position: "relative", minWidth: 0 }}>
-            <CmsMedia image={media.poolDetail} video={media.poolDetailVideo} fallback="/images/playa-luna/pool-chair.webp" altFallback="Piscina Playa Luna con area relax e lettini" sizes="28vw" fill srcOverride={blobMedia.poolDetail} videoOverride={blobVideos.poolDetail} dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("poolDetail", media.poolDetailVideo))} />
+            <CmsMedia image={media.poolDetail} video={media.poolDetailVideo} fallback="/images/playa-luna/pool-chair.webp" altFallback="Piscina Playa Luna con area relax e lettini" sizes="28vw" fill srcOverride={blobMedia.poolDetail} videoOverride={blobVideos.poolDetail} localImage="/images/playa-luna/pool-detail-2f8a5583.webp" dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("poolDetail", media.poolDetailVideo))} />
           </div>
         </div>
         <div className="family-copy">
@@ -315,7 +317,7 @@ export default async function Home() {
             <a className="pill-button dark" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events">Richiedi informazioni <span aria-hidden="true">↗</span></a>
           </div>
           <figure className="events-image" style={{ position: "relative", overflow: "hidden" }}>
-            <CmsMedia image={media.eventsFeature} video={media.eventsFeatureVideo} fallback="/images/playa-luna/events/home-feature.webp" altFallback="Allestimento elegante per un evento al Playa Luna" sizes="(max-width: 800px) 100vw, 52vw" fill srcOverride={blobMedia.eventsFeature} videoOverride={blobVideos.eventsFeature} dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("eventsFeature", media.eventsFeatureVideo))} />
+            <CmsMedia image={media.eventsFeature} video={media.eventsFeatureVideo} fallback="/images/playa-luna/events/home-feature.webp" altFallback="Allestimento elegante per un evento al Playa Luna" sizes="(max-width: 800px) 100vw, 52vw" fill srcOverride={blobMedia.eventsFeature} videoOverride={blobVideos.eventsFeature} localVideo="/videos/playa-luna/pvt-playa.mp4" dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("eventsFeature", media.eventsFeatureVideo))} />
           </figure>
           <div className="event-types" aria-label="Tipologie di eventi">
             <div><span>01</span><h3>Private party</h3><p>Compleanni, lauree e feste su misura.</p></div>
@@ -326,7 +328,7 @@ export default async function Home() {
       </section>
 
       <section className="final-cta" aria-labelledby="final-title">
-        <CmsMedia image={media.finalCta} video={media.finalCtaVideo} fallback="/images/playa-luna/pool-chair.webp" altFallback="Postazione riservata accanto alla piscina Playa Luna" sizes="100vw" fill srcOverride={blobMedia.finalCta} videoOverride={blobVideos.finalCta} imagePositionFallback="50% 58%" dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("finalCta", media.finalCtaVideo))} />
+        <CmsMedia image={media.finalCta} video={media.finalCtaVideo} fallback="/images/playa-luna/pool-chair.webp" altFallback="Postazione riservata accanto alla piscina Playa Luna" sizes="100vw" fill srcOverride={blobMedia.finalCta} videoOverride={blobVideos.finalCta} localImage="/images/playa-luna/final-cta-2f8a5852.webp" imagePositionFallback="50% 58%" dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("finalCta", media.finalCtaVideo))} />
         <div className="final-cta-shade" />
         <div className="final-cta-content">
           <p className="eyebrow light">La tua giornata comincia qui</p>

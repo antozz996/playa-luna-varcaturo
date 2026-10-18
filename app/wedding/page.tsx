@@ -133,6 +133,7 @@ export default async function WeddingPage() {
                 sizes={index < 2 ? "(max-width: 800px) 100vw, 58vw" : "(max-width: 800px) 100vw, 33vw"}
                 srcOverride={blobMedia[item.slot]}
                 videoOverride={blobVideos[item.slot]}
+                localVideo={item.slot === "gallery03" ? "/videos/playa-luna/wedding-gallery-03.mp4" : undefined}
                 dataSanity={sanityImageAttribute("weddingMedia", "weddingMedia", mediaPath(item.slot, video))}
               />
               <figcaption>{mediaCaption(image, item.caption)}</figcaption>
@@ -167,6 +168,7 @@ export default async function WeddingPage() {
             sizes="(max-width: 800px) 100vw, 52vw"
             srcOverride={blobMedia.closing}
             videoOverride={blobVideos.closing}
+            localImage="/images/playa-luna/wedding/closing-2f8a6584.webp"
             dataSanity={sanityImageAttribute("weddingMedia", "weddingMedia", mediaPath("closing", closingVideo))}
           />
         </div>

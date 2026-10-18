@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 export default async function PoolPage() {
   const [media, blobMedia, blobVideos] = await Promise.all([getMediaDocument<PoolMedia & Record<string, unknown>>("poolMedia"), getPageBlobMedia("piscina"), getPageBlobVideos("piscina")]);
   const heroVideo = blobVideos.hero ?? (blobMedia.hero ? undefined : mediaFileUrl(media.heroVideo));
-  const detailVideo = blobVideos.detail ?? (blobMedia.detail ? undefined : mediaFileUrl(media.detailVideo));
+  const detailVideo = undefined;
 
   return (
     <ServicePage
@@ -53,7 +53,7 @@ export default async function PoolPage() {
       heroObjectPosition={mediaObjectPosition(media.hero, "50% 55%")}
       heroVideo={heroVideo}
       heroVideoObjectPosition={mediaFileObjectPosition(media.heroVideo)}
-      detailImage={blobMedia.detail ?? mediaUrl(media.detail, "/images/playa-luna/pool-chair.webp")}
+      detailImage="/images/playa-luna/pool-detail-2f8a1100.webp"
       detailAlt={mediaAlt(media.detail, "Lettino davanti alla piscina Playa Luna con il logo della struttura")}
       detailObjectPosition={mediaObjectPosition(media.detail)}
       detailVideo={detailVideo}

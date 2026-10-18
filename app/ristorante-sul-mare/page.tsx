@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 
 export default async function RestaurantPage() {
   const [media, blobMedia, blobVideos] = await Promise.all([getMediaDocument<RestaurantMedia & Record<string, unknown>>("restaurantMedia"), getPageBlobMedia("ristorante"), getPageBlobVideos("ristorante")]);
-  const heroVideo = blobVideos.hero ?? (blobMedia.hero ? undefined : mediaFileUrl(media.heroVideo));
+  const heroVideo = undefined;
   const detailVideo = blobVideos.detail ?? (blobMedia.detail ? undefined : mediaFileUrl(media.detailVideo));
 
   return (
@@ -51,7 +51,7 @@ export default async function RestaurantPage() {
       emphasis="del mare."
       intro="Il ristorante è parte della giornata Playa Luna: una sala aperta sulla luce, cucina mediterranea e tavoli da condividere."
       body="La proposta accompagna il ritmo del lido, dal pranzo agli aperitivi. Il mare resta il filo conduttore, insieme a ingredienti mediterranei, piatti curati e un ambiente informale ma attento ai dettagli."
-      image={blobMedia.hero ?? mediaUrl(media.hero, "/images/playa-luna/restaurant/hero.webp")}
+      image="/images/playa-luna/restaurant/hero-2f8a7552.webp"
       imageAlt={mediaAlt(media.hero, "La sala luminosa del ristorante Playa Luna durante il servizio")}
       heroObjectPosition={mediaObjectPosition(media.hero, "50% 35%")}
       heroVideo={heroVideo}
