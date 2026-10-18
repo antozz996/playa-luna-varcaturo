@@ -130,7 +130,7 @@ export default async function EventsPage() {
                 altFallback={item.alt}
                 fill
                 sizes={item.wide ? "(max-width: 800px) 100vw, 66vw" : "(max-width: 800px) 100vw, 33vw"}
-                localVideo={item.slot === "gallery06" ? "/videos/playa-luna/events-gallery-06.mp4" : undefined}
+                localVideo={item.slot === "gallery08" ? "/videos/playa-luna/events-gallery-08.mp4" : undefined}
                 localImage={item.slot === "gallery07" ? "/images/playa-luna/events/gallery-07-2f8a1650.webp" : undefined}
                 dataSanity={sanityImageAttribute("eventsMedia", "eventsMedia", mediaPath(item.slot, video))}
               />
