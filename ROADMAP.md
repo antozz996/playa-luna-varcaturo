@@ -126,6 +126,20 @@ Legenda: `[x]` risolto e verificato · `[~]` parziale · `[ ]` da fare · `[-]` 
 | 2026-11-09 | A1–A8, A10, A9~ | Landmark e skip link, menu mobile, pausa video, contrasti AA, banner compatto, CTA corretti. tsc/lint/build OK, verificato nel browser a 390×844, 0 errori console. |
 | 2026-11-09 | K1–K5, K10 | Solo Next/Vercel, codice del template rimosso, smoke test 20/20, 0 vulnerabilità in produzione, `npm run dev` ok su Windows, README nuovo. |
 | 2026-11-09 | G1–G6, A9 | Dati societari, informativa art. 13, tabella cookie, GA/Clarity solo dopo consenso (verificato via rete), consenso con scadenza 6 mesi. lint/tsc/test 20/20 OK. |
+| 2026-11-09 | **Pubblicazione** | PR #13 unita in `main`, deploy di produzione su playaluna.it. Verificato sul sito vero: 10 pagine 200 con i nuovi title, CSP/HSTS/X-Frame attivi, media raggiungibili, video hero 3,5 MB con cache 7 giorni, `/gestione-foto` e `/studio` 404. |
+| 2026-11-09 | **Bug GA preesistente** | Google Analytics non aveva mai inviato dati: il codice originale metteva array nel `dataLayer`, che gtag.js ignora. Corretto (`arguments` come nello snippet ufficiale). Verificato in produzione: 0 richieste prima del consenso, hit `g/collect` e cookie `_ga` dopo "Accetta", cookie cancellati dopo "Rifiuta", 0 violazioni CSP. |
+
+## Stato finale
+
+Tutte le 7 fasi completate e online. Restano solo azioni fuori dal codice:
+
+- [ ] **Vercel → Settings → Domains**: redirect da `playa-luna-varcaturo-delta.vercel.app` a `playaluna.it` (SEO3).
+- [ ] **Vercel → Environment Variables**: rimuovere `NEXT_PUBLIC_SANITY_*`, `SANITY_*`, `BLOB_READ_WRITE_TOKEN`, `MEDIA_ADMIN_PASSWORD`; impostare `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` (SEO4) o verificare il dominio via DNS in Search Console e inviare `https://playaluna.it/sitemap.xml`.
+- [ ] **Vercel → Storage**: eliminare lo store Blob (non più usato).
+- [ ] **Sanity**: archiviare il progetto `7xx613y2`.
+- [ ] **PEC** della società da aggiungere in `legalEntity.pec` (`app/lib/site.ts`).
+- [ ] **SEO8**: pagine più ricche + FAQ + menu in HTML (serve materiale: servizi, prezzi indicativi, parcheggio, testo del menu).
+- [ ] Far rileggere privacy e cookie policy a un consulente.
 
 ## Da fare su Vercel/Sanity dopo il deploy
 
