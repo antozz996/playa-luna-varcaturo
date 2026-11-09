@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     description: "Beach club, cucina, piscina ed eventi a Marina di Varcaturo.",
     images: [
       {
-        url: "/og.png",
+        url: "/og.jpg",
         width: 1200,
         height: 630,
         alt: "Playa Luna · Beach Club, Restaurant, Events",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Playa Luna | Tutto il mare in un giorno",
     description: "Beach club, cucina, piscina ed eventi a Marina di Varcaturo.",
-    images: ["/og.png"],
+    images: ["/og.jpg"],
   },
   icons: {
     icon: "/favicon.svg",

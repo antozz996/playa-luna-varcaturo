@@ -34,6 +34,7 @@ export function PageMedia({
     return (
       <ExperienceVideo
         src={video}
+        poster={video.replace(/\.mp4$/, "-poster.webp")}
         objectPosition={position}
         fill={fill}
         priority={priority}
@@ -45,6 +46,8 @@ export function PageMedia({
 
   if (!src) return null;
 
-  const common = { src, alt, sizes, priority, className, style: { objectPosition: position } };
-  return fill ? <Image {...common} fill /> : <Image {...common} width={width} height={height} />;
+  const common = { src, sizes, priority, className, style: { objectPosition: position } };
+  return fill
+    ? <Image {...common} alt={alt} fill />
+    : <Image {...common} alt={alt} width={width} height={height} />;
 }

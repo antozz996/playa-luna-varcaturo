@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: "Contatti e indicazioni",
   description: "Contatta Playa Luna a Marina di Varcaturo per prenotare la spiaggia, il ristorante o richiedere informazioni per un evento.",
   alternates: { canonical: "/contatti" },
-  openGraph: { title: "Contatti Playa Luna", description: "Prenotazioni beach, ristorante, eventi e indicazioni stradali.", url: "/contatti", images: ["/og.png"] },
+  openGraph: { title: "Contatti Playa Luna", description: "Prenotazioni beach, ristorante, eventi e indicazioni stradali.", url: "/contatti", images: ["/og.jpg"] },
 };
 
 export default function ContactsPage() {
@@ -24,7 +24,7 @@ export default function ContactsPage() {
     <main>
       <SiteHeader />
       <section className="contact-hero">
-        <Image src="/images/playa-luna/sunset-view.webp" alt="Vista del mare da Playa Luna a Marina di Varcaturo" width={960} height={1200} priority unoptimized sizes="100vw" />
+        <Image src="/images/playa-luna/sunset-view.webp" alt="Vista del mare da Playa Luna a Marina di Varcaturo" width={960} height={1200} priority sizes="100vw" />
         <div className="service-hero-shade" />
         <div className="shell service-hero-copy">
           <p className="eyebrow light">Contatti · Marina di Varcaturo</p>

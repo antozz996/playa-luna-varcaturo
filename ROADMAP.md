@@ -44,19 +44,20 @@ Legenda: `[x]` risolto e verificato · `[~]` parziale · `[ ]` da fare · `[-]` 
 - [-] **C10 · Impostazioni sito editabili** — non serve: modifiche via GitHub.
 - [x] **Migrazione** — scaricati in `public/` gli 8 media che il sito live prendeva da Sanity (4 video, 4 foto), con i loro testi alternativi.
 
-## Fase 3 — Performance (prossima)
+## Fase 3 — Performance ✅
 
-- [~] **P1 · Video pesanti** — tutti ricompressi: **da ~205 MB a 23 MB** (es. card Food & Drink 88 MB → 3,7 MB, piscina 64 MB → 3,8 MB).
-  Poster `*-poster.webp` generati accanto a ogni video. **Manca**: collegarli (`poster`), `preload="metadata"` sull'hero.
-- [ ] **P2 · Hero invisibile fino a `loadeddata`** — mostrare il poster subito, togliere animazione 1,5 s dall'LCP.
-- [x] **P3 · Video `/eventi` e altri** — compressi (vedi P1).
+- [x] **P1 · Video pesanti** — tutti ricompressi: **da ~205 MB a 23 MB** (es. card Food & Drink 88 MB → 3,7 MB, piscina 64 MB → 3,8 MB).
+  Poster `*-poster.webp` collegati automaticamente da `PageMedia`, `preload="metadata"`, lazy load a 300 px dal viewport.
+- [x] **P2 · Hero invisibile fino a `loadeddata`** — con poster il video è visibile subito (opacity 1); tolta l'animazione `hero-in` da 1,5 s dall'elemento LCP. _Verificato a 390×844._
+- [x] **P3 · Video `/eventi` e altri** — compressi (vedi P1). _Verificato_: gallerie eventi/wedding partono allo scroll.
 - [x] **P4 · Cache `public/`** — `max-age=604800` (7 giorni) su images/videos/menus/svg. Quando si sostituisce un file conviene rinominarlo.
-- [ ] **P5 · Immagini sorgente sovradimensionate** (`public/` ~25 MB), jpg duplicata `beach-detail-2f8a3953.jpg`.
+- [x] **P5 · Immagini** — 14 WebP ricodificati a qualità 78 (5,4 → 4,1 MB), eliminati 21 file non usati (2,3 MB, inclusa la jpg duplicata).
 - [-] **P6 · Doppia ottimizzazione Sanity** — Sanity rimosso.
-- [ ] **P7 · `og.png` 1 MB** → <200 KB.
-- [ ] **P8 · Logo header lazy** → eager; `contatti` senza `unoptimized`.
+- [x] **P7 · `og.png` 1 MB** → `og.jpg` **74 KB** (6 riferimenti aggiornati).
+- [x] **P8 · Logo header** → `loading="eager"`; immagine contatti ora ottimizzata (tolto `unoptimized`).
 - [x] **P9 · `data-sanity` in produzione** — rimossi.
-- [ ] **P10 · GA caricato prima del consenso** (legato a G3).
+- [ ] **P10 · GA caricato prima del consenso** — spostato in Fase 6 (G3), è una scelta legale prima che di performance.
+- [x] **Extra** — video non partono con `prefers-reduced-motion` (resta il poster) → copre parte di A2.
 
 ## Fase 4 — SEO
 
@@ -74,7 +75,7 @@ Legenda: `[x]` risolto e verificato · `[~]` parziale · `[ ]` da fare · `[-]` 
 ## Fase 5 — Accessibilità e UX
 
 - [ ] **A1 · Banner cookie copre le CTA su mobile**.
-- [ ] **A2 · Video autoplay senza pausa / reduced-motion** (WCAG 2.2.2).
+- [~] **A2 · Video autoplay senza pausa / reduced-motion** (WCAG 2.2.2) — reduced-motion fatto in Fase 3; manca un pulsante pausa.
 - [ ] **A3 · Landmark** — header/footer fuori da `<main>`, skip link.
 - [ ] **A4 · Bottone Menu 35×16 px**, Escape, click fuori, aria-label dinamico.
 - [ ] **A5 · Contrasti** — footer, dialog, bianco su corallo.
@@ -100,7 +101,7 @@ Legenda: `[x]` risolto e verificato · `[~]` parziale · `[ ]` da fare · `[-]` 
 - [ ] **K3 · Test sempre rosso** (`codex-preview`) → smoke test reali.
 - [ ] **K4 · Script npm cross-platform** (risolto con K1).
 - [ ] **K5 · Dipendenze inutili** (`drizzle-orm`), versioni esatte.
-- [ ] **K6 · Lint** — `set-state-in-effect` in `experience-video.tsx`.
+- [x] **K6 · Lint** — `experience-video.tsx` riscritto con `useSyncExternalStore`; `eslint app` = 0 errori, 0 avvisi.
 - [x] **K7 · URL vercel.app hardcoded** — erano tutti nel codice Sanity, rimosso.
 - [x] **K8 · `package-lock.json`** — aggiunto al repo.
 - [x] **K9 · `vercel.json`** — build semplificata a `npm ci` + `next build`.
@@ -113,6 +114,7 @@ Legenda: `[x]` risolto e verificato · `[~]` parziale · `[ ]` da fare · `[-]` 
 |---|---|---|
 | 2026-11-09 | S1–S5, K8 | Sessione firmata, rate limit, logout, Next 16.4.5, lockfile (commit `6788035`). |
 | 2026-11-09 | S6–S13, C1–C10, P1~, P3, P4, P9, SEO2, K7, K9 | Media migrati in `public/`, rimossi Sanity/Blob/pannello (−915 pacchetti), video da 205 MB a 23 MB, header di sicurezza e cache. `tsc` e `next build` OK, 10 pagine 200, 27 media presenti, 0 errori console. |
+| 2026-11-09 | P1, P2, P5, P7, P8, K6, A2~ | Poster sui video, hero visibile subito, reduced-motion, immagini ricodificate, 21 file inutili eliminati, og.jpg 74 KB. Lint/tsc/build OK, video verificati su mobile. |
 
 ## Da fare su Vercel/Sanity dopo il deploy
 

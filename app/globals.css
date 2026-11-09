@@ -477,7 +477,6 @@ h2 {
 .hero-image {
   object-fit: cover;
   object-position: center 63%;
-  animation: hero-in 1.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
 .hero-shade {

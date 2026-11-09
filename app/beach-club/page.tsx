@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Beach Club Playa Luna a Varcaturo",
     description: "Vivi la spiaggia di Playa Luna sul litorale di Varcaturo.",
     url: "/beach-club",
-    images: ["/og.png"],
+    images: ["/og.jpg"],
   },
 };
 
