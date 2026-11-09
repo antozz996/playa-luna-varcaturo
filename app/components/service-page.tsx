@@ -1,7 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { createDataAttribute } from "next-sanity";
-import { ExperienceVideo } from "./experience-video";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
 import { beachWhatsapp, siteUrl } from "../lib/site";
@@ -26,34 +24,7 @@ type ServicePageProps = {
   schemaType?: "Beach" | "Restaurant" | "EventVenue" | "LocalBusiness";
   heroObjectPosition?: string;
   detailObjectPosition?: string;
-  heroVideo?: string;
-  heroVideoObjectPosition?: string;
-  detailVideo?: string;
-  detailVideoObjectPosition?: string;
-  sanityDocumentId?: string;
-  sanityDocumentType?: string;
 };
-
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "";
-const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
-const studioUrl = "https://playa-luna-varcaturo-delta.vercel.app/studio";
-
-function imageDataAttribute(
-  id: string | undefined,
-  type: string | undefined,
-  path: string,
-) {
-  if (!id || !type || !projectId) return undefined;
-
-  return createDataAttribute({
-    projectId,
-    dataset,
-    baseUrl: studioUrl,
-    id,
-    type,
-    path,
-  }).toString();
-}
 
 export function ServicePage({
   slug,
@@ -75,12 +46,6 @@ export function ServicePage({
   schemaType = "LocalBusiness",
   heroObjectPosition = "center 55%",
   detailObjectPosition = "50% 50%",
-  heroVideo,
-  heroVideoObjectPosition = "50% 50%",
-  detailVideo,
-  detailVideoObjectPosition = "50% 50%",
-  sanityDocumentId,
-  sanityDocumentType,
 }: ServicePageProps) {
   const structuredImage = image.startsWith("http") ? image : `${siteUrl}${image}`;
 
@@ -111,42 +76,21 @@ export function ServicePage({
     },
   ];
 
-  const heroSanity = imageDataAttribute(
-    sanityDocumentId,
-    sanityDocumentType,
-    heroVideo ? "heroVideo" : "hero",
-  );
-  const detailSanity = imageDataAttribute(
-    sanityDocumentId,
-    sanityDocumentType,
-    detailVideo ? "detailVideo" : "detail",
-  );
-
   return (
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <SiteHeader />
 
-      <section className="service-hero" aria-labelledby="service-title" data-sanity={heroSanity}>
-        {heroVideo ? (
-          <ExperienceVideo
-            src={heroVideo}
-            objectPosition={heroVideoObjectPosition}
-            fill
-            priority
-            zIndex={-2}
-          />
-        ) : (
-          <Image
-            src={image}
-            alt={imageAlt}
-            width={960}
-            height={1200}
-            priority
-            sizes="100vw"
-            style={{ objectPosition: heroObjectPosition }}
-          />
-        )}
+      <section className="service-hero" aria-labelledby="service-title">
+        <Image
+          src={image}
+          alt={imageAlt}
+          width={960}
+          height={1200}
+          priority
+          sizes="100vw"
+          style={{ objectPosition: heroObjectPosition }}
+        />
 
         <div className="service-hero-shade" />
 
@@ -186,23 +130,15 @@ export function ServicePage({
           ))}
         </div>
 
-        <figure
-          className="service-detail-image"
-          data-sanity={detailSanity}
-          style={detailVideo ? { position: "relative", minHeight: 680, overflow: "hidden" } : undefined}
-        >
-          {detailVideo ? (
-            <ExperienceVideo src={detailVideo} objectPosition={detailVideoObjectPosition} fill />
-          ) : (
-            <Image
-              src={detailImage}
-              alt={detailAlt}
-              width={960}
-              height={1200}
-              sizes="(max-width: 800px) 100vw, 36vw"
-              style={{ objectPosition: detailObjectPosition }}
-            />
-          )}
+        <figure className="service-detail-image">
+          <Image
+            src={detailImage}
+            alt={detailAlt}
+            width={960}
+            height={1200}
+            sizes="(max-width: 800px) 100vw, 36vw"
+            style={{ objectPosition: detailObjectPosition }}
+          />
         </figure>
       </section>
 

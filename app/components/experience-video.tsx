@@ -9,7 +9,6 @@ type ExperienceVideoProps = {
   fill?: boolean;
   priority?: boolean;
   className?: string;
-  dataSanity?: string;
   zIndex?: number;
 };
 
@@ -19,7 +18,6 @@ export function ExperienceVideo({
   fill = false,
   priority = false,
   className = "",
-  dataSanity,
   zIndex,
 }: ExperienceVideoProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -75,7 +73,6 @@ export function ExperienceVideo({
       onLoadedData={() => setIsReady(true)}
       aria-hidden="true"
       tabIndex={-1}
-      data-sanity={dataSanity}
     />
   );
 }

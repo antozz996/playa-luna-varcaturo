@@ -4,26 +4,6 @@ import {
   restaurantPhoneHref,
   restaurantPhoneNumber,
 } from "../lib/site";
-import {
-  getMediaDocument,
-  mediaAlt,
-  mediaObjectPosition,
-  mediaUrl,
-  type ManagedImage,
-} from "../lib/sanity";
-import {
-  mediaFileObjectPosition,
-  mediaFileUrl,
-  type ManagedFile,
-} from "../lib/sanity-file";
-import { getPageBlobMedia, getPageBlobVideos } from "../lib/site-media-pages";
-
-type RestaurantMedia = {
-  hero?: ManagedImage;
-  heroVideo?: ManagedFile;
-  detail?: ManagedImage;
-  detailVideo?: ManagedFile;
-};
 
 export const metadata: Metadata = {
   title: "Ristorante sul mare a Varcaturo",
@@ -38,11 +18,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RestaurantPage() {
-  const [media, blobMedia, blobVideos] = await Promise.all([getMediaDocument<RestaurantMedia & Record<string, unknown>>("restaurantMedia"), getPageBlobMedia("ristorante"), getPageBlobVideos("ristorante")]);
-  const heroVideo = undefined;
-  const detailVideo = blobVideos.detail ?? (blobMedia.detail ? undefined : mediaFileUrl(media.detailVideo));
-
+export default function RestaurantPage() {
   return (
     <ServicePage
       slug="ristorante-sul-mare"
@@ -52,15 +28,10 @@ export default async function RestaurantPage() {
       intro="Il ristorante è parte della giornata Playa Luna: una sala aperta sulla luce, cucina mediterranea e tavoli da condividere."
       body="La proposta accompagna il ritmo del lido, dal pranzo agli aperitivi. Il mare resta il filo conduttore, insieme a ingredienti mediterranei, piatti curati e un ambiente informale ma attento ai dettagli."
       image="/images/playa-luna/restaurant/hero-2f8a7552.webp"
-      imageAlt={mediaAlt(media.hero, "La sala luminosa del ristorante Playa Luna durante il servizio")}
-      heroObjectPosition={mediaObjectPosition(media.hero, "50% 35%")}
-      heroVideo={heroVideo}
-      heroVideoObjectPosition={mediaFileObjectPosition(media.heroVideo)}
-      detailImage={blobMedia.detail ?? mediaUrl(media.detail, "/images/playa-luna/food-pasta.webp")}
-      detailAlt={mediaAlt(media.detail, "Piatto di pasta mediterranea preparato al ristorante Playa Luna")}
-      detailObjectPosition={mediaObjectPosition(media.detail)}
-      detailVideo={detailVideo}
-      detailVideoObjectPosition={mediaFileObjectPosition(media.detailVideo)}
+      imageAlt="La sala luminosa del ristorante Playa Luna durante il servizio"
+      heroObjectPosition="50% 35%"
+      detailImage="/images/playa-luna/restaurant/detail-carpaccio.webp"
+      detailAlt="Carpaccio gourmet servito al ristorante Playa Luna di Varcaturo, con ingredienti selezionati e impiattamento curato."
       features={[
         "Pranzo nella struttura sul mare",
         "Cucina mediterranea e piatti di pesce",
@@ -73,8 +44,6 @@ export default async function RestaurantPage() {
       ctaEvent="phone_restaurant"
       telephone={restaurantPhoneNumber}
       schemaType="Restaurant"
-      sanityDocumentId="restaurantMedia"
-      sanityDocumentType="restaurantMedia"
     />
   );
 }

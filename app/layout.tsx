@@ -1,6 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { draftMode } from "next/headers";
-import { VisualEditing } from "next-sanity/visual-editing";
 import "./globals.css";
 import "./food-gallery-three.css";
 import { AnalyticsConsent } from "./components/analytics-consent";
@@ -58,19 +56,16 @@ export const viewport: Viewport = {
   themeColor: "#27251f",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { isEnabled } = await draftMode();
-
   return (
     <html lang="it">
       <body>
         {children}
         <AnalyticsConsent />
-        {isEnabled && <VisualEditing />}
       </body>
     </html>
   );

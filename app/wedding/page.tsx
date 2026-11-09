@@ -1,18 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CmsMedia } from "../components/cms-media";
+import { PageMedia } from "../components/page-media";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
 import { eventPhoneNumber, eventWhatsapp, siteUrl } from "../lib/site";
-import {
-  getMediaDocument,
-  mediaCaption,
-  mediaUrl,
-  type ManagedImage,
-} from "../lib/sanity";
-import { type ManagedFile } from "../lib/sanity-file";
-import { sanityImageAttribute } from "../lib/sanity-visual";
-import { getPageBlobMedia, getPageBlobVideos, isSiteMediaSlotHidden } from "../lib/site-media-pages";
 
 export const metadata: Metadata = {
   title: "Ricevimento di matrimonio sul mare a Napoli",
@@ -34,12 +25,13 @@ const weddingDetails = [
   { number: "04", title: "Il momento", text: "Tempi, luci e dettagli coordinati per lasciare spazio alle emozioni vere." },
 ];
 
-const weddingGallery = [
-  { src: "/images/playa-luna/wedding/place-setting.webp", alt: "Dettaglio della mise en place bianca e azzurra", caption: "Una tavola che parla di voi", slot: "gallery01" },
-  { src: "/images/playa-luna/wedding/flowers.webp", alt: "Composizione floreale per un ricevimento al Playa Luna", caption: "Fiori, luce, materia", slot: "gallery02" },
-  { src: "/images/playa-luna/wedding/sea-table.webp", alt: "Tavola elegante allestita davanti al mare", caption: "Il mare come scenografia", slot: "gallery03" },
-  { src: "/images/playa-luna/wedding/table-by-sea.webp", alt: "Ricevimento con tavoli apparecchiati sulla terrazza sul mare", caption: "Il ricevimento all’aperto", slot: "gallery04" },
-  { src: "/images/playa-luna/wedding/white-table.webp", alt: "Tavola nuziale bianca con composizioni floreali", caption: "Eleganza, senza distanza", slot: "gallery05" },
+type GalleryItem = { src?: string; video?: string; alt: string; caption: string };
+
+const weddingGallery: GalleryItem[] = [
+  { src: "/images/playa-luna/wedding/place-setting.webp", alt: "Dettaglio della mise en place bianca e azzurra", caption: "Una tavola che parla di voi" },
+  { src: "/images/playa-luna/wedding/flowers.webp", alt: "Composizione floreale per un ricevimento al Playa Luna", caption: "Fiori, luce, materia" },
+  { video: "/videos/playa-luna/wedding-gallery-03.mp4", alt: "Tavola elegante allestita davanti al mare", caption: "Il mare come scenografia" },
+  { src: "/images/playa-luna/wedding/white-table.webp", alt: "Tavola nuziale bianca con composizioni floreali", caption: "Eleganza, senza distanza" },
 ];
 
 const baseSchema = {
@@ -57,36 +49,21 @@ const baseSchema = {
   },
 };
 
-function mediaPath(slot: string, video?: ManagedFile) {
-  return video?.asset?._ref ? `${slot}Video` : slot;
-}
+const schema = { ...baseSchema, image: `${siteUrl}/images/playa-luna/wedding/hero.webp` };
 
-export default async function WeddingPage() {
-  const [media, blobMedia, blobVideos] = await Promise.all([getMediaDocument<Record<string, unknown>>("weddingMedia"), getPageBlobMedia("wedding"), getPageBlobVideos("wedding")]);
-  const heroImage = media.hero as ManagedImage | undefined;
-  const heroVideo = media.heroVideo as ManagedFile | undefined;
-  const closingImage = media.closing as ManagedImage | undefined;
-  const closingVideo = media.closingVideo as ManagedFile | undefined;
-  const hero = mediaUrl(heroImage, "/images/playa-luna/wedding/hero.webp");
-  const schema = { ...baseSchema, image: hero.startsWith("http") ? hero : `${siteUrl}${hero}` };
-
+export default function WeddingPage() {
   return (
     <main className="wedding-editorial-v2">
       <SiteHeader />
 
       <section className="wedding-hero-v2">
-        <CmsMedia
-          image={heroImage}
-          video={heroVideo}
-          fallback="/images/playa-luna/wedding/hero.webp"
-          altFallback="Tavola wedding bianca e azzurra allestita al Playa Luna"
+        <PageMedia
+          src="/images/playa-luna/wedding/hero.webp"
+          alt="Tavola wedding bianca e azzurra allestita al Playa Luna"
           sizes="100vw"
           fill
           priority
           className="wedding-hero-image-v2"
-          srcOverride={blobMedia.hero}
-          videoOverride={blobVideos.hero}
-          dataSanity={sanityImageAttribute("weddingMedia", "weddingMedia", mediaPath("hero", heroVideo))}
         />
         <div className="wedding-hero-shade-v2" />
         <div className="shell wedding-hero-copy-v2">
@@ -115,31 +92,22 @@ export default async function WeddingPage() {
           <h2>La bellezza<br /><em>dei dettagli.</em></h2>
           <p>Materiali naturali, colori morbidi e composizioni leggere dialogano con il paesaggio. La scenografia non copre il luogo: lo rende vostro.</p>
         </div>
-        {weddingGallery.filter((item) => !isSiteMediaSlotHidden("wedding", item.slot)).map((item, index) => {
-          const image = media[item.slot] as ManagedImage | undefined;
-          const video = media[`${item.slot}Video`] as ManagedFile | undefined;
-          return (
-            <figure
-              className={`wedding-gallery-item-v3 wedding-gallery-item-${index + 1}-v3`}
-              key={item.slot}
-              style={{ position: "relative", overflow: "hidden" }}
-            >
-              <CmsMedia
-                image={image}
-                video={video}
-                fallback={item.src}
-                altFallback={item.alt}
-                fill
-                sizes={index < 2 ? "(max-width: 800px) 100vw, 58vw" : "(max-width: 800px) 100vw, 33vw"}
-                srcOverride={blobMedia[item.slot]}
-                videoOverride={blobVideos[item.slot]}
-                localVideo={item.slot === "gallery03" ? "/videos/playa-luna/wedding-gallery-03.mp4" : undefined}
-                dataSanity={sanityImageAttribute("weddingMedia", "weddingMedia", mediaPath(item.slot, video))}
-              />
-              <figcaption>{mediaCaption(image, item.caption)}</figcaption>
-            </figure>
-          );
-        })}
+        {weddingGallery.map((item, index) => (
+          <figure
+            className={`wedding-gallery-item-v3 wedding-gallery-item-${index + 1}-v3`}
+            key={item.caption}
+            style={{ position: "relative", overflow: "hidden" }}
+          >
+            <PageMedia
+              src={item.src}
+              video={item.video}
+              alt={item.alt}
+              fill
+              sizes={index < 2 ? "(max-width: 800px) 100vw, 58vw" : "(max-width: 800px) 100vw, 33vw"}
+            />
+            <figcaption>{item.caption}</figcaption>
+          </figure>
+        ))}
       </section>
 
       <section className="wedding-details-v2">
@@ -159,17 +127,11 @@ export default async function WeddingPage() {
 
       <section className="wedding-moment-v2">
         <div className="wedding-moment-image-v2" style={{ position: "relative", overflow: "hidden" }}>
-          <CmsMedia
-            image={closingImage}
-            video={closingVideo}
-            fallback="/images/playa-luna/wedding/favors.webp"
-            altFallback="Dettagli e cadeaux preparati per un ricevimento al Playa Luna"
+          <PageMedia
+            src="/images/playa-luna/wedding/closing-2f8a6584.webp"
+            alt="Dettagli e cadeaux preparati per un ricevimento al Playa Luna"
             fill
             sizes="(max-width: 800px) 100vw, 52vw"
-            srcOverride={blobMedia.closing}
-            videoOverride={blobVideos.closing}
-            localImage="/images/playa-luna/wedding/closing-2f8a6584.webp"
-            dataSanity={sanityImageAttribute("weddingMedia", "weddingMedia", mediaPath("closing", closingVideo))}
           />
         </div>
         <div className="wedding-moment-copy-v2">
