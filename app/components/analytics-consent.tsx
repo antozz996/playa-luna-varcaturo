@@ -44,8 +44,11 @@ function analyticsWindow() {
   target.dataLayer = target.dataLayer ?? [];
   target.gtag =
     target.gtag ??
-    function gtag(...args: unknown[]) {
-      target.dataLayer?.push(args);
+    function gtag() {
+      // gtag.js only processes the `arguments` object (as in Google's official snippet):
+      // pushing a plain array is silently ignored and no data is ever sent.
+      // eslint-disable-next-line prefer-rest-params
+      target.dataLayer?.push(arguments as unknown as unknown[]);
     };
   return target as AnalyticsWindow & { gtag: (...args: unknown[]) => void };
 }
