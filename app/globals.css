@@ -8,6 +8,8 @@
   --sea: #64889a;
   --deep-sea: #335b68;
   --coral: #e76543;
+  /* Coral dark enough for white text (≈5:1, WCAG AA). */
+  --coral-strong: #b8452a;
   --white: #fffdf8;
   --line: rgba(39, 37, 31, 0.2);
 }
@@ -31,8 +33,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.page-shell,
 main {
   overflow: hidden;
+}
+
+main:focus {
+  outline: none;
 }
 
 a {
@@ -55,270 +62,6 @@ img {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
-}
-
-.media-login,
-.media-admin {
-  min-height: 100svh;
-  background: #f5f0e7;
-  color: #27251f;
-}
-
-.media-login {
-  display: grid;
-  padding: 24px;
-  place-items: center;
-}
-
-.media-login-card {
-  width: min(100%, 470px);
-  padding: clamp(30px, 6vw, 56px);
-  border: 1px solid rgba(39, 37, 31, 0.18);
-  background: #fffdf8;
-  box-shadow: 14px 14px 0 #d8c4a8;
-}
-
-.media-kicker {
-  margin-bottom: 14px;
-  color: #335b68;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.17em;
-  text-transform: uppercase;
-}
-
-.media-login h1,
-.media-admin h1 {
-  font-size: clamp(48px, 7vw, 76px);
-}
-
-.media-login p:not(.media-kicker):not(.media-error) {
-  margin-top: 22px;
-  color: rgba(39, 37, 31, 0.74);
-}
-
-.media-login label {
-  display: grid;
-  margin-top: 28px;
-  gap: 8px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.media-login input {
-  width: 100%;
-  padding: 14px;
-  border: 1px solid rgba(39, 37, 31, 0.34);
-  border-radius: 0;
-  background: white;
-  color: #27251f;
-  font: inherit;
-}
-
-.media-login button,
-.media-card button {
-  border: 0;
-  cursor: pointer;
-  font: inherit;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.media-login button {
-  display: flex;
-  width: 100%;
-  margin-top: 22px;
-  padding: 16px 18px;
-  background: #27251f;
-  color: #fffdf8;
-  justify-content: space-between;
-}
-
-.media-error {
-  margin-top: 12px;
-  color: #b42318;
-}
-
-.media-admin {
-  padding: clamp(24px, 5vw, 72px);
-}
-
-.media-admin-header {
-  display: flex;
-  gap: 22px;
-  align-items: end;
-  justify-content: space-between;
-}
-
-.media-admin-header a {
-  padding-bottom: 8px;
-  border-bottom: 1px solid currentColor;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.media-intro {
-  max-width: 630px;
-  margin: 30px 0 20px;
-  color: rgba(39, 37, 31, 0.72);
-}
-
-.media-page-nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 24px; }
-.media-page-nav button, .media-page-nav a { padding: 10px 12px; border: 1px solid rgba(39, 37, 31, 0.25); background: #fffdf8; color: #27251f; font: inherit; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
-.media-remove-button { grid-column: 1 / -1; border-color: #9d2b2b !important; color: #9d2b2b !important; }
-.media-page-nav button.is-active { border-color: #27251f; background: #27251f; color: #fffdf8; }
-.media-page-nav a { margin-left: auto; text-decoration: none; }
-
-.media-status {
-  margin: 0 0 24px;
-  padding: 13px 16px;
-  border-left: 3px solid #335b68;
-  background: rgba(100, 136, 154, 0.14);
-  font-weight: 700;
-}
-
-.media-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-}
-
-.media-card {
-  overflow: hidden;
-  border: 1px solid rgba(39, 37, 31, 0.18);
-  background: #fffdf8;
-}
-
-.media-preview {
-  position: relative;
-  display: grid;
-  min-height: 230px;
-  background: #d8c4a8;
-  place-items: center;
-}
-
-.media-preview img,
-.media-preview video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.media-preview video { position: absolute; inset: 0; }
-
-.media-type {
-  padding: 6px 8px;
-  background: rgba(39, 37, 31, 0.84);
-  color: #fffdf8;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-}
-
-.media-badges {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  left: 12px;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.media-origin {
-  padding: 6px 8px;
-  background: rgba(255, 253, 248, 0.88);
-  color: #27251f;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.media-preview span {
-  max-width: 180px;
-  color: rgba(39, 37, 31, 0.65);
-  font-size: 13px;
-  text-align: center;
-}
-
-.media-card-copy {
-  padding: 18px;
-}
-
-.media-card h2 {
-  font-size: 27px;
-  letter-spacing: -0.035em;
-  line-height: 1;
-}
-
-.media-card p {
-  min-height: 44px;
-  margin-top: 8px;
-  color: rgba(39, 37, 31, 0.68);
-  font-size: 13px;
-  line-height: 1.4;
-}
-
-.media-card .media-area {
-  min-height: auto;
-  margin: 0 0 8px;
-  color: #335b68;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.media-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-
-.media-card button {
-  width: 100%;
-  margin-top: 18px;
-  padding: 13px;
-  border: 1px solid #27251f;
-  background: transparent;
-  color: #27251f;
-}
-
-.media-card .media-video-button {
-  border-color: #335b68;
-  color: #335b68;
-}
-
-.media-card .media-video-button:hover:not(:disabled),
-.media-card .media-video-button:focus-visible:not(:disabled) {
-  background: #335b68;
-  color: #fffdf8;
-}
-
-.media-card button:hover:not(:disabled),
-.media-card button:focus-visible:not(:disabled) {
-  background: #27251f;
-  color: #fffdf8;
-}
-
-.media-card button:disabled {
-  cursor: wait;
-  opacity: 0.6;
-}
-
-@media (max-width: 900px) {
-  .media-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
-@media (max-width: 620px) {
-  .media-admin-header { align-items: start; flex-direction: column; }
-  .media-grid { grid-template-columns: 1fr; }
-  .media-preview { min-height: 260px; }
 }
 
 figure,
@@ -345,6 +88,7 @@ ul {
   align-items: center;
   gap: 12px;
   color: color-mix(in srgb, var(--ink) 67%, transparent);
+  font-family: inherit;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.2em;
@@ -363,8 +107,14 @@ ul {
   color: rgba(255, 253, 248, 0.82);
 }
 
+/* Keyword H1s styled as eyebrows can wrap on mobile: give them breathing room. */
+h1.eyebrow {
+  line-height: 1.5;
+}
+
 h1,
-h2 {
+h2,
+.display-title {
   font-family: Georgia, "Times New Roman", serif;
   font-weight: 400;
   letter-spacing: -0.055em;
@@ -372,7 +122,8 @@ h2 {
 }
 
 h1 em,
-h2 em {
+h2 em,
+.display-title em {
   font-weight: 400;
 }
 
@@ -477,7 +228,6 @@ h2 {
 .hero-image {
   object-fit: cover;
   object-position: center 63%;
-  animation: hero-in 1.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
 .hero-shade {
@@ -496,7 +246,7 @@ h2 {
   justify-content: center;
 }
 
-.hero h1 {
+.hero .display-title {
   max-width: 1040px;
   margin-top: 30px;
   font-size: clamp(74px, 10.6vw, 174px);
@@ -549,7 +299,7 @@ h2 {
 
 .hero-actions span {
   color: currentColor;
-  font-size: 10px;
+  font-size: 11px;
   opacity: 0.68;
 }
 
@@ -637,7 +387,7 @@ h2 {
   border-radius: 50%;
   background: rgba(25, 28, 26, 0.22);
   color: var(--white);
-  font-size: 10px;
+  font-size: 11px;
   place-items: center;
   backdrop-filter: blur(8px);
 }
@@ -678,8 +428,8 @@ h2 {
 }
 
 .experience-card:hover .round-arrow {
-  background: var(--coral);
-  border-color: var(--coral);
+  background: var(--coral-strong);
+  border-color: var(--coral-strong);
   color: var(--white);
   transform: rotate(45deg);
 }
@@ -742,7 +492,7 @@ h2 {
   gap: 34px;
   align-items: center;
   justify-content: space-between;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -756,7 +506,7 @@ h2 {
 
 .pill-button.dark:hover,
 .pill-button.dark:focus-visible {
-  background: var(--coral);
+  background: var(--coral-strong);
 }
 
 .beach-main-image {
@@ -771,7 +521,7 @@ h2 {
 
 .beach-main-image figcaption {
   margin-top: 10px;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -853,7 +603,7 @@ h2 {
 
 .restaurant-bottom > p {
   color: rgba(255, 255, 255, 0.62);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -861,7 +611,7 @@ h2 {
 
 .pill-button.coral {
   margin-top: 0;
-  background: var(--coral);
+  background: var(--coral-strong);
   color: var(--white);
 }
 
@@ -964,7 +714,7 @@ h2 {
   top: 35px;
   left: 0;
   color: color-mix(in srgb, var(--ink) 48%, transparent);
-  font-size: 9px;
+  font-size: 11px;
 }
 
 .event-types h3 {
@@ -1030,7 +780,7 @@ h2 {
 
 .pill-button.linen:hover,
 .pill-button.linen:focus-visible {
-  background: var(--coral);
+  background: var(--coral-strong);
   color: var(--white);
 }
 
@@ -1062,8 +812,8 @@ footer {
 }
 
 .footer-brand > p {
-  color: rgba(255, 255, 255, 0.52);
-  font-size: 9px;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -1071,8 +821,8 @@ footer {
 
 .footer-label {
   margin-bottom: 24px;
-  color: rgba(255, 255, 255, 0.44);
-  font-size: 9px;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -1099,8 +849,8 @@ footer {
   border-top: 1px solid rgba(255, 255, 255, 0.16);
   grid-template-columns: 1fr auto 1fr;
   gap: 30px;
-  color: rgba(255, 255, 255, 0.38);
-  font-size: 8px;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -1129,12 +879,12 @@ footer {
   min-height: 52px;
   padding: 0 22px;
   border-radius: 999px;
-  background: var(--coral);
+  background: var(--coral-strong);
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2);
   color: var(--white);
   gap: 9px;
   align-items: center;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1186,7 +936,7 @@ footer {
   margin-bottom: auto;
   color: rgba(255, 255, 255, 0.62);
   gap: 10px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1197,8 +947,8 @@ footer {
   color: var(--white);
 }
 
-.service-hero h1,
-.contact-hero h1 {
+.service-hero .display-title,
+.contact-hero .display-title {
   max-width: 1100px;
   margin-top: 28px;
   font-family: Georgia, "Times New Roman", serif;
@@ -1208,8 +958,8 @@ footer {
   line-height: 0.91;
 }
 
-.service-hero h1 em,
-.contact-hero h1 em {
+.service-hero .display-title em,
+.contact-hero .display-title em {
   font-weight: 400;
 }
 
@@ -1259,7 +1009,7 @@ footer {
 
 .service-facts span {
   color: color-mix(in srgb, var(--ink) 45%, transparent);
-  font-size: 9px;
+  font-size: 11px;
 }
 
 .service-facts p {
@@ -1308,13 +1058,13 @@ footer {
 
 .contact-options > a:hover,
 .contact-options > a:focus-visible {
-  background: var(--coral);
-  border-color: var(--coral);
+  background: var(--coral-strong);
+  border-color: var(--coral-strong);
   color: var(--white);
 }
 
 .contact-options span {
-  font-size: 9px;
+  font-size: 11px;
   opacity: 0.55;
 }
 
@@ -1332,7 +1082,7 @@ footer {
 .contact-options b {
   margin-top: auto;
   padding-top: 30px;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.13em;
   text-transform: uppercase;
 }
@@ -1363,8 +1113,8 @@ footer {
 
 .legal-page .legal-updated {
   margin-top: 24px;
-  color: color-mix(in srgb, var(--ink) 55%, transparent);
-  font-size: 12px;
+  color: color-mix(in srgb, var(--ink) 72%, transparent);
+  font-size: 13px;
 }
 
 .legal-page h2 {
@@ -1375,15 +1125,71 @@ footer {
   line-height: 1.1;
 }
 
-.legal-page h2 + p {
+.legal-page h2 ~ p,
+.legal-page li {
   margin-top: 16px;
-  color: color-mix(in srgb, var(--ink) 74%, transparent);
+  color: color-mix(in srgb, var(--ink) 80%, transparent);
   font-size: 16px;
   line-height: 1.75;
 }
 
+.legal-page ul {
+  margin: 16px 0 0;
+  padding-left: 22px;
+}
+
+.legal-page li {
+  margin-top: 8px;
+}
+
 .legal-page a {
   border-bottom: 1px solid currentColor;
+}
+
+.legal-page .pill-button {
+  margin-top: 24px;
+}
+
+.legal-table-wrap {
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+.legal-table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.legal-table caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.legal-table th,
+.legal-table td {
+  padding: 12px 14px 12px 0;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.legal-table thead th {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.legal-table tbody th {
+  font-family: ui-monospace, Consolas, monospace;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .cookie-banner {
@@ -1402,6 +1208,7 @@ footer {
 }
 
 .cookie-title {
+  padding-right: 40px;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 24px;
 }
@@ -1418,7 +1225,7 @@ footer {
   display: inline-block;
   margin-top: 10px;
   border-bottom: 1px solid currentColor;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1429,6 +1236,28 @@ footer {
   gap: 8px;
 }
 
+.cookie-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.cookie-banner .cookie-links {
+  display: flex;
+  gap: 18px;
+}
+
 .cookie-actions button {
   min-height: 44px;
   padding: 0 16px;
@@ -1436,7 +1265,7 @@ footer {
   background: transparent;
   color: var(--ink);
   cursor: pointer;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -1445,11 +1274,6 @@ footer {
 .cookie-actions .accept {
   background: var(--ink);
   color: var(--white);
-}
-
-@keyframes hero-in {
-  from { opacity: 0; transform: scale(1.025); }
-  to { opacity: 1; transform: scale(1); }
 }
 
 @media (max-width: 1100px) {
@@ -1473,8 +1297,15 @@ footer {
   }
 
   .mobile-menu summary {
+    display: inline-flex;
+    min-width: 48px;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    margin: -16px -12px;
+    padding: 0 12px;
     cursor: pointer;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.14em;
     list-style: none;
@@ -1563,8 +1394,12 @@ footer {
     height: 50px;
   }
 
+  /* Keep "Prenota" one tap away on mobile, next to the Menu button. */
   .header-cta {
-    display: none;
+    margin-right: 76px;
+    padding: 8px 0;
+    gap: 8px;
+    font-size: 12px;
   }
 
   .mobile-menu {
@@ -1587,7 +1422,7 @@ footer {
     justify-content: flex-start;
   }
 
-  .hero h1 {
+  .hero .display-title {
     margin-top: 24px;
     font-size: clamp(62px, 21vw, 98px);
   }
@@ -1608,7 +1443,7 @@ footer {
     padding: 0 14px;
     border-right: 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.35);
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .hero-actions a:last-child {
@@ -1630,8 +1465,8 @@ footer {
     margin-bottom: auto;
   }
 
-  .service-hero h1,
-  .contact-hero h1 {
+  .service-hero .display-title,
+  .contact-hero .display-title {
     font-size: clamp(58px, 18vw, 86px);
   }
 
@@ -1677,11 +1512,32 @@ footer {
     padding-bottom: 100px;
   }
 
+  /* Compact banner on mobile so the booking buttons stay reachable. */
   .cookie-banner {
-    right: 12px;
-    bottom: 12px;
-    width: calc(100% - 24px);
+    right: 10px;
+    bottom: 10px;
+    width: calc(100% - 20px);
+    padding: 14px 16px;
     grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .cookie-title {
+    font-size: 18px;
+  }
+
+  .cookie-banner div > p:not(.cookie-title) {
+    margin-top: 4px;
+    line-height: 1.42;
+  }
+
+  .cookie-banner a {
+    margin-top: 6px;
+  }
+
+  /* While the banner is open, lift the floating booking button above it. */
+  body:has(.cookie-banner) .whatsapp-float {
+    bottom: 236px;
   }
 
   .cookie-actions {
@@ -1938,20 +1794,20 @@ footer {
   color: rgba(255, 253, 248, 0.78);
 }
 
-.events-hero-copy-v2 h1,
-.wedding-hero-copy-v2 h1 {
+.events-hero-copy-v2 .display-title,
+.wedding-hero-copy-v2 .display-title {
   max-width: 1160px;
   margin-top: 30px;
   font-size: clamp(76px, 9.5vw, 150px);
 }
 
-.events-hero-copy-v2 h1 em,
-.wedding-hero-copy-v2 h1 em {
+.events-hero-copy-v2 .display-title em,
+.wedding-hero-copy-v2 .display-title em {
   font-weight: 400;
 }
 
 .events-hero-lead-v2,
-.wedding-hero-copy-v2 > p:not(.eyebrow) {
+.wedding-hero-copy-v2 > p:not(.eyebrow):not(.display-title) {
   max-width: 570px;
   margin-top: 30px;
   color: rgba(255, 253, 248, 0.84);
@@ -2062,7 +1918,7 @@ footer {
   bottom: 22px;
   left: 26px;
   color: var(--white);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -2111,7 +1967,7 @@ footer {
   display: block;
   margin-bottom: 90px;
   color: rgba(255, 255, 255, 0.45);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.16em;
 }
@@ -2243,7 +2099,7 @@ footer {
   bottom: 20px;
   left: 24px;
   color: var(--white);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -2359,8 +2215,8 @@ footer {
     padding-bottom: 64px;
   }
 
-  .events-hero-copy-v2 h1,
-  .wedding-hero-copy-v2 h1 {
+  .events-hero-copy-v2 .display-title,
+  .wedding-hero-copy-v2 .display-title {
     font-size: clamp(58px, 17vw, 88px);
   }
 
@@ -2469,4 +2325,123 @@ footer {
     min-height: 600px;
     padding: 80px 18px;
   }
+}
+
+/* Contatti — orari di apertura */
+.contact-hours {
+  padding-bottom: clamp(80px, 9vw, 140px);
+}
+
+.contact-hours h2 {
+  margin: 20px 0 40px;
+  font-size: clamp(44px, 6vw, 84px);
+}
+
+.contact-hours dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+  border-top: 1px solid var(--line);
+}
+
+.contact-hours dl > div {
+  padding: 24px 24px 24px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.contact-hours dt {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.contact-hours dd {
+  margin: 12px 0 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(28px, 3vw, 40px);
+  letter-spacing: -0.03em;
+}
+
+.contact-hours dd span {
+  display: block;
+  margin-top: 6px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  letter-spacing: 0;
+  color: color-mix(in srgb, var(--ink) 72%, transparent);
+}
+
+.contact-hours > p:last-child {
+  margin-top: 24px;
+  font-size: 16px;
+}
+
+@media (max-width: 800px) {
+  .contact-hours dl {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Accessibilità — link "Vai al contenuto", visibile solo al focus da tastiera */
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: 12px;
+  left: 12px;
+  padding: 12px 18px;
+  background: var(--ink);
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 700;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* Pulsante pausa/riproduzione sui video in evidenza (WCAG 2.2.2) */
+.video-toggle {
+  position: absolute;
+  z-index: 5;
+  right: 16px;
+  bottom: 16px;
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 253, 248, 0.6);
+  border-radius: 50%;
+  background: rgba(39, 37, 31, 0.55);
+  color: var(--white);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* On full-screen heroes the bottom is taken by the booking buttons: place the toggle under the header. */
+.hero .video-toggle,
+.events-hero-v2 .video-toggle {
+  top: 104px;
+  bottom: auto;
+}
+
+/* Keep the keyword H1 clear of the pause button. */
+.hero h1.eyebrow,
+.events-hero-copy-v2 h1.eyebrow {
+  padding-right: 60px;
+}
+
+.video-toggle:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 2px;
+}
+
+/* Gallerie a scorrimento orizzontale raggiungibili da tastiera */
+.food-gallery:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
 }

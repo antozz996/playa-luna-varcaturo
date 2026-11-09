@@ -40,8 +40,8 @@
 
 .eyebrow {
   margin: 0;
-  color: #8c8177;
-  font-size: 10px;
+  color: #6b625a;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -49,8 +49,8 @@
 
 .close {
   display: grid;
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   flex: 0 0 auto;
   padding: 0;
   border: 1px solid #dedbd3;
@@ -123,8 +123,8 @@
 .optionAction {
   display: inline-flex;
   flex: 0 0 auto;
-  color: #877970;
-  font-size: 10px;
+  color: #6b625a;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.07em;
   align-items: center;

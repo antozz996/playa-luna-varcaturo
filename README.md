@@ -1,131 +1,57 @@
 # Playa Luna · sito ufficiale
 
-Sito mobile-first per Playa Luna a Marina di Varcaturo. Il progetto integra
-homepage commerciale, pagine SEO dedicate, conversioni WhatsApp/telefono,
-consenso analytics, dati strutturati, sitemap e contenuti Local SEO.
+Sito di Playa Luna a Marina di Varcaturo (beach club, ristorante, piscina, eventi, wedding).
+Next.js 16 + React 19, pagine statiche, deploy su Vercel. Live: https://playaluna.it
 
-## Architettura pubblica
+## Comandi
 
-- `/` — homepage e panoramica dell'esperienza
-- `/beach-club/` — spiaggia e servizi
-- `/ristorante-sul-mare/` — ristorante e cucina
-- `/piscina/` — piscina interna a Playa Luna
-- `/eventi/` — feste, cerimonie e corporate
-- `/wedding/` — matrimoni e ricevimenti sul mare
-- `/contatti/` — WhatsApp, telefono, email e indicazioni
-- `/privacy/` e `/cookie/` — informative
-
-## Analytics e Search Console
-
-Il caricamento di Google Analytics avviene solo dopo il consenso. Configurare
-le variabili runtime `NEXT_PUBLIC_GA_ID` e
-`NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` prima della pubblicazione sul dominio
-definitivo. Gli eventi principali sono dichiarati tramite `data-event`.
-
-## Runtime
-
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
-
-## Prerequisites
-
-- Node.js `>=22.13.0`
-- Linux with `flock`, `curl`, and GNU `timeout`
-
-## Sites Lifecycle
-
-The Sites lifecycle CLI runs the locked dependency install before returning this checkout. Edit the source under `app/`, then checkpoint when a coherent milestone is ready to inspect or share. The remote Sites builder runs `npm run build` against the pushed commit. Do not repeat install or build as a normal pre-checkpoint step.
-
-This starter does not use `wrangler.jsonc`.
-
-`install:ci` is intentionally a single, non-retrying `npm ci`. It refuses a concurrent install for the same project, consumes a matching image-seeded npm cache with `--prefer-offline` while retaining registry fallback for a missing cache object, otherwise downloads and verifies the complete vinext tarball recorded in `package-lock.json`, limits npm to one socket, and terminates a stalled install. `build` applies a short timeout. These helpers target Linux and use GNU `timeout`; they are not native macOS scripts.
-
-Scripts that need writable project-scoped home, npm, XDG, and temporary paths use `scripts/sites-env.sh`. The `dev` and `start` scripts honor the caller's runtime environment and keep Wrangler logs inside the checkout. The generated `.sites-runtime/` directory is disposable and ignored by Git.
-
-## Included Shape
-
-- edit site code under `app/`
-- `app/chatgpt-auth.ts` provides optional dispatch-owned ChatGPT sign-in helpers
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/index.ts` reads the D1 binding from the Cloudflare Worker environment
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
-
-## Workspace Auth Headers
-
-OpenAI workspace sites can read the current user's email from
-`oai-authenticated-user-email`.
-
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
+```bash
+npm install        # dipendenze
+npm run dev        # sviluppo su http://localhost:3000
+npm run build      # build di produzione
+npm start          # serve la build
+npm run lint       # ESLint
+npm run typecheck  # TypeScript
+npm test           # build + smoke test su tutte le pagine (tests/smoke.test.mjs)
 ```
 
-## Optional Dispatch-Owned ChatGPT Sign-In
+Funziona su Windows, macOS e Linux. Node >= 22.13.
 
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
+## Struttura
 
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
+- `app/` — pagine (`page.tsx` per rotta), componenti in `app/components/`
+- `app/lib/site.ts` — **dati centrali**: telefoni, WhatsApp, indirizzo, orari, navigazione
+- `app/lib/schema.ts` — dati strutturati schema.org (LocalBusiness, reparti, breadcrumb)
+- `public/images/`, `public/videos/`, `public/menus/` — tutti i media del sito
+- `next.config.ts` — redirect dal vecchio sito, header di sicurezza (CSP) e cache
+- `ROADMAP.md` — stato delle correzioni dopo l'audit
 
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
+## Cambiare foto, video o menu
 
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
+I media vivono nel repository: non c'è CMS né storage esterno a pagamento.
 
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
+1. Metti il file in `public/images/…` o `public/videos/…` con un **nome nuovo**
+   (es. `hero-2027.webp`): la cache dei browser dura 7 giorni, un nome nuovo la aggira.
+2. Aggiorna il percorso nella pagina (`app/…/page.tsx`).
+3. Foto: WebP, lato lungo max 2048 px, qualità ~78.
+   Video: MP4 H.264, max 1080 px di lato corto, 15 s in loop, senza audio, ≤ 2 Mbps,
+   e un poster `nome-poster.webp` accanto (lo usa `PageMedia` in automatico):
+   ```bash
+   ffmpeg -i input.mp4 -t 15 -an -vf "scale=w='min(1080,iw)':h=-2,fps=30,format=yuv420p" \
+     -c:v libx264 -preset slow -crf 26 -maxrate 2M -bufsize 4M -movflags +faststart output.mp4
+   ffmpeg -ss 0.5 -i output.mp4 -frames:v 1 -q:v 80 output-poster.webp
+   ```
+4. `npm test`, commit, push: Vercel pubblica in ~1 minuto.
 
-## Diagnostic Commands
+Menu PDF: sostituisci il file in `public/menus/` e aggiorna `menuPdf` in `app/menu-ristorante/page.tsx`.
 
-- `npm run install:ci`: perform the one bounded lockfile install
-- `npm run dev`: start the Vite/Vinext development server
-- `npm run build`: build the deployable Sites artifact
-- `npm run start`: start the built Vinext application
-- `npm test`: build and verify the rendered development-preview metadata
-- `npm run db:generate`: generate Drizzle migrations after schema changes
+## Orari e contatti
 
-Use build commands for targeted diagnosis after a remote failure, not as part of the normal checkpoint path.
+Si cambiano in un solo punto: `app/lib/site.ts` (`openingHours`, telefoni, WhatsApp).
+Pagina contatti, footer e dati strutturati per Google si aggiornano da soli.
 
-The timeout defaults can be overridden for a controlled canary with `SITES_INSTALL_TIMEOUT`, `SITES_INSTALL_KILL_AFTER`, `SITES_BUILD_TIMEOUT`, and `SITES_BUILD_KILL_AFTER`. A timeout fails the command; the helpers never retry an unchanged install or build.
+## Analytics e privacy
 
-## Learn More
-
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+Google Analytics (`NEXT_PUBLIC_GA_ID`) e Microsoft Clarity (`NEXT_PUBLIC_CLARITY_ID`) si
+attivano solo su playaluna.it, gestiti da `app/components/analytics-consent.tsx`.
+Se si aggiunge un servizio esterno va autorizzato nella CSP in `next.config.ts`.

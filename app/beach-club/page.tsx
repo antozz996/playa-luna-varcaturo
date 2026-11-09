@@ -1,73 +1,43 @@
 import type { Metadata } from "next";
 import { ServicePage } from "../components/service-page";
-import { beachPhoneNumber } from "../lib/site";
-import {
-  getMediaDocument,
-  mediaAlt,
-  mediaObjectPosition,
-  mediaUrl,
-  type ManagedImage,
-} from "../lib/sanity";
-import {
-  mediaFileObjectPosition,
-  mediaFileUrl,
-  type ManagedFile,
-} from "../lib/sanity-file";
-import { getPageBlobMedia, getPageBlobVideos } from "../lib/site-media-pages";
+import { beachPhoneNumber, openingHours, pageOpenGraph } from "../lib/site";
 
-type BeachMedia = {
-  hero?: ManagedImage;
-  heroVideo?: ManagedFile;
-  detail?: ManagedImage;
-  detailVideo?: ManagedFile;
-};
+const title = "Lido e beach club a Marina di Varcaturo";
+const description =
+  "Spiaggia attrezzata con ombrelloni e lettini, bar e servizi family al Playa Luna di Marina di Varcaturo. Aperto tutti i giorni 8–19 da maggio a settembre.";
 
 export const metadata: Metadata = {
-  title: "Beach Club a Varcaturo",
-  description:
-    "Spiaggia attrezzata, lettini, ombrelloni, bar e servizi family al Playa Luna di Marina di Varcaturo. Contattaci per disponibilità e prenotazioni.",
+  title,
+  description,
   alternates: { canonical: "/beach-club" },
-  openGraph: {
-    title: "Beach Club Playa Luna a Varcaturo",
-    description: "Vivi la spiaggia di Playa Luna sul litorale di Varcaturo.",
-    url: "/beach-club",
-    images: ["/og.png"],
-  },
+  openGraph: pageOpenGraph({ path: "/beach-club", title: `${title} | Playa Luna`, description }),
 };
 
-export default async function BeachClubPage() {
-  const [media, blobMedia, blobVideos] = await Promise.all([getMediaDocument<BeachMedia & Record<string, unknown>>("beachMedia"), getPageBlobMedia("beachClub"), getPageBlobVideos("beachClub")]);
-  const heroVideo = blobVideos.hero ?? (blobMedia.hero ? undefined : mediaFileUrl(media.heroVideo));
-  const detailVideo = undefined;
-
+export default function BeachClubPage() {
+  const season = openingHours.beachSeason;
   return (
     <ServicePage
       slug="beach-club"
       eyebrow="Beach Club"
+      heading="Lido e spiaggia attrezzata a Marina di Varcaturo"
       title="La tua estate,"
       emphasis="senza orari."
       intro="Una giornata sul litorale di Varcaturo con spiaggia attrezzata, servizi e il mare sempre davanti."
-      body="Playa Luna è pensato per chi vuole vivere il mare con semplicità, senza rinunciare ai servizi. Puoi prenotare la tua postazione, fermarti per pranzo e alternare la spiaggia agli altri spazi della struttura."
-      image={blobMedia.hero ?? mediaUrl(media.hero, "/images/playa-luna/beach-day.webp")}
-      imageAlt={mediaAlt(media.hero, "Spiaggia attrezzata del beach club Playa Luna a Varcaturo")}
-      heroObjectPosition={mediaObjectPosition(media.hero, "50% 55%")}
-      heroVideo={heroVideo}
-      heroVideoObjectPosition={mediaFileObjectPosition(media.heroVideo)}
+      body={`Playa Luna è pensato per chi vuole vivere il mare con semplicità, senza rinunciare ai servizi. Puoi prenotare la tua postazione, fermarti per pranzo e alternare la spiaggia agli altri spazi della struttura. Il lido è aperto tutti i giorni dalle ${Number(season.opens.slice(0, 2))} alle ${Number(season.closes.slice(0, 2))}, da ${season.months.replace(" – ", " a ")}.`}
+      image="/images/playa-luna/beach-day.webp"
+      imageAlt="Spiaggia attrezzata del beach club Playa Luna a Varcaturo"
+      heroObjectPosition="50% 55%"
       detailImage="/images/playa-luna/beachclub/detail-dsc00166.webp"
-      detailAlt={mediaAlt(media.detail, "Vista del mare dagli spazi mediterranei di Playa Luna")}
-      detailObjectPosition={mediaObjectPosition(media.detail)}
-      detailVideo={detailVideo}
-      detailVideoObjectPosition={mediaFileObjectPosition(media.detailVideo)}
+      detailAlt="Vista del mare dagli spazi mediterranei di Playa Luna"
       features={[
         "Spiaggia attrezzata con ombrelloni e lettini",
         "Bar e proposte per il pranzo",
         "Docce e servizi per gli ospiti",
         "Spazi adatti anche alle famiglie",
       ]}
+      ctaLabel="Prenota il tuo posto su WhatsApp"
       telephone={beachPhoneNumber}
       schemaType="Beach"
-      sanityDocumentId="beachMedia"
-      sanityDocumentType="beachMedia"
     />
   );
 }

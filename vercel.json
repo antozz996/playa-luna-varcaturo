@@ -1,17 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "installCommand": "npm install",
-  "buildCommand": "npx sanity manifest extract --path public/studio/static && mkdir -p public/static && cp -R public/studio/static/. public/static/ && npx next build",
-  "headers": [
-    {
-      "source": "/studio/:path*",
-      "headers": [
-        {
-          "key": "Content-Security-Policy",
-          "value": "frame-ancestors https://*.sanity.io https://www.sanity.io"
-        }
-      ]
-    }
-  ]
+  "installCommand": "npm ci",
+  "buildCommand": "npx next build"
 }

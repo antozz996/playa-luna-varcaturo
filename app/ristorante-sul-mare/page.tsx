@@ -1,80 +1,58 @@
 import type { Metadata } from "next";
 import { ServicePage } from "../components/service-page";
+import { restaurantOpeningHours } from "../lib/schema";
 import {
+  pageOpenGraph,
   restaurantPhoneHref,
   restaurantPhoneNumber,
+  siteUrl,
 } from "../lib/site";
-import {
-  getMediaDocument,
-  mediaAlt,
-  mediaObjectPosition,
-  mediaUrl,
-  type ManagedImage,
-} from "../lib/sanity";
-import {
-  mediaFileObjectPosition,
-  mediaFileUrl,
-  type ManagedFile,
-} from "../lib/sanity-file";
-import { getPageBlobMedia, getPageBlobVideos } from "../lib/site-media-pages";
 
-type RestaurantMedia = {
-  hero?: ManagedImage;
-  heroVideo?: ManagedFile;
-  detail?: ManagedImage;
-  detailVideo?: ManagedFile;
-};
+const title = "Ristorante sul mare a Varcaturo";
+const description =
+  "Cucina mediterranea e piatti di mare al ristorante Playa Luna di Marina di Varcaturo. Pranzo tutti i giorni 12:30–16, tutto l'anno. Prenota un tavolo.";
 
 export const metadata: Metadata = {
-  title: "Ristorante sul mare a Varcaturo",
-  description:
-    "Cucina mediterranea, piatti di mare e pranzo vista mare al ristorante Playa Luna di Marina di Varcaturo.",
+  title,
+  description,
   alternates: { canonical: "/ristorante-sul-mare" },
-  openGraph: {
-    title: "Ristorante Playa Luna sul mare",
-    description: "Cucina mediterranea e pranzo sul mare a Varcaturo.",
-    url: "/ristorante-sul-mare",
-    images: ["/og.png"],
-  },
+  openGraph: pageOpenGraph({ path: "/ristorante-sul-mare", title: `${title} | Playa Luna`, description }),
 };
 
-export default async function RestaurantPage() {
-  const [media, blobMedia, blobVideos] = await Promise.all([getMediaDocument<RestaurantMedia & Record<string, unknown>>("restaurantMedia"), getPageBlobMedia("ristorante"), getPageBlobVideos("ristorante")]);
-  const heroVideo = undefined;
-  const detailVideo = blobVideos.detail ?? (blobMedia.detail ? undefined : mediaFileUrl(media.detailVideo));
-
+export default function RestaurantPage() {
   return (
     <ServicePage
       slug="ristorante-sul-mare"
-      eyebrow="Restaurant"
+      eyebrow="Ristorante"
+      heading="Ristorante sul mare a Marina di Varcaturo"
       title="Il sapore"
       emphasis="del mare."
       intro="Il ristorante è parte della giornata Playa Luna: una sala aperta sulla luce, cucina mediterranea e tavoli da condividere."
-      body="La proposta accompagna il ritmo del lido, dal pranzo agli aperitivi. Il mare resta il filo conduttore, insieme a ingredienti mediterranei, piatti curati e un ambiente informale ma attento ai dettagli."
+      body="La proposta accompagna il ritmo del lido, dalla colazione all'aperitivo, con il pranzo servito tutti i giorni dalle 12:30 alle 16, tutto l'anno. Il mare resta il filo conduttore, insieme a ingredienti mediterranei, piatti curati e un ambiente informale ma attento ai dettagli. La sera la struttura apre solo per eventi privati."
       image="/images/playa-luna/restaurant/hero-2f8a7552.webp"
-      imageAlt={mediaAlt(media.hero, "La sala luminosa del ristorante Playa Luna durante il servizio")}
-      heroObjectPosition={mediaObjectPosition(media.hero, "50% 35%")}
-      heroVideo={heroVideo}
-      heroVideoObjectPosition={mediaFileObjectPosition(media.heroVideo)}
-      detailImage={blobMedia.detail ?? mediaUrl(media.detail, "/images/playa-luna/food-pasta.webp")}
-      detailAlt={mediaAlt(media.detail, "Piatto di pasta mediterranea preparato al ristorante Playa Luna")}
-      detailObjectPosition={mediaObjectPosition(media.detail)}
-      detailVideo={detailVideo}
-      detailVideoObjectPosition={mediaFileObjectPosition(media.detailVideo)}
+      imageAlt="La sala luminosa del ristorante Playa Luna durante il servizio"
+      heroObjectPosition="50% 35%"
+      detailImage="/images/playa-luna/restaurant/detail-carpaccio.webp"
+      detailAlt="Carpaccio gourmet servito al ristorante Playa Luna di Varcaturo, con ingredienti selezionati e impiattamento curato."
       features={[
-        "Pranzo nella struttura sul mare",
+        "Pranzo tutti i giorni, 12:30–16",
         "Cucina mediterranea e piatti di pesce",
-        "Proposte da condividere",
-        "Cocktail e aperitivo",
+        "Colazione, bar e aperitivo",
+        "Cene solo per eventi privati",
       ]}
-      menuHref="/menu-ristorante/"
+      menuHref="/menu-ristorante"
       ctaLabel="Prenota un tavolo"
+      floatLabel="Chiama"
       ctaHref={restaurantPhoneHref}
       ctaEvent="phone_restaurant"
       telephone={restaurantPhoneNumber}
       schemaType="Restaurant"
-      sanityDocumentId="restaurantMedia"
-      sanityDocumentType="restaurantMedia"
+      schemaExtra={{
+        servesCuisine: ["Mediterranea", "Pesce"],
+        hasMenu: `${siteUrl}/menu-ristorante`,
+        acceptsReservations: true,
+        openingHoursSpecification: restaurantOpeningHours,
+      }}
     />
   );
 }

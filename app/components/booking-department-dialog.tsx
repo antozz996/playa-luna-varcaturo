@@ -39,6 +39,7 @@ export function BookingDepartmentDialog({ mobile = false }: { mobile?: boolean }
         className={mobile ? styles.mobileTrigger : `header-cta ${styles.desktopTrigger}`}
         aria-haspopup="dialog"
         aria-controls={id}
+        data-event="booking_dialog_open"
         onClick={() => dialogRef.current?.showModal()}
       >
         Prenota <span aria-hidden="true">↗</span>
@@ -69,7 +70,8 @@ export function BookingDepartmentDialog({ mobile = false }: { mobile?: boolean }
             </button>
           </div>
 
-          <h2 id={id + "-title"} className={styles.title}>Cosa vuoi prenotare?</h2>
+          {/* Not a heading element: the dialog is in the header, before each page's H1. It stays the dialog's accessible name via aria-labelledby. */}
+          <p id={id + "-title"} className={styles.title}>Cosa vuoi prenotare?</p>
           <p id={id + "-description"} className={styles.intro}>
             Scegli il reparto da contattare.
           </p>

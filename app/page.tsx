@@ -1,131 +1,61 @@
 import type { Metadata } from "next";
-import { CmsMedia } from "./components/cms-media";
+import { PageMedia } from "./components/page-media";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
+import { businessSchema, jsonLd } from "./lib/schema";
 import {
-  beachPhoneNumber,
   beachWhatsapp,
-  eventPhoneNumber,
   eventWhatsapp,
+  poolWhatsapp,
   restaurantPhoneHref,
-  restaurantPhoneNumber,
+  siteUrl,
 } from "./lib/site";
-import {
-  getMediaDocument,
-  mediaUrl,
-  type ManagedImage,
-} from "./lib/sanity";
-import { type ManagedFile } from "./lib/sanity-file";
-import { sanityImageAttribute } from "./lib/sanity-visual";
-import { getHomeBlobMedia, getHomeBlobVideos } from "./lib/site-media";
 
-type HomeMedia = {
-  hero?: ManagedImage;
-  heroVideo?: ManagedFile;
-  experienceBeach?: ManagedImage;
-  experienceBeachVideo?: ManagedFile;
-  experienceRestaurant?: ManagedImage;
-  experienceRestaurantVideo?: ManagedFile;
-  experienceEvents?: ManagedImage;
-  experienceEventsVideo?: ManagedFile;
-  beachMain?: ManagedImage;
-  beachMainVideo?: ManagedFile;
-  beachDetail?: ManagedImage;
-  beachDetailVideo?: ManagedFile;
-  restaurantMain?: ManagedImage;
-  restaurantMainVideo?: ManagedFile;
-  foodOne?: ManagedImage;
-  foodOneVideo?: ManagedFile;
-  foodTwo?: ManagedImage;
-  foodTwoVideo?: ManagedFile;
-  foodThree?: ManagedImage;
-  foodThreeVideo?: ManagedFile;
-  poolMain?: ManagedImage;
-  poolMainVideo?: ManagedFile;
-  poolDetail?: ManagedImage;
-  poolDetailVideo?: ManagedFile;
-  eventsFeature?: ManagedImage;
-  eventsFeatureVideo?: ManagedFile;
-  finalCta?: ManagedImage;
-  finalCtaVideo?: ManagedFile;
-};
+const HERO_IMAGE = "/images/playa-luna/hero-beach.webp";
+
+// Rebuild weekly so the seasonal opening-hours dates in structured data stay current.
+export const revalidate = 604800;
 
 export const metadata: Metadata = {
-  title: "Lido a Varcaturo sul mare | Playa Luna",
-  description: "Lido a Varcaturo con spiaggia attrezzata, piscina family, ristorante sul mare e sala eventi. Scopri Playa Luna e contattaci per prenotare.",
+  title: { absolute: "Playa Luna | Beach club e ristorante sul mare a Varcaturo" },
+  description: "Beach club, ristorante sul mare, piscina per bambini ed eventi a Marina di Varcaturo. Lido aperto da maggio a settembre, ristorante tutto l'anno. Prenota su WhatsApp.",
   alternates: { canonical: "/" },
 };
 
 const experienceDefaults = [
   {
     number: "01",
-    title: "Food & Drink",
-    text: "Dalla colazione al pranzo vista mare, una cucina che segue il ritmo della giornata.",
+    title: "Ristorante & Bar",
+    text: "Dalla colazione all'aperitivo vista mare, una cucina che segue il ritmo della giornata.",
     image: "/images/playa-luna/restaurant.webp",
-    slot: "experienceRestaurant",
-    videoSlot: "experienceRestaurantVideo",
-    href: "/ristorante-sul-mare/",
+    video: "/videos/home-experience-restaurant.mp4",
+    href: "/ristorante-sul-mare",
   },
   {
     number: "02",
     title: "Beach Club",
     text: "Il mare davanti, l'isola all'orizzonte e tutto quello che serve per staccare davvero.",
     image: "/images/playa-luna/beach-card-2f8a3359.webp",
-    slot: "experienceBeach",
-    videoSlot: "experienceBeachVideo",
-    href: "/beach-club/",
+    video: undefined,
+    href: "/beach-club",
   },
   {
     number: "03",
-    title: "Events",
+    title: "Eventi",
     text: "Feste, cerimonie e ricorrenze da vivere a pochi passi dalla sabbia.",
     image: "/images/playa-luna/events/home-card.webp",
-    slot: "experienceEvents",
-    videoSlot: "experienceEventsVideo",
-    href: "/eventi/",
+    video: "/videos/home-experience-events.mp4",
+    href: "/eventi",
   },
 ] as const;
 
-function mediaPath(base: string, video?: ManagedFile) {
-  return video?.asset?._ref ? `${base}Video` : base;
-}
-
-export default async function Home() {
-  const media = await getMediaDocument<HomeMedia & Record<string, unknown>>("homeMedia");
-  const blobMedia = await getHomeBlobMedia();
-  const blobVideos = await getHomeBlobVideos();
-  const hero = mediaUrl(media.hero, "/images/playa-luna/hero-beach.webp");
-
+export default function Home() {
   const structuredData = {
-    "@context": "https://schema.org",
-    "@type": ["Beach", "Restaurant", "EventVenue", "LocalBusiness"],
-    name: "Playa Luna",
-    description:
-      "Beach club, ristorante sul mare, piscina ed eventi a Marina di Varcaturo.",
-    url: "https://playaluna.it/",
-    telephone: beachPhoneNumber,
-    contactPoint: [
-      { "@type": "ContactPoint", contactType: "Beach Club", telephone: beachPhoneNumber },
-      { "@type": "ContactPoint", contactType: "Ristorante", telephone: restaurantPhoneNumber },
-      { "@type": "ContactPoint", contactType: "Events", telephone: eventPhoneNumber },
-    ],
-    priceRange: "€€",
-    image: hero.startsWith("http") ? hero : `https://playaluna.it${hero}`,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Via Marina di Varcaturo, 42",
-      addressLocality: "Giugliano in Campania",
-      addressRegion: "NA",
-      addressCountry: "IT",
-    },
-    sameAs: [
-      "https://www.instagram.com/lidoplayaluna/",
-      "https://www.facebook.com/Complesso.Playa.Luna/",
-    ],
+    ...businessSchema(`${siteUrl}${HERO_IMAGE}`),
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Servizi Playa Luna",
-      itemListElement: ["Beach Club", "Ristorante sul mare", "Piscina Playa Luna", "Eventi", "Wedding"].map((name) => ({
+      itemListElement: ["Beach Club", "Ristorante sul mare", "Piscina per bambini", "Eventi privati", "Matrimoni"].map((name) => ({
         "@type": "Offer",
         itemOffered: { "@type": "Service", name },
       })),
@@ -133,35 +63,32 @@ export default async function Home() {
   };
 
   return (
-    <main>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+    <div className="page-shell">
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(structuredData)} />
 
       <SiteHeader />
+      <main id="main">
 
       <section className="hero" id="top" aria-labelledby="hero-title">
-        <CmsMedia
-          image={media.hero}
-          video={media.heroVideo}
-          fallback="/images/playa-luna/hero-beach.webp"
-          altFallback="La spiaggia di Playa Luna con il mare e l'isola all'orizzonte"
+        <PageMedia
+          video="/videos/home-hero.mp4"
+          src={HERO_IMAGE}
+          alt="La spiaggia di Playa Luna con il mare e l'isola all'orizzonte"
           sizes="100vw"
           fill
           priority
           className="hero-image"
-          srcOverride={blobMedia.hero}
-          videoOverride={blobVideos.hero}
-          imagePositionFallback="50% 63%"
-          dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("hero", media.heroVideo))}
+          position="50% 50%"
         />
         <div className="hero-shade" />
         <div className="hero-content shell">
-          <p className="eyebrow light">Beach club · Varcaturo</p>
-          <h1 id="hero-title">Tutto il mare<br /><em>in un giorno.</em></h1>
+          <h1 id="hero-title" className="eyebrow light">Beach club e ristorante a Marina di Varcaturo</h1>
+          <p className="display-title">Tutto il mare<br /><em>in un giorno.</em></p>
           <p className="hero-copy">Dal primo caffè al tramonto. Spiaggia, cucina, piscina e momenti da ricordare.</p>
         </div>
-        <div className="hero-actions shell" aria-label="Azioni principali">
+        <div className="hero-actions shell" role="group" aria-label="Azioni principali">
           <a href={beachWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_beach"><span>01</span> Prenota la tua giornata <b aria-hidden="true">↗</b></a>
-          <a href="/ristorante-sul-mare/" data-event="restaurant_page_click"><span>02</span> Scopri il ristorante <b aria-hidden="true">↓</b></a>
+          <a href="/ristorante-sul-mare" data-event="restaurant_page_click"><span>02</span> Scopri il ristorante <b aria-hidden="true">→</b></a>
           <a href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events"><span>03</span> Organizza un evento <b aria-hidden="true">↗</b></a>
         </div>
       </section>
@@ -182,34 +109,25 @@ export default async function Home() {
       </section>
 
       <section className="experience-grid shell" id="experience" aria-label="Esperienze Playa Luna">
-        {experienceDefaults.map((item) => {
-          const image = media[item.slot];
-          const video = media[item.videoSlot];
-          return (
-            <a className="experience-card" href={item.href} key={item.number} data-event="service_page_click">
-              <div className="experience-image-wrap">
-                <CmsMedia
-                  image={image}
-                  video={video}
-                  fallback={item.image}
-                  altFallback=""
-                  sizes="(max-width: 800px) 82vw, 33vw"
-                  fill
-                  srcOverride={blobMedia[item.slot]}
-                  videoOverride={blobVideos[item.slot]}
-                  localImage={item.slot === "experienceBeach" ? item.image : undefined}
-                  dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath(item.slot, video))}
-                />
-                <span className="card-number">{item.number}</span>
-              </div>
-              <div className="experience-card-copy">
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-                <span className="round-arrow" aria-hidden="true">↗</span>
-              </div>
-            </a>
-          );
-        })}
+        {experienceDefaults.map((item) => (
+          <a className="experience-card" href={item.href} key={item.number} data-event="service_page_click">
+            <div className="experience-image-wrap">
+              <PageMedia
+                video={item.video}
+                src={item.image}
+                alt=""
+                sizes="(max-width: 800px) 82vw, 33vw"
+                fill
+              />
+              <span className="card-number">{item.number}</span>
+            </div>
+            <div className="experience-card-copy">
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+              <span className="round-arrow" aria-hidden="true">↗</span>
+            </div>
+          </a>
+        ))}
       </section>
 
       <section className="beach-story section-space" id="beach" aria-labelledby="beach-title">
@@ -226,36 +144,19 @@ export default async function Home() {
             </ul>
             <a className="pill-button dark" href={beachWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_beach">Prenota il tuo posto <span aria-hidden="true">↗</span></a>
           </div>
-          <figure className="beach-main-image" style={media.beachMainVideo?.asset?._ref ? { position: "relative", minHeight: 780, overflow: "hidden" } : undefined}>
-            <CmsMedia
-              image={media.beachMain}
-              video={media.beachMainVideo}
-              fallback="/images/playa-luna/beach-day.webp"
-              altFallback="Lettini e ombrelloni sulla spiaggia Playa Luna"
+          <figure className="beach-main-image">
+            <PageMedia
+              src="/images/playa-luna/home/beach-main.webp"
+              alt="Relax in spiaggia al Playa Luna di Varcaturo, tra lettini, ombrelloni e mare per una giornata di estate e benessere."
               sizes="(max-width: 800px) 100vw, 42vw"
-              width={960}
-              height={1200}
-              srcOverride={blobMedia.beachMain}
-              videoOverride={blobVideos.beachMain}
-              fill={Boolean(media.beachMainVideo?.asset?._ref)}
-              dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("beachMain", media.beachMainVideo))}
             />
             <figcaption>Marina di Varcaturo · Golfo di Napoli</figcaption>
           </figure>
-          <figure className="beach-detail-image" style={media.beachDetailVideo?.asset?._ref ? { position: "relative", aspectRatio: "3 / 4", overflow: "hidden" } : undefined}>
-            <CmsMedia
-              image={media.beachDetail}
-              video={media.beachDetailVideo}
-              fallback="/images/playa-luna/sunset-view.webp"
-              altFallback="Vista della spiaggia tra fiori e piante mediterranee"
+          <figure className="beach-detail-image">
+            <PageMedia
+              src="/images/playa-luna/beach-detail-2f8a3953.webp"
+              alt="Spiaggia attrezzata del Playa Luna a Marina di Varcaturo"
               sizes="18vw"
-              width={960}
-              height={1200}
-              srcOverride={blobMedia.beachDetail ?? "/images/playa-luna/beach-detail-2f8a3953.jpg"}
-              videoOverride={blobVideos.beachDetail}
-              localImage="/images/playa-luna/beach-detail-2f8a3953.webp"
-              fill={Boolean(media.beachDetailVideo?.asset?._ref)}
-              dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("beachDetail", media.beachDetailVideo))}
             />
           </figure>
         </div>
@@ -263,23 +164,23 @@ export default async function Home() {
 
       <section className="restaurant section-space" id="restaurant" aria-labelledby="restaurant-title">
         <div className="shell restaurant-heading">
-          <p className="eyebrow">Restaurant · Cucina di mare</p>
+          <p className="eyebrow">Ristorante · Cucina di mare</p>
           <h2 id="restaurant-title">Il sapore della<br /><em>giornata perfetta.</em></h2>
           <p>Ingredienti mediterranei, piatti da condividere e una sala aperta sulla luce del mare. Qui il pranzo è parte dell’esperienza, non una pausa dalla spiaggia.</p>
         </div>
 
-        <div className="food-gallery shell">
+        <div className="food-gallery shell" tabIndex={0} role="region" aria-label="Galleria piatti del ristorante">
           <figure className="food-large" style={{ position: "relative" }}>
-            <CmsMedia image={media.restaurantMain} video={media.restaurantMainVideo} fallback="/images/playa-luna/restaurant.webp" altFallback="Il ristorante Playa Luna con struttura in legno e tavoli all'aperto" sizes="(max-width: 800px) 78vw, 46vw" fill srcOverride={blobMedia.restaurantMain} videoOverride={blobVideos.restaurantMain} dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("restaurantMain", media.restaurantMainVideo))} />
+            <PageMedia src="/images/playa-luna/home/restaurant-main.webp" alt="Paella all’astice servita al ristorante Playa Luna di Varcaturo, ideale da condividere in una location sul mare." sizes="(max-width: 800px) 78vw, 46vw" fill />
           </figure>
           <figure style={{ position: "relative" }}>
-            <CmsMedia image={media.foodOne} video={media.foodOneVideo} fallback="/images/playa-luna/food-tartare.webp" altFallback="Tartare di mare servita al ristorante Playa Luna" sizes="(max-width: 800px) 78vw, 18vw" fill srcOverride={blobMedia.foodOne} videoOverride={blobVideos.foodOne} dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("foodOne", media.foodOneVideo))} />
+            <PageMedia src="/images/playa-luna/home/food-one.webp" alt="Carpaccio gourmet servito al ristorante Playa Luna di Varcaturo, con ingredienti selezionati e impiattamento curato." sizes="(max-width: 800px) 78vw, 18vw" fill />
           </figure>
           <figure style={{ position: "relative" }}>
-            <CmsMedia image={media.foodTwo} video={media.foodTwoVideo} fallback="/images/playa-luna/food-pasta.webp" altFallback="Pasta mediterranea servita in padella" sizes="(max-width: 800px) 78vw, 18vw" fill srcOverride={blobMedia.foodTwo} videoOverride={blobVideos.foodTwo} localImage="/images/playa-luna/food-pasta.webp" dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("foodTwo", media.foodTwoVideo))} />
+            <PageMedia src="/images/playa-luna/food-pasta.webp" alt="Pasta mediterranea servita in padella" sizes="(max-width: 800px) 78vw, 18vw" fill />
           </figure>
           <figure style={{ position: "relative" }}>
-          <CmsMedia image={media.foodThree} video={media.foodThreeVideo} fallback="/images/playa-luna/food-fish.webp" altFallback="Secondo piatto di pesce con verdure" sizes="(max-width: 800px) 78vw, 18vw" fill srcOverride={blobMedia.foodThree} videoOverride={blobVideos.foodThree} localImage="/images/playa-luna/food-three-2f8a7368.webp" dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("foodThree", media.foodThreeVideo))} />
+            <PageMedia src="/images/playa-luna/food-three-2f8a7368.webp" alt="Esperienza gastronomica al Playa Luna di Varcaturo tra cucina mediterranea, piatti di mare e atmosfera sulla spiaggia" sizes="(max-width: 800px) 78vw, 18vw" fill />
           </figure>
         </div>
 
@@ -292,24 +193,24 @@ export default async function Home() {
       <section className="family" id="pool" aria-labelledby="pool-title">
         <div className="family-images">
           <div style={{ position: "relative", minWidth: 0 }}>
-            <CmsMedia image={media.poolMain} video={media.poolMainVideo} fallback="/images/playa-luna/pool-family.webp" altFallback="Famiglie e bambini nella piscina di Playa Luna" sizes="(max-width: 800px) 100vw, 45vw" fill srcOverride={blobMedia.poolMain} videoOverride={blobVideos.poolMain} dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("poolMain", media.poolMainVideo))} />
+            <PageMedia src="/images/playa-luna/pool-family.webp" alt="Famiglie e bambini nella piscina di Playa Luna" sizes="(max-width: 800px) 100vw, 45vw" fill />
           </div>
           <div style={{ position: "relative", minWidth: 0 }}>
-            <CmsMedia image={media.poolDetail} video={media.poolDetailVideo} fallback="/images/playa-luna/pool-chair.webp" altFallback="Piscina Playa Luna con area relax e lettini" sizes="28vw" fill srcOverride={blobMedia.poolDetail} videoOverride={blobVideos.poolDetail} localImage="/images/playa-luna/pool-detail-2f8a5583.webp" dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("poolDetail", media.poolDetailVideo))} />
+            <PageMedia video="/videos/home-pool-detail.mp4" alt="Piscina Playa Luna con area relax e lettini" sizes="28vw" fill />
           </div>
         </div>
         <div className="family-copy">
           <p className="eyebrow light">Piscina · Playa Luna</p>
           <h2 id="pool-title">Un tuffo<br /><em>nell’estate.</em></h2>
           <p>La piscina interna a Playa Luna completa la giornata al mare: uno spazio dedicato al divertimento dei più piccoli e al relax di tutta la famiglia.</p>
-          <a className="text-link light-link" href={beachWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_pool">Chiedi disponibilità <span aria-hidden="true">→</span></a>
+          <a className="text-link light-link" href={poolWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_pool">Chiedi disponibilità <span aria-hidden="true">→</span></a>
         </div>
       </section>
 
       <section className="events section-space" id="events" aria-labelledby="events-title">
         <div className="shell events-grid">
           <div className="events-title-wrap">
-            <p className="eyebrow">Events & Wedding</p>
+            <p className="eyebrow">Eventi & Wedding</p>
             <h2 id="events-title">Momenti da<br /><em>a(mare).</em></h2>
           </div>
           <div className="events-copy">
@@ -317,9 +218,9 @@ export default async function Home() {
             <a className="pill-button dark" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events">Richiedi informazioni <span aria-hidden="true">↗</span></a>
           </div>
           <figure className="events-image" style={{ position: "relative", overflow: "hidden" }}>
-            <CmsMedia image={media.eventsFeature} video={media.eventsFeatureVideo} fallback="/images/playa-luna/events/home-feature.webp" altFallback="Allestimento elegante per un evento al Playa Luna" sizes="(max-width: 800px) 100vw, 52vw" fill srcOverride={blobMedia.eventsFeature} videoOverride={blobVideos.eventsFeature} localVideo="/videos/playa-luna/pvt-playa.mp4" dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("eventsFeature", media.eventsFeatureVideo))} />
+            <PageMedia video="/videos/playa-luna/pvt-playa.mp4" alt="Allestimento elegante per un evento al Playa Luna" sizes="(max-width: 800px) 100vw, 52vw" fill />
           </figure>
-          <div className="event-types" aria-label="Tipologie di eventi">
+          <div className="event-types" role="group" aria-label="Tipologie di eventi">
             <div><span>01</span><h3>Private party</h3><p>Compleanni, lauree e feste su misura.</p></div>
             <div><span>02</span><h3>Wedding</h3><p>Ricevimenti e promesse a pochi passi dal mare.</p></div>
             <div><span>03</span><h3>Corporate</h3><p>Pranzi, meeting ed eventi aziendali.</p></div>
@@ -328,7 +229,7 @@ export default async function Home() {
       </section>
 
       <section className="final-cta" aria-labelledby="final-title">
-        <CmsMedia image={media.finalCta} video={media.finalCtaVideo} fallback="/images/playa-luna/pool-chair.webp" altFallback="Postazione riservata accanto alla piscina Playa Luna" sizes="100vw" fill srcOverride={blobMedia.finalCta} videoOverride={blobVideos.finalCta} localImage="/images/playa-luna/final-cta-2f8a5852.webp" imagePositionFallback="50% 58%" dataSanity={sanityImageAttribute("homeMedia", "homeMedia", mediaPath("finalCta", media.finalCtaVideo))} />
+        <PageMedia src="/images/playa-luna/final-cta-2f8a5852.webp" alt="Postazione riservata accanto alla piscina Playa Luna" sizes="100vw" fill position="50% 58%" />
         <div className="final-cta-shade" />
         <div className="final-cta-content">
           <p className="eyebrow light">La tua giornata comincia qui</p>
@@ -336,12 +237,13 @@ export default async function Home() {
           <a className="pill-button linen" href={beachWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_beach">Prenota su WhatsApp <span aria-hidden="true">↗</span></a>
         </div>
       </section>
+      </main>
 
       <SiteFooter />
 
-      <a className="whatsapp-float" href={beachWhatsapp} target="_blank" rel="noreferrer" aria-label="Prenota Playa Luna su WhatsApp" data-event="whatsapp_sticky">
+      <a className="whatsapp-float" href={beachWhatsapp} target="_blank" rel="noreferrer" aria-label="Prenota su WhatsApp" data-event="whatsapp_sticky">
         <span aria-hidden="true">✦</span> Prenota
       </a>
-    </main>
+    </div>
   );
 }

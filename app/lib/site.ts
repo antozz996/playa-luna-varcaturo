@@ -1,4 +1,19 @@
+import type { Metadata } from "next";
+
 export const siteUrl = "https://playaluna.it";
+
+/** Complete Open Graph block for a page (Next replaces, not merges, the parent's openGraph). */
+export function pageOpenGraph(options: { path: string; title: string; description: string; image?: string }): Metadata["openGraph"] {
+  return {
+    type: "website",
+    locale: "it_IT",
+    siteName: "Playa Luna",
+    url: options.path,
+    title: options.title,
+    description: options.description,
+    images: [{ url: options.image ?? "/og.jpg", width: 1200, height: 630, alt: options.title }],
+  };
+}
 
 export const beachPhoneNumber = "+39 327 191 5427";
 export const beachPhoneHref = "tel:+393271915427";
@@ -19,11 +34,42 @@ export const eventWhatsapp =
 export const mapsUrl =
   "https://www.google.com/maps/search/?api=1&query=Playa+Luna+Via+Marina+di+Varcaturo+42";
 
+/**
+ * Legal entity (titolare del trattamento / dati societari, art. 13 GDPR e art. 2250 c.c.).
+ * Fill in every field: privacy page and footer show them automatically when complete.
+ */
+export const legalEntity = {
+  name: "Lido Playaluna S.r.l.",
+  vatNumber: "09146931218",
+  registeredOffice: "Via Epitaffio 15, 80014 Giugliano in Campania (NA)",
+  pec: "", // indirizzo PEC: shown in the privacy policy when filled in
+  email: "info@playaluna.it",
+};
+
+export const hasLegalEntity = Boolean(legalEntity.name && legalEntity.vatNumber && legalEntity.registeredOffice);
+
+export const address = {
+  streetAddress: "Via Marina di Varcaturo, 42",
+  postalCode: "80014",
+  locality: "Giugliano in Campania",
+  area: "Marina di Varcaturo",
+  region: "NA",
+  country: "IT",
+};
+
+/** Opening hours shown on the site and in structured data. Every day of the week. */
+export const openingHours = {
+  beachSeason: { label: "Lido", months: "maggio – settembre", from: "1 maggio", to: "30 settembre", opens: "08:00", closes: "19:00", validFrom: "05-01", validThrough: "09-30" },
+  offSeason: { label: "Bar e ristorante", months: "ottobre – aprile", from: "1 ottobre", to: "30 aprile", opens: "09:00", closes: "19:00", validFrom: "10-01", validThrough: "04-30" },
+  restaurant: { label: "Ristorante (pranzo)", months: "tutto l'anno", opens: "12:30", closes: "16:00" },
+  evening: "La sera la struttura è disponibile solo per eventi privati.",
+};
+
 export const mainNavigation = [
-  { href: "/beach-club/", label: "Beach" },
-  { href: "/ristorante-sul-mare/", label: "Restaurant" },
-  { href: "/piscina/", label: "Piscina" },
-  { href: "/eventi/", label: "Events" },
-  { href: "/wedding/", label: "Wedding" },
-  { href: "/contatti/", label: "Contatti" },
+  { href: "/beach-club", label: "Spiaggia" },
+  { href: "/ristorante-sul-mare", label: "Ristorante" },
+  { href: "/piscina", label: "Piscina" },
+  { href: "/eventi", label: "Eventi" },
+  { href: "/wedding", label: "Wedding" },
+  { href: "/contatti", label: "Contatti" },
 ];

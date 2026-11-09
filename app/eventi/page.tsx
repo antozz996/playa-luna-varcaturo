@@ -1,30 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CmsMedia } from "../components/cms-media";
+import { PageMedia } from "../components/page-media";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
-import { eventPhoneNumber, eventWhatsapp, siteUrl } from "../lib/site";
-import {
-  getMediaDocument,
-  mediaCaption,
-  mediaUrl,
-  type ManagedImage,
-} from "../lib/sanity";
-import { type ManagedFile } from "../lib/sanity-file";
-import { sanityImageAttribute } from "../lib/sanity-visual";
-import { isSiteMediaSlotHidden } from "../lib/site-media-pages";
+import { breadcrumbSchema, eventVenueSchema, jsonLd } from "../lib/schema";
+import { eventWhatsapp, pageOpenGraph, siteUrl } from "../lib/site";
+
+const title = "Eventi e feste private sul mare a Varcaturo";
+const description =
+  "Diciottesimi, compleanni, feste private ed eventi aziendali sul mare al Playa Luna di Marina di Varcaturo. La sera la struttura è riservata agli eventi privati.";
 
 export const metadata: Metadata = {
-  title: "Eventi sul mare a Varcaturo",
-  description:
-    "Diciottesimi, feste private, cerimonie ed eventi aziendali sul mare al Playa Luna di Marina di Varcaturo.",
+  title,
+  description,
   alternates: { canonical: "/eventi" },
-  openGraph: {
-    title: "Eventi sul mare · Playa Luna",
-    description: "Una scenografia sul mare per feste, cerimonie ed eventi che hanno qualcosa da raccontare.",
-    url: "/eventi",
-    images: ["/images/playa-luna/events/hero.webp"],
-  },
+  openGraph: pageOpenGraph({ path: "/eventi", title: `${title} | Playa Luna`, description, image: "/images/playa-luna/events/hero.webp" }),
 };
 
 const eventTypes = [
@@ -34,65 +24,41 @@ const eventTypes = [
   { number: "04", title: "Corporate", text: "Pranzi, cene e appuntamenti aziendali con spazi flessibili e un’identità riconoscibile." },
 ];
 
-const eventGallery = [
-  { src: "/images/playa-luna/events/gathering.webp", alt: "Ospiti durante un evento negli spazi del Playa Luna", caption: "Persone, atmosfera, mare", slot: "gallery01", wide: true },
-  { src: "/images/playa-luna/events/night-01.webp", alt: "La sala e la pista illuminate durante una festa serale al Playa Luna", caption: "Quando la notte prende vita", slot: "gallery02" },
-  { src: "/images/playa-luna/events/night-02.webp", alt: "Gruppo di amici in festa durante un evento al Playa Luna", caption: "Una festa da condividere", slot: "gallery03" },
-  { src: "/images/playa-luna/events/night-03.webp", alt: "Ospiti che ballano durante una serata al Playa Luna", caption: "Fino all’ultima canzone", slot: "gallery04" },
-  { src: "/images/playa-luna/events/night-04.webp", alt: "Consolle DJ accesa durante un evento serale", caption: "Il suono della serata", slot: "gallery05" },
-  { src: "/images/playa-luna/events/night-05.webp", alt: "Bottiglia celebrativa con luci da festa", caption: "Brindisi che restano", slot: "gallery06" },
-  { src: "/images/playa-luna/events/buffet.webp", alt: "Buffet preparato per un evento al Playa Luna", caption: "La cucina entra in scena", slot: "gallery07", wide: true },
-  { src: "/images/playa-luna/events/night-06.webp", alt: "Torta con scintille durante una festa al Playa Luna", caption: "Il momento più atteso", slot: "gallery08" },
-  { src: "/images/playa-luna/events/corporate.webp", alt: "Dettaglio di un’esperienza organizzata durante un evento", caption: "Dettagli che danno carattere", slot: "gallery09", wide: true },
+type GalleryItem = { src?: string; video?: string; alt: string; caption: string; wide?: boolean };
+
+const eventGallery: GalleryItem[] = [
+  { src: "/images/playa-luna/events/gathering.webp", alt: "Ospiti durante un evento negli spazi del Playa Luna", caption: "Persone, atmosfera, mare", wide: true },
+  { src: "/images/playa-luna/events/night-01.webp", alt: "La sala e la pista illuminate durante una festa serale al Playa Luna", caption: "Quando la notte prende vita" },
+  { src: "/images/playa-luna/events/night-05.webp", alt: "Bottiglia celebrativa con luci da festa", caption: "Brindisi che restano" },
+  { src: "/images/playa-luna/events/gallery-07-2f8a1650.webp", alt: "Buffet preparato per un evento al Playa Luna", caption: "La cucina entra in scena", wide: true },
+  { video: "/videos/playa-luna/events-gallery-08.mp4", alt: "Torta con scintille durante una festa al Playa Luna", caption: "Il momento più atteso" },
+  { src: "/images/playa-luna/events/corporate.webp", alt: "Dettaglio di un’esperienza organizzata durante un evento", caption: "Dettagli che danno carattere", wide: true },
 ];
 
-const baseSchema = {
-  "@context": "https://schema.org",
-  "@type": "EventVenue",
-  name: "Playa Luna Events",
-  url: `${siteUrl}/eventi/`,
-  telephone: eventPhoneNumber,
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Via Marina di Varcaturo, 42",
-    addressLocality: "Giugliano in Campania",
-    addressRegion: "NA",
-    addressCountry: "IT",
-  },
-};
+const schema = [
+  eventVenueSchema(`${siteUrl}/images/playa-luna/events/hero.webp`),
+  breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Eventi", path: "/eventi" }]),
+];
 
-function mediaPath(slot: string, video?: ManagedFile) {
-  return video?.asset?._ref ? `${slot}Video` : slot;
-}
-
-export default async function EventsPage() {
-  const media = await getMediaDocument<Record<string, unknown>>("eventsMedia");
-  const heroImage = media.hero as ManagedImage | undefined;
-  const heroVideo = media.heroVideo as ManagedFile | undefined;
-  const hero = mediaUrl(heroImage, "/images/playa-luna/events/hero.webp");
-  const schema = { ...baseSchema, image: hero.startsWith("http") ? hero : `${siteUrl}${hero}` };
-
+export default function EventsPage() {
   return (
-    <main className="events-editorial-v2">
+    <div className="page-shell events-editorial-v2">
       <SiteHeader />
+      <main id="main">
 
       <section className="events-hero-v2">
-        <CmsMedia
-          image={heroImage}
-          video={heroVideo}
-          fallback="/images/playa-luna/events/hero.webp"
-          altFallback="Tavola allestita per un evento serale al Playa Luna"
+        <PageMedia
+          video="/videos/playa-luna/pvt-playa.mp4"
+          alt="Tavola allestita per un evento serale al Playa Luna"
           sizes="100vw"
           fill
           priority
           className="events-hero-image-v2"
-          localVideo="/videos/playa-luna/pvt-playa.mp4"
-          dataSanity={sanityImageAttribute("eventsMedia", "eventsMedia", mediaPath("hero", heroVideo))}
         />
         <div className="events-hero-shade-v2" />
         <div className="shell events-hero-copy-v2">
-          <p className="eyebrow">Playa Luna · Events</p>
-          <h1>La tua storia<br /><em>prende vita.</em></h1>
+          <h1 className="eyebrow">Eventi e feste private sul mare a Varcaturo</h1>
+          <p className="display-title">La tua storia<br /><em>prende vita.</em></p>
           <p className="events-hero-lead-v2">Il mare come scenografia. Tutto il resto prende forma intorno a voi.</p>
           <a className="pill-button light" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events">
             Raccontaci il tuo evento <span aria-hidden="true">↗</span>
@@ -114,30 +80,22 @@ export default async function EventsPage() {
       </section>
 
       <section className="shell events-gallery-v2" aria-label="Atmosfere degli eventi Playa Luna">
-        {eventGallery.filter((item) => !isSiteMediaSlotHidden("eventi", item.slot)).map((item) => {
-          const image = media[item.slot] as ManagedImage | undefined;
-          const video = media[`${item.slot}Video`] as ManagedFile | undefined;
-          return (
-            <figure
-              className={item.wide ? "events-gallery-wide-v2" : undefined}
-              key={item.slot}
-              style={{ position: "relative", overflow: "hidden" }}
-            >
-              <CmsMedia
-                image={image}
-                video={video}
-                fallback={item.src}
-                altFallback={item.alt}
-                fill
-                sizes={item.wide ? "(max-width: 800px) 100vw, 66vw" : "(max-width: 800px) 100vw, 33vw"}
-                localVideo={item.slot === "gallery08" ? "/videos/playa-luna/events-gallery-08.mp4" : undefined}
-                localImage={item.slot === "gallery07" ? "/images/playa-luna/events/gallery-07-2f8a1650.webp" : undefined}
-                dataSanity={sanityImageAttribute("eventsMedia", "eventsMedia", mediaPath(item.slot, video))}
-              />
-              <figcaption>{mediaCaption(image, item.caption)}</figcaption>
-            </figure>
-          );
-        })}
+        {eventGallery.map((item) => (
+          <figure
+            className={item.wide ? "events-gallery-wide-v2" : undefined}
+            key={item.caption}
+            style={{ position: "relative", overflow: "hidden" }}
+          >
+            <PageMedia
+              src={item.src}
+              video={item.video}
+              alt={item.alt}
+              fill
+              sizes={item.wide ? "(max-width: 800px) 100vw, 66vw" : "(max-width: 800px) 100vw, 33vw"}
+            />
+            <figcaption>{item.caption}</figcaption>
+          </figure>
+        ))}
       </section>
 
       <section className="events-formats-v2">
@@ -167,9 +125,10 @@ export default async function EventsPage() {
         </a>
       </section>
 
+      </main>
       <SiteFooter />
-      <a className="whatsapp-float" href={eventWhatsapp} target="_blank" rel="noreferrer" aria-label="Scrivici su WhatsApp" data-event="whatsapp_events_float">WA</a>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-    </main>
+      <a className="whatsapp-float" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events_float"><span aria-hidden="true">✦</span> WhatsApp</a>
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(schema)} />
+    </div>
   );
 }

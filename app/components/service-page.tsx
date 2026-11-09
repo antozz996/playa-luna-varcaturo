@@ -1,14 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
-import { createDataAttribute } from "next-sanity";
-import { ExperienceVideo } from "./experience-video";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
+import { breadcrumbSchema, departmentSchema, jsonLd } from "../lib/schema";
 import { beachWhatsapp, siteUrl } from "../lib/site";
 
 type ServicePageProps = {
   slug: string;
   eyebrow: string;
+  /** Visible H1 with the page's main keyword, styled as an eyebrow. */
+  heading: string;
   title: string;
   emphasis: string;
   intro: string;
@@ -19,45 +20,23 @@ type ServicePageProps = {
   detailAlt: string;
   features: string[];
   ctaLabel?: string;
+  /** Short text of the floating mobile button (visible text = accessible name). */
+  floatLabel?: string;
   ctaHref?: string;
   ctaEvent?: string;
   menuHref?: string;
   telephone?: string;
-  schemaType?: "Beach" | "Restaurant" | "EventVenue" | "LocalBusiness";
+  schemaType?: "Beach" | "Restaurant" | "EventVenue" | "LocalBusiness" | "PublicSwimmingPool";
+  /** Extra schema.org properties for this department (e.g. opening hours). */
+  schemaExtra?: Record<string, unknown>;
   heroObjectPosition?: string;
   detailObjectPosition?: string;
-  heroVideo?: string;
-  heroVideoObjectPosition?: string;
-  detailVideo?: string;
-  detailVideoObjectPosition?: string;
-  sanityDocumentId?: string;
-  sanityDocumentType?: string;
 };
-
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "";
-const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
-const studioUrl = "https://playa-luna-varcaturo-delta.vercel.app/studio";
-
-function imageDataAttribute(
-  id: string | undefined,
-  type: string | undefined,
-  path: string,
-) {
-  if (!id || !type || !projectId) return undefined;
-
-  return createDataAttribute({
-    projectId,
-    dataset,
-    baseUrl: studioUrl,
-    id,
-    type,
-    path,
-  }).toString();
-}
 
 export function ServicePage({
   slug,
   eyebrow,
+  heading,
   title,
   emphasis,
   intro,
@@ -68,85 +47,52 @@ export function ServicePage({
   detailAlt,
   features,
   ctaLabel = "Chiedi informazioni",
+  floatLabel = "Prenota",
   ctaHref = beachWhatsapp,
   ctaEvent = "whatsapp_beach",
   menuHref,
   telephone,
   schemaType = "LocalBusiness",
+  schemaExtra,
   heroObjectPosition = "center 55%",
   detailObjectPosition = "50% 50%",
-  heroVideo,
-  heroVideoObjectPosition = "50% 50%",
-  detailVideo,
-  detailVideoObjectPosition = "50% 50%",
-  sanityDocumentId,
-  sanityDocumentType,
 }: ServicePageProps) {
   const structuredImage = image.startsWith("http") ? image : `${siteUrl}${image}`;
 
   const structuredData = [
-    {
-      "@context": "https://schema.org",
-      "@type": schemaType,
+    departmentSchema({
+      type: schemaType,
       name: `Playa Luna · ${eyebrow}`,
-      url: `${siteUrl}/${slug}/`,
-      telephone,
-      isPartOf: { "@type": "LocalBusiness", name: "Playa Luna", url: siteUrl },
+      path: `/${slug}`,
       image: structuredImage,
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: "Via Marina di Varcaturo, 42",
-        addressLocality: "Giugliano in Campania",
-        addressRegion: "NA",
-        addressCountry: "IT",
-      },
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` },
-        { "@type": "ListItem", position: 2, name: eyebrow, item: `${siteUrl}/${slug}/` },
-      ],
-    },
+      telephone,
+      extra: schemaExtra,
+    }),
+    breadcrumbSchema([
+      { name: "Home", path: "/" },
+      { name: eyebrow, path: `/${slug}` },
+    ]),
   ];
 
-  const heroSanity = imageDataAttribute(
-    sanityDocumentId,
-    sanityDocumentType,
-    heroVideo ? "heroVideo" : "hero",
-  );
-  const detailSanity = imageDataAttribute(
-    sanityDocumentId,
-    sanityDocumentType,
-    detailVideo ? "detailVideo" : "detail",
-  );
+  // tel: links must not open a new tab (it leaves an empty tab on desktop).
+  const ctaTarget = ctaHref.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {};
 
   return (
-    <main>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+    <div className="page-shell">
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(structuredData)} />
       <SiteHeader />
+      <main id="main">
 
-      <section className="service-hero" aria-labelledby="service-title" data-sanity={heroSanity}>
-        {heroVideo ? (
-          <ExperienceVideo
-            src={heroVideo}
-            objectPosition={heroVideoObjectPosition}
-            fill
-            priority
-            zIndex={-2}
-          />
-        ) : (
-          <Image
-            src={image}
-            alt={imageAlt}
-            width={960}
-            height={1200}
-            priority
-            sizes="100vw"
-            style={{ objectPosition: heroObjectPosition }}
-          />
-        )}
+      <section className="service-hero" aria-labelledby="service-title">
+        <Image
+          src={image}
+          alt={imageAlt}
+          width={960}
+          height={1200}
+          priority
+          sizes="100vw"
+          style={{ objectPosition: heroObjectPosition }}
+        />
 
         <div className="service-hero-shade" />
 
@@ -154,8 +100,8 @@ export function ServicePage({
           <nav className="breadcrumbs" aria-label="Percorso">
             <Link href="/">Home</Link><span>/</span><span>{eyebrow}</span>
           </nav>
-          <p className="eyebrow light">{eyebrow} · Playa Luna</p>
-          <h1 id="service-title">{title}<br /><em>{emphasis}</em></h1>
+          <h1 id="service-title" className="eyebrow light">{heading}</h1>
+          <p className="display-title">{title}<br /><em>{emphasis}</em></p>
           <p>{intro}</p>
         </div>
       </section>
@@ -166,18 +112,18 @@ export function ServicePage({
           <h2>Quello che<br /><em>trovi qui.</em></h2>
           <p>{body}</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
-          <a className="pill-button dark" href={ctaHref} target="_blank" rel="noreferrer" data-event={ctaEvent}>
+          <a className="pill-button dark" href={ctaHref} {...ctaTarget} data-event={ctaEvent}>
             {ctaLabel} <span aria-hidden="true">↗</span>
           </a>
             {menuHref ? (
-              <Link className="pill-button dark" href={menuHref}>
-                Consulta il menu <span aria-hidden="true">↗</span>
+              <Link className="pill-button dark" href={menuHref} data-event="menu_view">
+                Consulta il menu <span aria-hidden="true">→</span>
               </Link>
             ) : null}
           </div>
         </div>
 
-        <div className="service-facts" aria-label={`Caratteristiche ${eyebrow}`}>
+        <div className="service-facts" role="group" aria-label={`Caratteristiche ${eyebrow}`}>
           {features.map((feature, index) => (
             <div key={feature}>
               <span>{String(index + 1).padStart(2, "0")}</span>
@@ -186,23 +132,15 @@ export function ServicePage({
           ))}
         </div>
 
-        <figure
-          className="service-detail-image"
-          data-sanity={detailSanity}
-          style={detailVideo ? { position: "relative", minHeight: 680, overflow: "hidden" } : undefined}
-        >
-          {detailVideo ? (
-            <ExperienceVideo src={detailVideo} objectPosition={detailVideoObjectPosition} fill />
-          ) : (
-            <Image
-              src={detailImage}
-              alt={detailAlt}
-              width={960}
-              height={1200}
-              sizes="(max-width: 800px) 100vw, 36vw"
-              style={{ objectPosition: detailObjectPosition }}
-            />
-          )}
+        <figure className="service-detail-image">
+          <Image
+            src={detailImage}
+            alt={detailAlt}
+            width={960}
+            height={1200}
+            sizes="(max-width: 800px) 100vw, 36vw"
+            style={{ objectPosition: detailObjectPosition }}
+          />
         </figure>
       </section>
 
@@ -210,16 +148,17 @@ export function ServicePage({
         <div className="shell">
           <p className="eyebrow light">Playa Luna · Marina di Varcaturo</p>
           <h2>Organizza la tua<br /><em>giornata sul mare.</em></h2>
-          <a className="pill-button linen" href={ctaHref} target="_blank" rel="noreferrer" data-event={ctaEvent}>
+          <a className="pill-button linen" href={ctaHref} {...ctaTarget} data-event={ctaEvent}>
             {ctaLabel} <span aria-hidden="true">↗</span>
           </a>
         </div>
       </section>
+      </main>
 
       <SiteFooter />
-      <a className="whatsapp-float" href={ctaHref} target="_blank" rel="noreferrer" aria-label={ctaLabel} data-event={ctaEvent}>
-        <span aria-hidden="true">✦</span> Contattaci
+      <a className="whatsapp-float" href={ctaHref} {...ctaTarget} data-event={ctaEvent}>
+        <span aria-hidden="true">✦</span> {floatLabel}
       </a>
-    </main>
+    </div>
   );
 }
