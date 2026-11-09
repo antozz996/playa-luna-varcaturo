@@ -97,13 +97,14 @@ Legenda: `[x]` risolto e verificato · `[~]` parziale · `[ ]` da fare · `[-]` 
 - [ ] **G5 · Clarity `consentv2`**.
 - [ ] **G6 · Consenso con timestamp/versione e scadenza**, X di chiusura, link privacy.
 
-## Fase 7 — Pulizia architettura
+## Fase 7 — Pulizia architettura ✅
 
-- [ ] **K1 · Un solo target di deploy** (Vercel) — rimuovere vinext/vite/worker/wrangler/Cloudflare, script `next dev/build/start`.
-- [ ] **K2 · Codice morto template** — `chatgpt-auth.ts`, `examples/`, `db/`, `drizzle/`, `.openai/`, `tsconfig.tsbuildinfo`, ~27 regole CSS del vecchio pannello foto (`.media-*`), keyframe `hero-in`, classi `wedding-gallery-item-*-v3` inutilizzate.
-- [ ] **K3 · Test sempre rosso** (`codex-preview`) → smoke test reali.
-- [ ] **K4 · Script npm cross-platform** (risolto con K1).
-- [ ] **K5 · Dipendenze inutili** (`drizzle-orm`), versioni esatte.
+- [x] **K1 · Un solo target di deploy (Vercel)** — rimossi vinext, Vite, worker, Wrangler, plugin Cloudflare (−144 pacchetti). Script standard `next dev/build/start`.
+- [x] **K2 · Codice morto** — rimossi `chatgpt-auth.ts`, `examples/`, `db/`, `drizzle/`, `.openai/`, `build/`, `scripts/*.sh`, `vite.config.ts`, `tsconfig.tsbuildinfo` (ora in `.gitignore`), ~260 righe di CSS del vecchio pannello, keyframe `hero-in`. _Le classi `wedding-gallery-item-*-v3` sono invece usate (generate dinamicamente) e restano._
+- [x] **K3 · Test** — `tests/smoke.test.mjs`: 20 controlli su 10 pagine (title, canonical, description, og, 1 H1, 1 main, skip link, JSON-LD valido, niente slash finali, niente `tel:` in nuova scheda, nessun residuo Sanity/Blob, tutti i media esistono). `npm test` = **20/20**.
+- [x] **K4 · Script cross-platform** — `npm run dev` funziona su Windows (verificato: 200 su home, eventi, contatti).
+- [x] **K5 · Dipendenze** — tolti `drizzle-orm`/`drizzle-kit`, versioni esatte, `.npmrc` ripulito (audit riattivato). **Dipendenze di produzione: 0 vulnerabilità** (erano 30). Restano 8 moderate solo negli strumenti ESLint (dev).
+- [x] **K10 · README** — riscritto: comandi, struttura, come cambiare foto/video/menu/orari, impostazioni ffmpeg.
 - [x] **K6 · Lint** — `experience-video.tsx` riscritto con `useSyncExternalStore`; `eslint app` = 0 errori, 0 avvisi.
 - [x] **K7 · URL vercel.app hardcoded** — erano tutti nel codice Sanity, rimosso.
 - [x] **K8 · `package-lock.json`** — aggiunto al repo.
@@ -121,6 +122,7 @@ Legenda: `[x]` risolto e verificato · `[~]` parziale · `[ ]` da fare · `[-]` 
 | 2026-11-09 | Push | Branch `fix/audit-2026-11` su GitHub, anteprima Vercel OK (protetta da login). |
 | 2026-11-09 | SEO1, SEO2, SEO5, SEO6, SEO7, SEO9, SEO10, S12 | H1 con keyword, schema unificato con orari, contatti con orari, link senza slash, OG completo, nav in italiano. 10 pagine: 1 H1 ciascuna, JSON-LD valido, 0 link con slash. |
 | 2026-11-09 | A1–A8, A10, A9~ | Landmark e skip link, menu mobile, pausa video, contrasti AA, banner compatto, CTA corretti. tsc/lint/build OK, verificato nel browser a 390×844, 0 errori console. |
+| 2026-11-09 | K1–K5, K10 | Solo Next/Vercel, codice del template rimosso, smoke test 20/20, 0 vulnerabilità in produzione, `npm run dev` ok su Windows, README nuovo. |
 
 ## Da fare su Vercel/Sanity dopo il deploy
 
