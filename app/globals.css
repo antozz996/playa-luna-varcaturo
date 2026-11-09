@@ -87,8 +87,7 @@ img {
   text-transform: uppercase;
 }
 
-.media-login h1,
-.media-admin h1 {
+.media-login-removed {
   font-size: clamp(48px, 7vw, 76px);
 }
 
@@ -345,6 +344,7 @@ ul {
   align-items: center;
   gap: 12px;
   color: color-mix(in srgb, var(--ink) 67%, transparent);
+  font-family: inherit;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.2em;
@@ -363,8 +363,14 @@ ul {
   color: rgba(255, 253, 248, 0.82);
 }
 
+/* Keyword H1s styled as eyebrows can wrap on mobile: give them breathing room. */
+h1.eyebrow {
+  line-height: 1.5;
+}
+
 h1,
-h2 {
+h2,
+.display-title {
   font-family: Georgia, "Times New Roman", serif;
   font-weight: 400;
   letter-spacing: -0.055em;
@@ -372,7 +378,8 @@ h2 {
 }
 
 h1 em,
-h2 em {
+h2 em,
+.display-title em {
   font-weight: 400;
 }
 
@@ -495,7 +502,7 @@ h2 {
   justify-content: center;
 }
 
-.hero h1 {
+.hero .display-title {
   max-width: 1040px;
   margin-top: 30px;
   font-size: clamp(74px, 10.6vw, 174px);
@@ -1196,8 +1203,8 @@ footer {
   color: var(--white);
 }
 
-.service-hero h1,
-.contact-hero h1 {
+.service-hero .display-title,
+.contact-hero .display-title {
   max-width: 1100px;
   margin-top: 28px;
   font-family: Georgia, "Times New Roman", serif;
@@ -1207,8 +1214,8 @@ footer {
   line-height: 0.91;
 }
 
-.service-hero h1 em,
-.contact-hero h1 em {
+.service-hero .display-title em,
+.contact-hero .display-title em {
   font-weight: 400;
 }
 
@@ -1586,7 +1593,7 @@ footer {
     justify-content: flex-start;
   }
 
-  .hero h1 {
+  .hero .display-title {
     margin-top: 24px;
     font-size: clamp(62px, 21vw, 98px);
   }
@@ -1629,8 +1636,8 @@ footer {
     margin-bottom: auto;
   }
 
-  .service-hero h1,
-  .contact-hero h1 {
+  .service-hero .display-title,
+  .contact-hero .display-title {
     font-size: clamp(58px, 18vw, 86px);
   }
 
@@ -1937,20 +1944,20 @@ footer {
   color: rgba(255, 253, 248, 0.78);
 }
 
-.events-hero-copy-v2 h1,
-.wedding-hero-copy-v2 h1 {
+.events-hero-copy-v2 .display-title,
+.wedding-hero-copy-v2 .display-title {
   max-width: 1160px;
   margin-top: 30px;
   font-size: clamp(76px, 9.5vw, 150px);
 }
 
-.events-hero-copy-v2 h1 em,
-.wedding-hero-copy-v2 h1 em {
+.events-hero-copy-v2 .display-title em,
+.wedding-hero-copy-v2 .display-title em {
   font-weight: 400;
 }
 
 .events-hero-lead-v2,
-.wedding-hero-copy-v2 > p:not(.eyebrow) {
+.wedding-hero-copy-v2 > p:not(.eyebrow):not(.display-title) {
   max-width: 570px;
   margin-top: 30px;
   color: rgba(255, 253, 248, 0.84);
@@ -2358,8 +2365,8 @@ footer {
     padding-bottom: 64px;
   }
 
-  .events-hero-copy-v2 h1,
-  .wedding-hero-copy-v2 h1 {
+  .events-hero-copy-v2 .display-title,
+  .wedding-hero-copy-v2 .display-title {
     font-size: clamp(58px, 17vw, 88px);
   }
 
@@ -2467,5 +2474,62 @@ footer {
   .wedding-moment-copy-v2 {
     min-height: 600px;
     padding: 80px 18px;
+  }
+}
+
+/* Contatti — orari di apertura */
+.contact-hours {
+  padding-bottom: clamp(80px, 9vw, 140px);
+}
+
+.contact-hours h2 {
+  margin: 20px 0 40px;
+  font-size: clamp(44px, 6vw, 84px);
+}
+
+.contact-hours dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+  border-top: 1px solid var(--line);
+}
+
+.contact-hours dl > div {
+  padding: 24px 24px 24px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.contact-hours dt {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.contact-hours dd {
+  margin: 12px 0 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(28px, 3vw, 40px);
+  letter-spacing: -0.03em;
+}
+
+.contact-hours dd span {
+  display: block;
+  margin-top: 6px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  letter-spacing: 0;
+  color: color-mix(in srgb, var(--ink) 72%, transparent);
+}
+
+.contact-hours > p:last-child {
+  margin-top: 24px;
+  font-size: 16px;
+}
+
+@media (max-width: 800px) {
+  .contact-hours dl {
+    grid-template-columns: 1fr;
   }
 }

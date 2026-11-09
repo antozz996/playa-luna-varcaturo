@@ -11,13 +11,6 @@ export const metadata: Metadata = {
   },
   description:
     "Vivi Playa Luna a Marina di Varcaturo: spiaggia attrezzata, ristorante sul mare, piscina family ed eventi. Prenota la tua giornata.",
-  keywords: [
-    "lido Varcaturo",
-    "beach club Napoli",
-    "ristorante sul mare Varcaturo",
-    "eventi sul mare Napoli",
-    "Playa Luna",
-  ],
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
@@ -31,15 +24,13 @@ export const metadata: Metadata = {
         url: "/og.jpg",
         width: 1200,
         height: 630,
-        alt: "Playa Luna · Beach Club, Restaurant, Events",
+        alt: "Playa Luna · Beach club, ristorante ed eventi a Marina di Varcaturo",
       },
     ],
   },
+  // Only the card type: title, description and image fall back to each page's Open Graph tags.
   twitter: {
     card: "summary_large_image",
-    title: "Playa Luna | Tutto il mare in un giorno",
-    description: "Beach club, cucina, piscina ed eventi a Marina di Varcaturo.",
-    images: ["/og.jpg"],
   },
   icons: {
     icon: "/favicon.svg",

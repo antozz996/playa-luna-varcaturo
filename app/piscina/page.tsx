@@ -1,18 +1,16 @@
 import type { Metadata } from "next";
 import { ServicePage } from "../components/service-page";
-import { beachPhoneNumber } from "../lib/site";
+import { beachPhoneNumber, pageOpenGraph } from "../lib/site";
+
+const title = "Piscina per bambini a Varcaturo";
+const description =
+  "La piscina all'interno del Playa Luna a Marina di Varcaturo: uno spazio per il divertimento dei bambini e il relax delle famiglie, insieme a spiaggia e ristorante.";
 
 export const metadata: Metadata = {
-  title: "Piscina Playa Luna a Varcaturo",
-  description:
-    "Scopri la piscina interna alla struttura Playa Luna a Marina di Varcaturo, pensata per il divertimento dei bambini e il relax delle famiglie.",
+  title,
+  description,
   alternates: { canonical: "/piscina" },
-  openGraph: {
-    title: "Piscina Playa Luna a Varcaturo",
-    description: "La piscina interna alla struttura Playa Luna per famiglie e bambini.",
-    url: "/piscina",
-    images: ["/og.jpg"],
-  },
+  openGraph: pageOpenGraph({ path: "/piscina", title: `${title} | Playa Luna`, description }),
 };
 
 export default function PoolPage() {
@@ -20,6 +18,7 @@ export default function PoolPage() {
     <ServicePage
       slug="piscina"
       eyebrow="Piscina"
+      heading="Piscina per bambini e famiglie a Varcaturo"
       title="Un tuffo"
       emphasis="nell’estate."
       intro="La piscina appartiene alla struttura Playa Luna e completa la giornata al mare con uno spazio dedicato alle famiglie."
@@ -36,6 +35,7 @@ export default function PoolPage() {
         "Collegata agli altri servizi del beach club",
       ]}
       telephone={beachPhoneNumber}
+      schemaType="PublicSwimmingPool"
     />
   );
 }

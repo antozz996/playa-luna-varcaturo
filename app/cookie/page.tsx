@@ -2,12 +2,16 @@ import type { Metadata } from "next";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
 import { CookiePreferencesButton } from "../components/cookie-preferences-button";
+import { pageOpenGraph } from "../lib/site";
+
+const description = "Informazioni sui cookie utilizzati dal sito Playa Luna.";
 
 export const metadata: Metadata = {
   title: "Cookie Policy",
-  description: "Informazioni sui cookie utilizzati dal sito Playa Luna.",
+  description,
   alternates: { canonical: "/cookie" },
   robots: { index: false, follow: true },
+  openGraph: pageOpenGraph({ path: "/cookie", title: "Cookie Policy | Playa Luna", description }),
 };
 
 export default function CookiePage() {

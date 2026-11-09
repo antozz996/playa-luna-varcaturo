@@ -180,7 +180,7 @@ export function AnalyticsConsent() {
           funzionamento del sito. Solo con il tuo consenso attiviamo cookie di misurazione e
           Microsoft Clarity per capire come migliorare la navigazione.
         </p>
-        <a href="/cookie/">Scopri di più</a>
+        <a href="/cookie">Scopri di più</a>
       </div>
       <div className="cookie-actions">
         <button type="button" onClick={() => choose("rejected")}>Solo necessari</button>

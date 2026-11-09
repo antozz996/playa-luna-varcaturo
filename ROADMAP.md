@@ -30,7 +30,7 @@ Legenda: `[x]` risolto e verificato · `[~]` parziale · `[ ]` da fare · `[-]` 
 - [-] **S9 · Route legacy upload** — tutte le route `/api/media/*` rimosse.
 - [-] **S10 · Magic bytes upload** — niente più upload.
 - [-] **S11 · Errori interni al client** — route rimosse.
-- [ ] **S12 · JSON-LD** — escape di `<` (rischio ora nullo: dati tutti statici). Da fare in Fase 4 con lo schema.
+- [x] **S12 · JSON-LD** — escape di `<` tramite `jsonLd()` in `app/lib/schema.ts` (Fase 4).
 - [-] **S13 · Token Sanity** — Sanity rimosso.
 
 ## Fase 2 — CMS e media ✅
@@ -59,18 +59,20 @@ Legenda: `[x]` risolto e verificato · `[~]` parziale · `[ ]` da fare · `[-]` 
 - [ ] **P10 · GA caricato prima del consenso** — spostato in Fase 6 (G3), è una scelta legale prima che di performance.
 - [x] **Extra** — video non partono con `prefers-reduced-motion` (resta il poster) → copre parte di A2.
 
-## Fase 4 — SEO
+## Fase 4 — SEO ✅ (restano contenuti e impostazioni esterne)
 
-- [ ] **SEO1 · Trailing slash** — link senza `/` finale (evita 308), canonical menu, URL schema.
-- [x] **SEO2 · Title home duplicato** — era un difetto di vinext; con `next build` il titolo è corretto. _(piscina: brand ripetuto ancora da sistemare)_
-- [ ] **SEO3 · Host vercel.app indicizzabile** — redirect a playaluna.it (impostazione Vercel).
-- [ ] **SEO4 · Search Console** — `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` o verifica DNS.
-- [ ] **SEO5 · JSON-LD** — entità unica con `@id`, CAP, geo, orari, `hasMap`, `servesCuisine`, `hasMenu`; correggere `isPartOf`; unificare EventVenue.
-- [ ] **SEO6 · Contatti** — JSON-LD, mappa, orari.
-- [ ] **SEO7 · H1 con keyword**, niente H2 del dialog prima dell'H1.
-- [ ] **SEO8 · Contenuti sottili** (~270 parole) + FAQ; menu in HTML e in sitemap.
-- [ ] **SEO9 · OG/Twitter per pagina**, sitemap con `lastModified`, rimuovere `keywords` e `Host:`.
-- [ ] **SEO10 · Etichette nav in italiano**.
+- [x] **SEO1 · Trailing slash** — tutti i link interni senza `/` finale (nav, home, footer, banner, menu); canonical menu corretto; URL nello schema = canonical. _Verificato_: 0 link con slash su 10 pagine.
+- [x] **SEO2 · Title** — home `Playa Luna | Beach club e ristorante sul mare a Varcaturo` (absolute), piscina senza brand ripetuto; title unici su tutte le pagine.
+- [ ] **SEO3 · Host vercel.app indicizzabile** — redirect a playaluna.it. _Azione tua su Vercel → Settings → Domains._
+- [ ] **SEO4 · Search Console** — impostare `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` su Vercel o verifica DNS, poi inviare la sitemap. _Azione tua._
+- [x] **SEO5 · JSON-LD** — `app/lib/schema.ts`: entità unica `LocalBusiness+Restaurant` con `@id`, CAP 80014, orari stagionali, `hasMap`, `servesCuisine`, `hasMenu`, `acceptsReservations`, `logo`; reparti con `parentOrganization` (tolto `isPartOf`); un'unica `EventVenue` condivisa da eventi e wedding; piscina `PublicSwimmingPool`; escape di `<` (chiude S12). Coordinate geo omesse: OpenStreetMap non ha l'indirizzo preciso.
+- [x] **SEO6 · Contatti** — blocco orari visibile, JSON-LD dell'attività, CAP e "Marina di Varcaturo" nel testo. Niente iframe Google Maps (imposterebbe cookie di terzi senza consenso): resta il link "Apri la mappa".
+- [x] **SEO7 · H1 con keyword** — su tutte le pagine l'H1 è la riga piccola sopra lo slogan (stesso aspetto), lo slogan resta grande come `.display-title`; il titolo del dialog di prenotazione non è più un H2.
+- [ ] **SEO8 · Contenuti sottili** (~270 parole) + FAQ; menu in HTML. _Da fare: serve materiale (servizi, prezzi indicativi, parcheggio, menu in testo)._ Menu aggiunto alla sitemap.
+- [x] **SEO9 · Meta** — `pageOpenGraph()` per Open Graph completo su ogni pagina (anche privacy/cookie/menu), Twitter eredita dall'OG, sitemap con `lastModified` e senza `changeFrequency`, rimossi `keywords` e `Host:`.
+- [x] **SEO10 · Etichette in italiano** — nav (Spiaggia, Ristorante, Eventi), footer, breadcrumb, card home ("Ristorante & Bar", "Eventi").
+- [x] **Coerenza offerta** — colazione, pranzo e aperitivo; la sera solo eventi privati; orari: lido 8–19 mag–set, bar e ristorante 9–19 ott–apr, pranzo 12:30–16 tutto l'anno (in `site.ts`).
+- [x] **Extra** — home e contatti si rigenerano ogni settimana (`revalidate`) per tenere aggiornate le date degli orari stagionali nello schema.
 
 ## Fase 5 — Accessibilità e UX
 
@@ -97,7 +99,7 @@ Legenda: `[x]` risolto e verificato · `[~]` parziale · `[ ]` da fare · `[-]` 
 ## Fase 7 — Pulizia architettura
 
 - [ ] **K1 · Un solo target di deploy** (Vercel) — rimuovere vinext/vite/worker/wrangler/Cloudflare, script `next dev/build/start`.
-- [ ] **K2 · Codice morto template** — `chatgpt-auth.ts`, `examples/`, `db/`, `drizzle/`, `.openai/`, svg, `tsconfig.tsbuildinfo`.
+- [ ] **K2 · Codice morto template** — `chatgpt-auth.ts`, `examples/`, `db/`, `drizzle/`, `.openai/`, `tsconfig.tsbuildinfo`, ~27 regole CSS del vecchio pannello foto (`.media-*`), keyframe `hero-in`, classi `wedding-gallery-item-*-v3` inutilizzate.
 - [ ] **K3 · Test sempre rosso** (`codex-preview`) → smoke test reali.
 - [ ] **K4 · Script npm cross-platform** (risolto con K1).
 - [ ] **K5 · Dipendenze inutili** (`drizzle-orm`), versioni esatte.
@@ -115,6 +117,8 @@ Legenda: `[x]` risolto e verificato · `[~]` parziale · `[ ]` da fare · `[-]` 
 | 2026-11-09 | S1–S5, K8 | Sessione firmata, rate limit, logout, Next 16.4.5, lockfile (commit `6788035`). |
 | 2026-11-09 | S6–S13, C1–C10, P1~, P3, P4, P9, SEO2, K7, K9 | Media migrati in `public/`, rimossi Sanity/Blob/pannello (−915 pacchetti), video da 205 MB a 23 MB, header di sicurezza e cache. `tsc` e `next build` OK, 10 pagine 200, 27 media presenti, 0 errori console. |
 | 2026-11-09 | P1, P2, P5, P7, P8, K6, A2~ | Poster sui video, hero visibile subito, reduced-motion, immagini ricodificate, 21 file inutili eliminati, og.jpg 74 KB. Lint/tsc/build OK, video verificati su mobile. |
+| 2026-11-09 | Push | Branch `fix/audit-2026-11` su GitHub, anteprima Vercel OK (protetta da login). |
+| 2026-11-09 | SEO1, SEO2, SEO5, SEO6, SEO7, SEO9, SEO10, S12 | H1 con keyword, schema unificato con orari, contatti con orari, link senza slash, OG completo, nav in italiano. 10 pagine: 1 H1 ciascuna, JSON-LD valido, 0 link con slash. |
 
 ## Da fare su Vercel/Sanity dopo il deploy
 

@@ -2,31 +2,33 @@ import type { Metadata } from "next";
 import { PageMedia } from "./components/page-media";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
+import { businessSchema, jsonLd } from "./lib/schema";
 import {
-  beachPhoneNumber,
   beachWhatsapp,
-  eventPhoneNumber,
   eventWhatsapp,
   restaurantPhoneHref,
-  restaurantPhoneNumber,
+  siteUrl,
 } from "./lib/site";
 
 const HERO_IMAGE = "/images/playa-luna/hero-beach.webp";
 
+// Rebuild weekly so the seasonal opening-hours dates in structured data stay current.
+export const revalidate = 604800;
+
 export const metadata: Metadata = {
-  title: "Lido a Varcaturo sul mare | Playa Luna",
-  description: "Lido a Varcaturo con spiaggia attrezzata, piscina family, ristorante sul mare e sala eventi. Scopri Playa Luna e contattaci per prenotare.",
+  title: { absolute: "Playa Luna | Beach club e ristorante sul mare a Varcaturo" },
+  description: "Beach club, ristorante sul mare, piscina per bambini ed eventi a Marina di Varcaturo. Lido aperto da maggio a settembre, ristorante tutto l'anno. Prenota su WhatsApp.",
   alternates: { canonical: "/" },
 };
 
 const experienceDefaults = [
   {
     number: "01",
-    title: "Food & Drink",
-    text: "Dalla colazione al pranzo vista mare, una cucina che segue il ritmo della giornata.",
+    title: "Ristorante & Bar",
+    text: "Dalla colazione all'aperitivo vista mare, una cucina che segue il ritmo della giornata.",
     image: "/images/playa-luna/restaurant.webp",
     video: "/videos/home-experience-restaurant.mp4",
-    href: "/ristorante-sul-mare/",
+    href: "/ristorante-sul-mare",
   },
   {
     number: "02",
@@ -34,49 +36,25 @@ const experienceDefaults = [
     text: "Il mare davanti, l'isola all'orizzonte e tutto quello che serve per staccare davvero.",
     image: "/images/playa-luna/beach-card-2f8a3359.webp",
     video: undefined,
-    href: "/beach-club/",
+    href: "/beach-club",
   },
   {
     number: "03",
-    title: "Events",
+    title: "Eventi",
     text: "Feste, cerimonie e ricorrenze da vivere a pochi passi dalla sabbia.",
     image: "/images/playa-luna/events/home-card.webp",
     video: "/videos/home-experience-events.mp4",
-    href: "/eventi/",
+    href: "/eventi",
   },
 ] as const;
 
 export default function Home() {
   const structuredData = {
-    "@context": "https://schema.org",
-    "@type": ["Beach", "Restaurant", "EventVenue", "LocalBusiness"],
-    name: "Playa Luna",
-    description:
-      "Beach club, ristorante sul mare, piscina ed eventi a Marina di Varcaturo.",
-    url: "https://playaluna.it/",
-    telephone: beachPhoneNumber,
-    contactPoint: [
-      { "@type": "ContactPoint", contactType: "Beach Club", telephone: beachPhoneNumber },
-      { "@type": "ContactPoint", contactType: "Ristorante", telephone: restaurantPhoneNumber },
-      { "@type": "ContactPoint", contactType: "Events", telephone: eventPhoneNumber },
-    ],
-    priceRange: "€€",
-    image: `https://playaluna.it${HERO_IMAGE}`,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Via Marina di Varcaturo, 42",
-      addressLocality: "Giugliano in Campania",
-      addressRegion: "NA",
-      addressCountry: "IT",
-    },
-    sameAs: [
-      "https://www.instagram.com/lidoplayaluna/",
-      "https://www.facebook.com/Complesso.Playa.Luna/",
-    ],
+    ...businessSchema(`${siteUrl}${HERO_IMAGE}`),
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Servizi Playa Luna",
-      itemListElement: ["Beach Club", "Ristorante sul mare", "Piscina Playa Luna", "Eventi", "Wedding"].map((name) => ({
+      itemListElement: ["Beach Club", "Ristorante sul mare", "Piscina per bambini", "Eventi privati", "Matrimoni"].map((name) => ({
         "@type": "Offer",
         itemOffered: { "@type": "Service", name },
       })),
@@ -85,7 +63,7 @@ export default function Home() {
 
   return (
     <main>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(structuredData)} />
 
       <SiteHeader />
 
@@ -102,13 +80,13 @@ export default function Home() {
         />
         <div className="hero-shade" />
         <div className="hero-content shell">
-          <p className="eyebrow light">Beach club · Varcaturo</p>
-          <h1 id="hero-title">Tutto il mare<br /><em>in un giorno.</em></h1>
+          <h1 id="hero-title" className="eyebrow light">Beach club e ristorante a Marina di Varcaturo</h1>
+          <p className="display-title">Tutto il mare<br /><em>in un giorno.</em></p>
           <p className="hero-copy">Dal primo caffè al tramonto. Spiaggia, cucina, piscina e momenti da ricordare.</p>
         </div>
         <div className="hero-actions shell" aria-label="Azioni principali">
           <a href={beachWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_beach"><span>01</span> Prenota la tua giornata <b aria-hidden="true">↗</b></a>
-          <a href="/ristorante-sul-mare/" data-event="restaurant_page_click"><span>02</span> Scopri il ristorante <b aria-hidden="true">↓</b></a>
+          <a href="/ristorante-sul-mare" data-event="restaurant_page_click"><span>02</span> Scopri il ristorante <b aria-hidden="true">↓</b></a>
           <a href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events"><span>03</span> Organizza un evento <b aria-hidden="true">↗</b></a>
         </div>
       </section>
@@ -184,7 +162,7 @@ export default function Home() {
 
       <section className="restaurant section-space" id="restaurant" aria-labelledby="restaurant-title">
         <div className="shell restaurant-heading">
-          <p className="eyebrow">Restaurant · Cucina di mare</p>
+          <p className="eyebrow">Ristorante · Cucina di mare</p>
           <h2 id="restaurant-title">Il sapore della<br /><em>giornata perfetta.</em></h2>
           <p>Ingredienti mediterranei, piatti da condividere e una sala aperta sulla luce del mare. Qui il pranzo è parte dell’esperienza, non una pausa dalla spiaggia.</p>
         </div>
@@ -230,7 +208,7 @@ export default function Home() {
       <section className="events section-space" id="events" aria-labelledby="events-title">
         <div className="shell events-grid">
           <div className="events-title-wrap">
-            <p className="eyebrow">Events & Wedding</p>
+            <p className="eyebrow">Eventi & Wedding</p>
             <h2 id="events-title">Momenti da<br /><em>a(mare).</em></h2>
           </div>
           <div className="events-copy">

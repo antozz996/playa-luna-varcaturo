@@ -3,19 +3,18 @@ import Link from "next/link";
 import { PageMedia } from "../components/page-media";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
-import { eventPhoneNumber, eventWhatsapp, siteUrl } from "../lib/site";
+import { breadcrumbSchema, eventVenueSchema, jsonLd } from "../lib/schema";
+import { eventWhatsapp, pageOpenGraph, siteUrl } from "../lib/site";
+
+const title = "Matrimonio sul mare a Varcaturo, Napoli";
+const description =
+  "Ricevimenti di matrimonio sul mare al Playa Luna di Marina di Varcaturo, a pochi minuti da Napoli e Pozzuoli: luce naturale, cucina e allestimenti personalizzati.";
 
 export const metadata: Metadata = {
-  title: "Ricevimento di matrimonio sul mare a Napoli",
-  description:
-    "Ricevimenti di matrimonio sul mare al Playa Luna di Marina di Varcaturo, tra luce naturale, cucina e allestimenti personalizzati.",
+  title,
+  description,
   alternates: { canonical: "/wedding" },
-  openGraph: {
-    title: "Wedding sul mare · Playa Luna",
-    description: "Un ricevimento mediterraneo, intimo e personale, davanti al mare.",
-    url: "/wedding",
-    images: ["/images/playa-luna/wedding/hero.webp"],
-  },
+  openGraph: pageOpenGraph({ path: "/wedding", title: `${title} | Playa Luna`, description, image: "/images/playa-luna/wedding/hero.webp" }),
 };
 
 const weddingDetails = [
@@ -34,22 +33,10 @@ const weddingGallery: GalleryItem[] = [
   { src: "/images/playa-luna/wedding/white-table.webp", alt: "Tavola nuziale bianca con composizioni floreali", caption: "Eleganza, senza distanza" },
 ];
 
-const baseSchema = {
-  "@context": "https://schema.org",
-  "@type": "EventVenue",
-  name: "Playa Luna Wedding",
-  url: `${siteUrl}/wedding/`,
-  telephone: eventPhoneNumber,
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Via Marina di Varcaturo, 42",
-    addressLocality: "Giugliano in Campania",
-    addressRegion: "NA",
-    addressCountry: "IT",
-  },
-};
-
-const schema = { ...baseSchema, image: `${siteUrl}/images/playa-luna/wedding/hero.webp` };
+const schema = [
+  eventVenueSchema(`${siteUrl}/images/playa-luna/wedding/hero.webp`),
+  breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Wedding", path: "/wedding" }]),
+];
 
 export default function WeddingPage() {
   return (
@@ -67,8 +54,8 @@ export default function WeddingPage() {
         />
         <div className="wedding-hero-shade-v2" />
         <div className="shell wedding-hero-copy-v2">
-          <p className="eyebrow">Playa Luna · Wedding</p>
-          <h1>Il vostro sì,<br /><em>con il mare davanti.</em></h1>
+          <h1 className="eyebrow">Matrimoni e ricevimenti sul mare a Varcaturo, Napoli</h1>
+          <p className="display-title">Il vostro sì,<br /><em>con il mare davanti.</em></p>
           <p>Un ricevimento mediterraneo, intimo e personale. Creato intorno a voi.</p>
           <a className="pill-button light" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_wedding">
             Raccontateci il vostro giorno <span aria-hidden="true">↗</span>
@@ -146,7 +133,7 @@ export default function WeddingPage() {
 
       <SiteFooter />
       <a className="whatsapp-float" href={eventWhatsapp} target="_blank" rel="noreferrer" aria-label="Scrivici su WhatsApp" data-event="whatsapp_wedding_float">WA</a>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(schema)} />
     </main>
   );
 }

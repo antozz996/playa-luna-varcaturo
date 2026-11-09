@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
+import { pageOpenGraph } from "../lib/site";
+
+const description = "Informativa sul trattamento dei dati personali del sito Playa Luna.";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "Informativa sul trattamento dei dati personali del sito Playa Luna.",
+  description,
   alternates: { canonical: "/privacy" },
   robots: { index: false, follow: true },
+  openGraph: pageOpenGraph({ path: "/privacy", title: "Privacy Policy | Playa Luna", description }),
 };
 
 export default function PrivacyPage() {

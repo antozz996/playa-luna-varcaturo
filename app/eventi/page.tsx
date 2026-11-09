@@ -3,19 +3,18 @@ import Link from "next/link";
 import { PageMedia } from "../components/page-media";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
-import { eventPhoneNumber, eventWhatsapp, siteUrl } from "../lib/site";
+import { breadcrumbSchema, eventVenueSchema, jsonLd } from "../lib/schema";
+import { eventWhatsapp, pageOpenGraph, siteUrl } from "../lib/site";
+
+const title = "Eventi e feste private sul mare a Varcaturo";
+const description =
+  "Diciottesimi, compleanni, feste private ed eventi aziendali sul mare al Playa Luna di Marina di Varcaturo. La sera la struttura è riservata agli eventi privati.";
 
 export const metadata: Metadata = {
-  title: "Eventi sul mare a Varcaturo",
-  description:
-    "Diciottesimi, feste private, cerimonie ed eventi aziendali sul mare al Playa Luna di Marina di Varcaturo.",
+  title,
+  description,
   alternates: { canonical: "/eventi" },
-  openGraph: {
-    title: "Eventi sul mare · Playa Luna",
-    description: "Una scenografia sul mare per feste, cerimonie ed eventi che hanno qualcosa da raccontare.",
-    url: "/eventi",
-    images: ["/images/playa-luna/events/hero.webp"],
-  },
+  openGraph: pageOpenGraph({ path: "/eventi", title: `${title} | Playa Luna`, description, image: "/images/playa-luna/events/hero.webp" }),
 };
 
 const eventTypes = [
@@ -36,22 +35,10 @@ const eventGallery: GalleryItem[] = [
   { src: "/images/playa-luna/events/corporate.webp", alt: "Dettaglio di un’esperienza organizzata durante un evento", caption: "Dettagli che danno carattere", wide: true },
 ];
 
-const baseSchema = {
-  "@context": "https://schema.org",
-  "@type": "EventVenue",
-  name: "Playa Luna Events",
-  url: `${siteUrl}/eventi/`,
-  telephone: eventPhoneNumber,
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Via Marina di Varcaturo, 42",
-    addressLocality: "Giugliano in Campania",
-    addressRegion: "NA",
-    addressCountry: "IT",
-  },
-};
-
-const schema = { ...baseSchema, image: `${siteUrl}/images/playa-luna/events/hero.webp` };
+const schema = [
+  eventVenueSchema(`${siteUrl}/images/playa-luna/events/hero.webp`),
+  breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Eventi", path: "/eventi" }]),
+];
 
 export default function EventsPage() {
   return (
@@ -69,8 +56,8 @@ export default function EventsPage() {
         />
         <div className="events-hero-shade-v2" />
         <div className="shell events-hero-copy-v2">
-          <p className="eyebrow">Playa Luna · Events</p>
-          <h1>La tua storia<br /><em>prende vita.</em></h1>
+          <h1 className="eyebrow">Eventi e feste private sul mare a Varcaturo</h1>
+          <p className="display-title">La tua storia<br /><em>prende vita.</em></p>
           <p className="events-hero-lead-v2">Il mare come scenografia. Tutto il resto prende forma intorno a voi.</p>
           <a className="pill-button light" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events">
             Raccontaci il tuo evento <span aria-hidden="true">↗</span>
@@ -139,7 +126,7 @@ export default function EventsPage() {
 
       <SiteFooter />
       <a className="whatsapp-float" href={eventWhatsapp} target="_blank" rel="noreferrer" aria-label="Scrivici su WhatsApp" data-event="whatsapp_events_float">WA</a>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(schema)} />
     </main>
   );
 }
