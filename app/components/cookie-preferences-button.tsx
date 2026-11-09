@@ -1,10 +1,10 @@
 "use client";
 
-const consentKey = "playaluna-analytics-consent";
+import { clearConsent } from "../lib/consent";
 
 export function CookiePreferencesButton() {
   const reopenPreferences = () => {
-    window.localStorage.removeItem(consentKey);
+    clearConsent();
     window.location.reload();
   };
 

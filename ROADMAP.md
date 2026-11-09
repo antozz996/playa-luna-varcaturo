@@ -84,18 +84,20 @@ Legenda: `[x]` risolto e verificato · `[~]` parziale · `[ ]` da fare · `[-]` 
 - [x] **A6 · Nome accessibile = testo visibile** — flottanti "WhatsApp" (eventi/wedding), "Prenota"/"Chiama" (servizi).
 - [x] **A7 · Alt dei video** — i video con descrizione hanno `role="img"` + `aria-label`; quelli decorativi restano nascosti.
 - [x] **A8 · CTA** — beach club "Prenota il tuo posto su WhatsApp"; piscina (pagina e home) con `poolWhatsapp` ed evento `whatsapp_pool`; `tel:` senza nuova scheda; freccia "Scopri il ristorante" corretta.
-- [~] **A9 · Tracking** — aggiunti `booking_dialog_open`, `menu_view`, `menu_pdf_open`, `menu_pdf_download`. _Resta: separare reparto e posizione in due parametri (si fa con G3, toccando lo stesso file)._
+- [x] **A9 · Tracking** (completato in Fase 6) — aggiunti `booking_dialog_open`, `menu_view`, `menu_pdf_open`, `menu_pdf_download`. _Resta: separare reparto e posizione in due parametri (si fa con G3, toccando lo stesso file)._
 - [x] **A10 · Testi** — tutti i testi da 8–10 px portati a 11 px (12 px dove serviva); galleria piatti raggiungibile da tastiera; frecce decorative `aria-hidden`; `role="group"` sui gruppi con etichetta.
 - [ ] **Non fatto** — ristorante prenotabile anche su WhatsApp: manca un numero WhatsApp del ristorante.
 
-## Fase 6 — Privacy / GDPR (serve input del titolare)
+## Fase 6 — Privacy / GDPR ✅
 
-- [ ] **G1 · Dati titolare** — ragione sociale, P.IVA, sede, PEC. _Serve input._
-- [ ] **G2 · Informativa art. 13** — basi giuridiche, trasferimenti extra-UE, conservazione, responsabili, reclamo.
-- [ ] **G3 · "Anonimo senza cookie"** — GA solo dopo consenso o testo corretto.
-- [ ] **G4 · Tabella cookie** completa.
-- [ ] **G5 · Clarity `consentv2`**.
-- [ ] **G6 · Consenso con timestamp/versione e scadenza**, X di chiusura, link privacy.
+- [x] **G1 · Dati titolare** — Lido Playaluna S.r.l., P.IVA 09146931218, sede legale Via Epitaffio 15, 80014 Giugliano in Campania (NA): in privacy, footer e schema (`legalName`, `vatID`). Unico punto: `legalEntity` in `app/lib/site.ts`. _Manca solo la PEC (campo pronto, compare quando compilato)._
+- [x] **G2 · Informativa art. 13** — riscritta: titolare, dati trattati, finalità con base giuridica (6.1.a/b/c/f), destinatari (Vercel, Google, Microsoft, titolari autonomi Meta/Google), trasferimenti USA (DPF/SCC), conservazione, diritti artt. 15–22, revoca, reclamo al Garante.
+- [x] **G3 · GA solo dopo il consenso** (Consent Mode "basic"): prima di "Accetta" non parte nessuna richiesta verso Google o Microsoft; tolta la dicitura "anonimo senza cookie". _Verificato_ simulando playaluna.it: 0 richieste prima, GA+Clarity dopo l'accettazione, 0 dopo il rifiuto, 0 errori CSP.
+- [x] **G4 · Tabella cookie** — `/cookie` con nome, fornitore, finalità e durata (localStorage del consenso, `_ga`, `_ga_<ID>`, `_clck`, `_clsk`, `CLID`/`MUID`).
+- [x] **G5 · Clarity `consentv2`** — granted dopo il consenso, denied al rifiuto.
+- [x] **G6 · Consenso** — salvato con data e versione (`app/lib/consent.ts`), scade dopo 6 mesi, versione aumentabile se cambiano i servizi; X di chiusura = rifiuto; link a cookie e privacy; "Rifiuta" allo stesso livello di "Accetta".
+- [x] **A9 · Tracking** (dalla Fase 5) — eventi `whatsapp_click`/`phone_click` con parametri separati `department` e `placement`.
+- [ ] **Consiglio** — far rileggere privacy e cookie policy a un consulente privacy: i testi sono completi ma non sostituiscono una verifica legale.
 
 ## Fase 7 — Pulizia architettura ✅
 
@@ -123,6 +125,7 @@ Legenda: `[x]` risolto e verificato · `[~]` parziale · `[ ]` da fare · `[-]` 
 | 2026-11-09 | SEO1, SEO2, SEO5, SEO6, SEO7, SEO9, SEO10, S12 | H1 con keyword, schema unificato con orari, contatti con orari, link senza slash, OG completo, nav in italiano. 10 pagine: 1 H1 ciascuna, JSON-LD valido, 0 link con slash. |
 | 2026-11-09 | A1–A8, A10, A9~ | Landmark e skip link, menu mobile, pausa video, contrasti AA, banner compatto, CTA corretti. tsc/lint/build OK, verificato nel browser a 390×844, 0 errori console. |
 | 2026-11-09 | K1–K5, K10 | Solo Next/Vercel, codice del template rimosso, smoke test 20/20, 0 vulnerabilità in produzione, `npm run dev` ok su Windows, README nuovo. |
+| 2026-11-09 | G1–G6, A9 | Dati societari, informativa art. 13, tabella cookie, GA/Clarity solo dopo consenso (verificato via rete), consenso con scadenza 6 mesi. lint/tsc/test 20/20 OK. |
 
 ## Da fare su Vercel/Sanity dopo il deploy
 

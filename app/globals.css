@@ -1113,8 +1113,8 @@ footer {
 
 .legal-page .legal-updated {
   margin-top: 24px;
-  color: color-mix(in srgb, var(--ink) 55%, transparent);
-  font-size: 12px;
+  color: color-mix(in srgb, var(--ink) 72%, transparent);
+  font-size: 13px;
 }
 
 .legal-page h2 {
@@ -1125,15 +1125,71 @@ footer {
   line-height: 1.1;
 }
 
-.legal-page h2 + p {
+.legal-page h2 ~ p,
+.legal-page li {
   margin-top: 16px;
-  color: color-mix(in srgb, var(--ink) 74%, transparent);
+  color: color-mix(in srgb, var(--ink) 80%, transparent);
   font-size: 16px;
   line-height: 1.75;
 }
 
+.legal-page ul {
+  margin: 16px 0 0;
+  padding-left: 22px;
+}
+
+.legal-page li {
+  margin-top: 8px;
+}
+
 .legal-page a {
   border-bottom: 1px solid currentColor;
+}
+
+.legal-page .pill-button {
+  margin-top: 24px;
+}
+
+.legal-table-wrap {
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+.legal-table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.legal-table caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.legal-table th,
+.legal-table td {
+  padding: 12px 14px 12px 0;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.legal-table thead th {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.legal-table tbody th {
+  font-family: ui-monospace, Consolas, monospace;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .cookie-banner {
@@ -1152,6 +1208,7 @@ footer {
 }
 
 .cookie-title {
+  padding-right: 40px;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 24px;
 }
@@ -1177,6 +1234,28 @@ footer {
 .cookie-actions {
   display: flex;
   gap: 8px;
+}
+
+.cookie-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.cookie-banner .cookie-links {
+  display: flex;
+  gap: 18px;
 }
 
 .cookie-actions button {
@@ -2348,6 +2427,12 @@ footer {
 .events-hero-v2 .video-toggle {
   top: 104px;
   bottom: auto;
+}
+
+/* Keep the keyword H1 clear of the pause button. */
+.hero h1.eyebrow,
+.events-hero-copy-v2 h1.eyebrow {
+  padding-right: 60px;
 }
 
 .video-toggle:focus-visible {

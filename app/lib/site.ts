@@ -34,6 +34,20 @@ export const eventWhatsapp =
 export const mapsUrl =
   "https://www.google.com/maps/search/?api=1&query=Playa+Luna+Via+Marina+di+Varcaturo+42";
 
+/**
+ * Legal entity (titolare del trattamento / dati societari, art. 13 GDPR e art. 2250 c.c.).
+ * Fill in every field: privacy page and footer show them automatically when complete.
+ */
+export const legalEntity = {
+  name: "Lido Playaluna S.r.l.",
+  vatNumber: "09146931218",
+  registeredOffice: "Via Epitaffio 15, 80014 Giugliano in Campania (NA)",
+  pec: "", // indirizzo PEC: shown in the privacy policy when filled in
+  email: "info@playaluna.it",
+};
+
+export const hasLegalEntity = Boolean(legalEntity.name && legalEntity.vatNumber && legalEntity.registeredOffice);
+
 export const address = {
   streetAddress: "Via Marina di Varcaturo, 42",
   postalCode: "80014",

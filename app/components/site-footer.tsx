@@ -5,6 +5,8 @@ import {
   beachPhoneNumber,
   eventPhoneHref,
   eventPhoneNumber,
+  hasLegalEntity,
+  legalEntity,
   mapsUrl,
   restaurantPhoneHref,
   restaurantPhoneNumber,
@@ -39,7 +41,9 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="shell footer-bottom">
-        <p>© {new Date().getFullYear()} Playa Luna</p>
+        <p>
+          © {new Date().getFullYear()} {hasLegalEntity ? `${legalEntity.name} · P.IVA ${legalEntity.vatNumber}` : "Playa Luna"}
+        </p>
         <div><Link href="/privacy">Privacy</Link><Link href="/cookie">Cookie</Link></div>
         <p>Pensato con il Mediterraneo nel cuore.</p>
       </div>

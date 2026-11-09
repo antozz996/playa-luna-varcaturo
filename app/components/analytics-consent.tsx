@@ -2,15 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { readConsent, writeConsent, type ConsentValue } from "../lib/consent";
 
-type Consent = "accepted" | "rejected" | null;
 type AnalyticsWindow = Window & {
   dataLayer?: unknown[][];
   gtag?: (...args: unknown[]) => void;
   clarity?: ((...args: unknown[]) => void) & { q?: unknown[][] };
 };
 
-const consentKey = "playaluna-analytics-consent";
 const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim();
 const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID?.trim();
 
@@ -51,126 +50,125 @@ function analyticsWindow() {
   return target as AnalyticsWindow & { gtag: (...args: unknown[]) => void };
 }
 
-const deniedConsent = {
-  analytics_storage: "denied",
-  ad_storage: "denied",
-  ad_user_data: "denied",
-  ad_personalization: "denied",
-} as const;
+function injectScript(src: string, dataKey: string, dataValue: string) {
+  if (document.querySelector(`script[data-${dataKey}="${dataValue}"]`)) return;
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = src;
+  script.setAttribute(`data-${dataKey}`, dataValue);
+  document.head.appendChild(script);
+}
+
+/**
+ * Google Analytics: loaded ONLY after consent (Consent Mode "basic").
+ * Nothing is sent to Google before the visitor accepts.
+ */
+function startGoogleAnalytics() {
+  if (!gaId) return;
+  const ga = analyticsWindow();
+  ga.gtag("consent", "default", {
+    analytics_storage: "granted",
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+  });
+  ga.gtag("js", new Date());
+  ga.gtag("config", gaId, { cookie_flags: "SameSite=Lax;Secure", send_page_view: false });
+  injectScript(`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`, "ga-id", gaId);
+}
+
+/** Microsoft Clarity: loaded only after consent, with the consentv2 signal required for EEA visitors. */
+function startClarity() {
+  if (!clarityId) return;
+  const ga = analyticsWindow();
+  if (!ga.clarity) {
+    const queue = ((...args: unknown[]) => {
+      queue.q = queue.q ?? [];
+      queue.q.push(args);
+    }) as NonNullable<AnalyticsWindow["clarity"]>;
+    ga.clarity = queue;
+  }
+  ga.clarity("consentv2", { ad_Storage: "denied", analytics_Storage: "granted" });
+  injectScript(`https://www.clarity.ms/tag/${encodeURIComponent(clarityId)}`, "clarity-id", clarityId);
+}
+
+function stopAnalytics() {
+  const ga = window as AnalyticsWindow;
+  ga.gtag?.("consent", "update", { analytics_storage: "denied" });
+  ga.clarity?.("consentv2", { ad_Storage: "denied", analytics_Storage: "denied" });
+  clearAnalyticsCookies();
+}
+
+/**
+ * data-event naming: <channel>_<department>[_<placement>], e.g. whatsapp_events_float.
+ * Sent as one event per channel with department and placement as separate parameters.
+ */
+function describeClick(eventName: string) {
+  const [channel, rawDepartment, rawPlacement] = eventName.split("_");
+  if (channel !== "whatsapp" && channel !== "phone") return { name: eventName, params: {} };
+  // Legacy name: whatsapp_sticky = beach booking from the floating button.
+  const department = rawDepartment === "sticky" ? "beach" : rawDepartment;
+  const placement = rawDepartment === "sticky" ? "float" : rawPlacement ?? "inline";
+  return {
+    name: channel === "whatsapp" ? "whatsapp_click" : "phone_click",
+    params: { department, placement, link_id: eventName },
+  };
+}
 
 export function AnalyticsConsent() {
-  const [consent, setConsent] = useState<Consent>(null);
+  const [consent, setConsent] = useState<ConsentValue | null>(null);
   // The stored choice is only readable in the browser: render nothing until it has been read,
   // so visitors who already chose never see the banner flash.
   const [hydrated, setHydrated] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
-    const stored = window.localStorage.getItem(consentKey);
+    const stored = readConsent();
     const update = window.setTimeout(() => {
-      if (stored === "accepted" || stored === "rejected") setConsent(stored);
+      setConsent(stored);
       setHydrated(true);
     }, 0);
     return () => window.clearTimeout(update);
   }, []);
 
   useEffect(() => {
-    if (!gaId || !isProductionHost()) return;
-    const ga = analyticsWindow();
-
-    ga.gtag("consent", "default", { ...deniedConsent, wait_for_update: 500 });
-
-    if (!document.querySelector(`script[data-ga-id="${gaId}"]`)) {
-      const script = document.createElement("script");
-      script.async = true;
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`;
-      script.dataset.gaId = gaId;
-      document.head.appendChild(script);
-    }
-
-    ga.gtag("js", new Date());
-    ga.gtag("config", gaId, {
-      cookie_flags: "SameSite=Lax;Secure",
-      send_page_view: false,
-    });
-  }, []);
-
-  useEffect(() => {
     if (!isProductionHost()) return;
-    const ga = analyticsWindow();
-
-    if (consent === "accepted" && gaId) {
-      ga.gtag("consent", "update", {
-        ...deniedConsent,
-        analytics_storage: "granted",
-      });
-    }
-
-    if (consent === "rejected") clearAnalyticsCookies();
-
-    if (
-      consent === "accepted" &&
-      clarityId &&
-      !document.querySelector(`script[data-clarity-id="${clarityId}"]`)
-    ) {
-      if (!ga.clarity) {
-        const queue = ((...args: unknown[]) => {
-          queue.q = queue.q ?? [];
-          queue.q.push(args);
-        }) as NonNullable<AnalyticsWindow["clarity"]>;
-        ga.clarity = queue;
-      }
-
-      const script = document.createElement("script");
-      script.async = true;
-      script.src = `https://www.clarity.ms/tag/${encodeURIComponent(clarityId)}`;
-      script.dataset.clarityId = clarityId;
-      document.head.appendChild(script);
+    if (consent === "accepted") {
+      startGoogleAnalytics();
+      startClarity();
+    } else if (consent === "rejected") {
+      stopAnalytics();
     }
   }, [consent]);
 
   useEffect(() => {
-    if (!gaId || !isProductionHost()) return;
-    const ga = analyticsWindow();
-    ga.gtag("event", "page_view", {
+    if (consent !== "accepted" || !gaId || !isProductionHost()) return;
+    analyticsWindow().gtag("event", "page_view", {
       page_path: pathname,
       page_location: window.location.href,
       page_title: document.title,
     });
-  }, [pathname]);
+  }, [pathname, consent]);
 
   useEffect(() => {
-    if (!isProductionHost()) return;
+    if (consent !== "accepted" || !isProductionHost()) return;
     const ga = analyticsWindow();
 
     const trackClick = (event: MouseEvent) => {
       const target = (event.target as Element | null)?.closest<HTMLElement>("[data-event]");
       const eventName = target?.dataset.event;
       if (!eventName) return;
-
-      const isWhatsapp = eventName.startsWith("whatsapp_");
-      const isPhone = eventName.startsWith("phone_");
-      const normalizedEventName = isWhatsapp
-        ? "whatsapp_click"
-        : isPhone
-          ? "phone_click"
-          : eventName;
-
-      if (isWhatsapp || isPhone) {
-        const contactType = eventName.slice(eventName.indexOf("_") + 1);
-        ga.gtag?.("event", normalizedEventName, { contact_type: contactType });
-      } else {
-        ga.gtag?.("event", normalizedEventName);
-      }
+      const { name, params } = describeClick(eventName);
+      ga.gtag("event", name, params);
       ga.clarity?.("event", eventName);
     };
 
     document.addEventListener("click", trackClick);
     return () => document.removeEventListener("click", trackClick);
-  }, []);
+  }, [consent]);
 
-  const choose = (value: Exclude<Consent, null>) => {
-    window.localStorage.setItem(consentKey, value);
+  const choose = (value: ConsentValue) => {
+    writeConsent(value);
     setConsent(value);
   };
 
@@ -178,17 +176,27 @@ export function AnalyticsConsent() {
 
   return (
     <aside className="cookie-banner" aria-label="Preferenze cookie">
+      <button
+        type="button"
+        className="cookie-close"
+        onClick={() => choose("rejected")}
+        aria-label="Chiudi: continua senza cookie di analisi"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
       <div>
         <p className="cookie-title">La tua privacy</p>
         <p>
-          Usiamo Google Analytics in modalità anonima, senza cookie, per statistiche aggregate sul
-          funzionamento del sito. Solo con il tuo consenso attiviamo cookie di misurazione e
-          Microsoft Clarity per capire come migliorare la navigazione.
+          Con il tuo consenso usiamo Google Analytics e Microsoft Clarity per capire come viene
+          usato il sito. Senza consenso nessuno dei due viene attivato.
         </p>
-        <a href="/cookie">Scopri di più</a>
+        <p className="cookie-links">
+          <a href="/cookie">Cookie policy</a>
+          <a href="/privacy">Privacy</a>
+        </p>
       </div>
       <div className="cookie-actions">
-        <button type="button" onClick={() => choose("rejected")}>Solo necessari</button>
+        <button type="button" onClick={() => choose("rejected")}>Rifiuta</button>
         <button className="accept" type="button" onClick={() => choose("accepted")}>Accetta</button>
       </div>
     </aside>
