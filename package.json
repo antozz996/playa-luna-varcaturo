@@ -15,12 +15,12 @@
     "db:generate": "bash scripts/sites-env.sh -- drizzle-kit generate"
   },
   "dependencies": {
-    "@vercel/blob": "^2.8.1",
     "@sanity/client": "^8.2.0",
     "@sanity/image-url": "^2.1.1",
     "@sanity/vision": "^6.10.1",
+    "@vercel/blob": "^2.8.1",
     "drizzle-orm": "0.45.2",
-    "next": "16.2.6",
+    "next": "16.4.5",
     "next-sanity": "^13.3.3",
     "react": "19.2.6",
     "react-dom": "19.2.6",
@@ -36,7 +36,7 @@
     "@vitejs/plugin-rsc": "0.5.26",
     "drizzle-kit": "0.31.10",
     "eslint": "9.39.4",
-    "eslint-config-next": "16.2.6",
+    "eslint-config-next": "16.4.5",
     "react-server-dom-webpack": "19.2.6",
     "tailwindcss": "4.2.1",
     "typescript": "5.9.3",
@@ -45,5 +45,13 @@
     "wrangler": "4.92.0"
   },
   "type": "module",
-  "displayName": "Playa Luna | Beach Club Varcaturo"
+  "displayName": "Playa Luna | Beach Club Varcaturo",
+  "allowScripts": {
+    "esbuild@0.18.20": true,
+    "esbuild@0.25.12": true,
+    "esbuild@0.28.2": true,
+    "esbuild@0.27.3": true,
+    "workerd@1.20260515.1": true,
+    "sharp@0.34.5": true
+  }
 }
