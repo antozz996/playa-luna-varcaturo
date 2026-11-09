@@ -74,18 +74,19 @@ Legenda: `[x]` risolto e verificato · `[~]` parziale · `[ ]` da fare · `[-]` 
 - [x] **Coerenza offerta** — colazione, pranzo e aperitivo; la sera solo eventi privati; orari: lido 8–19 mag–set, bar e ristorante 9–19 ott–apr, pranzo 12:30–16 tutto l'anno (in `site.ts`).
 - [x] **Extra** — home e contatti si rigenerano ogni settimana (`revalidate`) per tenere aggiornate le date degli orari stagionali nello schema.
 
-## Fase 5 — Accessibilità e UX
+## Fase 5 — Accessibilità e UX ✅
 
-- [ ] **A1 · Banner cookie copre le CTA su mobile**.
-- [~] **A2 · Video autoplay senza pausa / reduced-motion** (WCAG 2.2.2) — reduced-motion fatto in Fase 3; manca un pulsante pausa.
-- [ ] **A3 · Landmark** — header/footer fuori da `<main>`, skip link.
-- [ ] **A4 · Bottone Menu 35×16 px**, Escape, click fuori, aria-label dinamico.
-- [ ] **A5 · Contrasti** — footer, dialog, bianco su corallo.
-- [ ] **A6 · Nome accessibile ≠ testo visibile** (WA/Contattaci).
-- [ ] **A7 · Alt perso quando l'immagine diventa video**.
-- [ ] **A8 · CTA** — beach-club "Prenota", piscina con `poolWhatsapp`, `tel:` senza `_blank`, Prenota nell'header mobile.
-- [ ] **A9 · Tracking** — tassonomia evento/posizione, `booking_dialog_open`, `menu_view`.
-- [ ] **A10 · Testi 8–10 px** → min 12 px; caroselli focusabili; frecce `aria-hidden`.
+- [x] **A1 · Banner cookie su mobile** — compatto (288 → 209 px), il pulsante flottante "Prenota" sale sopra il banner finché è aperto, "Prenota" sempre visibile nell'header mobile; niente più lampo del banner per chi ha già scelto; tolto `aria-live`. _Il testo del banner si accorcia in Fase 6 (G3)._
+- [x] **A2 · Video** — pulsante pausa/riproduci (44 px, etichetta che cambia) sui video in evidenza; reduced-motion già dalla Fase 3.
+- [x] **A3 · Landmark** — su tutte le 10 pagine header e footer fuori da `<main id="main">`, link "Vai al contenuto" visibile al focus. _Verificato._
+- [x] **A4 · Menu mobile** — area di tocco 66×48 px, testo 12 px, chiusura con Esc (focus torna al pulsante) e tocco fuori; nome = testo visibile. _Verificato._
+- [x] **A5 · Contrasti** — footer da 0,38–0,52 a 0,74 di opacità; dialog `#6b625a`; nuovo `--coral-strong #b8452a` (~5:1) per tutti gli sfondi con testo bianco; X del dialog 44 px.
+- [x] **A6 · Nome accessibile = testo visibile** — flottanti "WhatsApp" (eventi/wedding), "Prenota"/"Chiama" (servizi).
+- [x] **A7 · Alt dei video** — i video con descrizione hanno `role="img"` + `aria-label`; quelli decorativi restano nascosti.
+- [x] **A8 · CTA** — beach club "Prenota il tuo posto su WhatsApp"; piscina (pagina e home) con `poolWhatsapp` ed evento `whatsapp_pool`; `tel:` senza nuova scheda; freccia "Scopri il ristorante" corretta.
+- [~] **A9 · Tracking** — aggiunti `booking_dialog_open`, `menu_view`, `menu_pdf_open`, `menu_pdf_download`. _Resta: separare reparto e posizione in due parametri (si fa con G3, toccando lo stesso file)._
+- [x] **A10 · Testi** — tutti i testi da 8–10 px portati a 11 px (12 px dove serviva); galleria piatti raggiungibile da tastiera; frecce decorative `aria-hidden`; `role="group"` sui gruppi con etichetta.
+- [ ] **Non fatto** — ristorante prenotabile anche su WhatsApp: manca un numero WhatsApp del ristorante.
 
 ## Fase 6 — Privacy / GDPR (serve input del titolare)
 
@@ -119,6 +120,7 @@ Legenda: `[x]` risolto e verificato · `[~]` parziale · `[ ]` da fare · `[-]` 
 | 2026-11-09 | P1, P2, P5, P7, P8, K6, A2~ | Poster sui video, hero visibile subito, reduced-motion, immagini ricodificate, 21 file inutili eliminati, og.jpg 74 KB. Lint/tsc/build OK, video verificati su mobile. |
 | 2026-11-09 | Push | Branch `fix/audit-2026-11` su GitHub, anteprima Vercel OK (protetta da login). |
 | 2026-11-09 | SEO1, SEO2, SEO5, SEO6, SEO7, SEO9, SEO10, S12 | H1 con keyword, schema unificato con orari, contatti con orari, link senza slash, OG completo, nav in italiano. 10 pagine: 1 H1 ciascuna, JSON-LD valido, 0 link con slash. |
+| 2026-11-09 | A1–A8, A10, A9~ | Landmark e skip link, menu mobile, pausa video, contrasti AA, banner compatto, CTA corretti. tsc/lint/build OK, verificato nel browser a 390×844, 0 errori console. |
 
 ## Da fare su Vercel/Sanity dopo il deploy
 

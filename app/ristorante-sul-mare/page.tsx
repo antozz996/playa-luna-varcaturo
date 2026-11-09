@@ -42,6 +42,7 @@ export default function RestaurantPage() {
       ]}
       menuHref="/menu-ristorante"
       ctaLabel="Prenota un tavolo"
+      floatLabel="Chiama"
       ctaHref={restaurantPhoneHref}
       ctaEvent="phone_restaurant"
       telephone={restaurantPhoneNumber}

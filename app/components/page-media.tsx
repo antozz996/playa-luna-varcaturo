@@ -40,6 +40,8 @@ export function PageMedia({
         priority={priority}
         className={className}
         zIndex={videoZIndex}
+        label={alt}
+        pausable={priority}
       />
     );
   }

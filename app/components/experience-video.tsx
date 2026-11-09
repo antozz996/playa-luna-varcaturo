@@ -11,6 +11,10 @@ type ExperienceVideoProps = {
   priority?: boolean;
   className?: string;
   zIndex?: number;
+  /** Text alternative: exposed as role="img" when the video carries meaning. Empty = decorative. */
+  label?: string;
+  /** Show a pause/play button (WCAG 2.2.2), used on hero videos. */
+  pausable?: boolean;
 };
 
 const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
@@ -37,12 +41,27 @@ export function ExperienceVideo({
   priority = false,
   className = "",
   zIndex,
+  label,
+  pausable = false,
 }: ExperienceVideoProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const reducedMotion = usePrefersReducedMotion();
   const [inView, setInView] = useState(priority);
   const [isReady, setIsReady] = useState(false);
+  const [userPaused, setUserPaused] = useState(false);
   const shouldLoad = inView && !reducedMotion;
+
+  const togglePlayback = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (userPaused) {
+      setUserPaused(false);
+      void video.play().catch(() => {});
+    } else {
+      setUserPaused(true);
+      video.pause();
+    }
+  };
 
   useEffect(() => {
     if (priority) return;
@@ -74,8 +93,10 @@ export function ExperienceVideo({
 
   // With a poster the element is visible immediately; without one it fades in on first frame.
   const visible = Boolean(poster) || isReady;
+  const a11y = label ? { role: "img", "aria-label": label } : { "aria-hidden": true as const };
 
   return (
+    <>
     <video
       ref={videoRef}
       className={`${styles.video} ${fill ? styles.fill : ""} ${visible ? styles.ready : ""} ${className}`}
@@ -85,11 +106,23 @@ export function ExperienceVideo({
       muted
       loop
       playsInline
-      autoPlay={!reducedMotion}
+      autoPlay={!reducedMotion && !userPaused}
       preload={shouldLoad ? "metadata" : "none"}
       onLoadedData={() => setIsReady(true)}
-      aria-hidden="true"
       tabIndex={-1}
+      {...a11y}
     />
+    {pausable && shouldLoad ? (
+      <button
+        type="button"
+        className="video-toggle"
+        onClick={togglePlayback}
+        aria-label={userPaused ? "Riproduci il video" : "Metti in pausa il video"}
+        aria-pressed={userPaused}
+      >
+        <span aria-hidden="true">{userPaused ? "▶" : "❚❚"}</span>
+      </button>
+    ) : null}
+    </>
   );
 }

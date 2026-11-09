@@ -40,8 +40,9 @@ const schema = [
 
 export default function WeddingPage() {
   return (
-    <main className="wedding-editorial-v2">
+    <div className="page-shell wedding-editorial-v2">
       <SiteHeader />
+      <main id="main">
 
       <section className="wedding-hero-v2">
         <PageMedia
@@ -131,9 +132,10 @@ export default function WeddingPage() {
         </div>
       </section>
 
+      </main>
       <SiteFooter />
-      <a className="whatsapp-float" href={eventWhatsapp} target="_blank" rel="noreferrer" aria-label="Scrivici su WhatsApp" data-event="whatsapp_wedding_float">WA</a>
+      <a className="whatsapp-float" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_wedding_float"><span aria-hidden="true">✦</span> WhatsApp</a>
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(schema)} />
-    </main>
+    </div>
   );
 }

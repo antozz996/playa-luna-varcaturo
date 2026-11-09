@@ -19,8 +19,9 @@ const menuPdf = "/menus/Playa_Menu_ITA_2026_v11.pdf";
 
 export default function RestaurantMenuPage() {
   return (
-    <main className={styles.page}>
+    <div className={`page-shell ${styles.page}`}>
       <SiteHeader />
+      <main id="main">
       <section className={styles.menu} aria-labelledby="menu-title">
         <div className="shell">
           <nav className="breadcrumbs" aria-label="Percorso">
@@ -31,10 +32,10 @@ export default function RestaurantMenuPage() {
           <p className={`display-title ${styles.title}`}>Il nostro <em>menu.</em></p>
           <p>Scopri la proposta del ristorante Playa Luna.</p>
           <div className={styles.actions}>
-            <a className="pill-button dark" href={menuPdf} target="_blank" rel="noopener noreferrer">
+            <a className="pill-button dark" href={menuPdf} target="_blank" rel="noopener noreferrer" data-event="menu_pdf_open">
               Apri il PDF <span aria-hidden="true">↗</span>
             </a>
-            <a className="pill-button dark" href={menuPdf} download>
+            <a className="pill-button dark" href={menuPdf} download data-event="menu_pdf_download">
               Scarica il menu <span aria-hidden="true">↓</span>
             </a>
           </div>
@@ -43,7 +44,8 @@ export default function RestaurantMenuPage() {
           </object>
         </div>
       </section>
+      </main>
       <SiteFooter />
-    </main>
+    </div>
   );
 }

@@ -42,8 +42,9 @@ const schema = [
 
 export default function EventsPage() {
   return (
-    <main className="events-editorial-v2">
+    <div className="page-shell events-editorial-v2">
       <SiteHeader />
+      <main id="main">
 
       <section className="events-hero-v2">
         <PageMedia
@@ -124,9 +125,10 @@ export default function EventsPage() {
         </a>
       </section>
 
+      </main>
       <SiteFooter />
-      <a className="whatsapp-float" href={eventWhatsapp} target="_blank" rel="noreferrer" aria-label="Scrivici su WhatsApp" data-event="whatsapp_events_float">WA</a>
+      <a className="whatsapp-float" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events_float"><span aria-hidden="true">✦</span> WhatsApp</a>
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(schema)} />
-    </main>
+    </div>
   );
 }

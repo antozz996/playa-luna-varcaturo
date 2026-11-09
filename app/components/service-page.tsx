@@ -20,6 +20,8 @@ type ServicePageProps = {
   detailAlt: string;
   features: string[];
   ctaLabel?: string;
+  /** Short text of the floating mobile button (visible text = accessible name). */
+  floatLabel?: string;
   ctaHref?: string;
   ctaEvent?: string;
   menuHref?: string;
@@ -45,6 +47,7 @@ export function ServicePage({
   detailAlt,
   features,
   ctaLabel = "Chiedi informazioni",
+  floatLabel = "Prenota",
   ctaHref = beachWhatsapp,
   ctaEvent = "whatsapp_beach",
   menuHref,
@@ -71,10 +74,14 @@ export function ServicePage({
     ]),
   ];
 
+  // tel: links must not open a new tab (it leaves an empty tab on desktop).
+  const ctaTarget = ctaHref.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {};
+
   return (
-    <main>
+    <div className="page-shell">
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(structuredData)} />
       <SiteHeader />
+      <main id="main">
 
       <section className="service-hero" aria-labelledby="service-title">
         <Image
@@ -105,18 +112,18 @@ export function ServicePage({
           <h2>Quello che<br /><em>trovi qui.</em></h2>
           <p>{body}</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
-          <a className="pill-button dark" href={ctaHref} target="_blank" rel="noreferrer" data-event={ctaEvent}>
+          <a className="pill-button dark" href={ctaHref} {...ctaTarget} data-event={ctaEvent}>
             {ctaLabel} <span aria-hidden="true">↗</span>
           </a>
             {menuHref ? (
-              <Link className="pill-button dark" href={menuHref}>
-                Consulta il menu <span aria-hidden="true">↗</span>
+              <Link className="pill-button dark" href={menuHref} data-event="menu_view">
+                Consulta il menu <span aria-hidden="true">→</span>
               </Link>
             ) : null}
           </div>
         </div>
 
-        <div className="service-facts" aria-label={`Caratteristiche ${eyebrow}`}>
+        <div className="service-facts" role="group" aria-label={`Caratteristiche ${eyebrow}`}>
           {features.map((feature, index) => (
             <div key={feature}>
               <span>{String(index + 1).padStart(2, "0")}</span>
@@ -141,16 +148,17 @@ export function ServicePage({
         <div className="shell">
           <p className="eyebrow light">Playa Luna · Marina di Varcaturo</p>
           <h2>Organizza la tua<br /><em>giornata sul mare.</em></h2>
-          <a className="pill-button linen" href={ctaHref} target="_blank" rel="noreferrer" data-event={ctaEvent}>
+          <a className="pill-button linen" href={ctaHref} {...ctaTarget} data-event={ctaEvent}>
             {ctaLabel} <span aria-hidden="true">↗</span>
           </a>
         </div>
       </section>
+      </main>
 
       <SiteFooter />
-      <a className="whatsapp-float" href={ctaHref} target="_blank" rel="noreferrer" aria-label={ctaLabel} data-event={ctaEvent}>
-        <span aria-hidden="true">✦</span> Contattaci
+      <a className="whatsapp-float" href={ctaHref} {...ctaTarget} data-event={ctaEvent}>
+        <span aria-hidden="true">✦</span> {floatLabel}
       </a>
-    </main>
+    </div>
   );
 }

@@ -15,8 +15,9 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <main>
+    <div className="page-shell">
       <div className="legal-header"><SiteHeader /></div>
+      <main id="main">
       <article className="legal-page shell">
         <p className="eyebrow">Informativa</p>
         <h1>Privacy Policy</h1>
@@ -32,7 +33,8 @@ export default function PrivacyPage() {
         <h2>I tuoi diritti</h2>
         <p>Puoi chiedere accesso, rettifica, cancellazione, limitazione o opposizione al trattamento e, quando applicabile, la portabilità dei dati. Puoi inoltre revocare il consenso in qualsiasi momento.</p>
       </article>
+      </main>
       <SiteFooter />
-    </main>
+    </div>
   );
 }

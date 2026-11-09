@@ -33,8 +33,9 @@ export const metadata: Metadata = {
 
 export default function ContactsPage() {
   return (
-    <main>
+    <div className="page-shell">
       <SiteHeader />
+      <main id="main">
       <section className="contact-hero">
         <Image src="/images/playa-luna/sunset-view.webp" alt="Vista del mare da Playa Luna a Marina di Varcaturo" width={960} height={1200} priority sizes="100vw" />
         <div className="service-hero-shade" />
@@ -45,10 +46,10 @@ export default function ContactsPage() {
         </div>
       </section>
       <section className="contact-options shell section-space" aria-label="Contatti Playa Luna">
-        <a href={beachWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_beach"><span>01</span><h2>Beach Club</h2><p>{beachPhoneNumber} · Prenota o chiedi disponibilità su WhatsApp.</p><b>Apri WhatsApp ↗</b></a>
-        <a href={restaurantPhoneHref} data-event="phone_restaurant"><span>02</span><h2>Ristorante</h2><p>Chiama {restaurantPhoneNumber} per prenotare un tavolo.</p><b>Chiama ora ↗</b></a>
-        <a href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events"><span>03</span><h2>Eventi</h2><p>{eventPhoneNumber} · Raccontaci che tipo di occasione vuoi organizzare.</p><b>Richiedi informazioni ↗</b></a>
-        <a href={mapsUrl} target="_blank" rel="noreferrer" data-event="directions_click"><span>04</span><h2>Come arrivare</h2><p>{address.streetAddress} · {address.postalCode} {address.locality} ({address.region}), {address.area}.</p><b>Apri la mappa ↗</b></a>
+        <a href={beachWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_beach"><span>01</span><h2>Beach Club</h2><p>{beachPhoneNumber} · Prenota o chiedi disponibilità su WhatsApp.</p><b>Apri WhatsApp <span aria-hidden="true">↗</span></b></a>
+        <a href={restaurantPhoneHref} data-event="phone_restaurant"><span>02</span><h2>Ristorante</h2><p>Chiama {restaurantPhoneNumber} per prenotare un tavolo.</p><b>Chiama ora <span aria-hidden="true">↗</span></b></a>
+        <a href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events"><span>03</span><h2>Eventi</h2><p>{eventPhoneNumber} · Raccontaci che tipo di occasione vuoi organizzare.</p><b>Richiedi informazioni <span aria-hidden="true">↗</span></b></a>
+        <a href={mapsUrl} target="_blank" rel="noreferrer" data-event="directions_click"><span>04</span><h2>Come arrivare</h2><p>{address.streetAddress} · {address.postalCode} {address.locality} ({address.region}), {address.area}.</p><b>Apri la mappa <span aria-hidden="true">↗</span></b></a>
       </section>
       <section className="contact-hours shell" aria-labelledby="hours-title">
         <p className="eyebrow">Tutti i giorni</p>
@@ -60,8 +61,9 @@ export default function ContactsPage() {
         </dl>
         <p>{openingHours.evening}</p>
       </section>
+      </main>
       <SiteFooter />
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd([businessSchema(`${siteUrl}/images/playa-luna/sunset-view.webp`), breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Contatti", path: "/contatti" }])])} />
-    </main>
+    </div>
   );
 }

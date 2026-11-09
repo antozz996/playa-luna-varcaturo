@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ServicePage } from "../components/service-page";
-import { beachPhoneNumber, pageOpenGraph } from "../lib/site";
+import { beachPhoneNumber, pageOpenGraph, poolWhatsapp } from "../lib/site";
 
 const title = "Piscina per bambini a Varcaturo";
 const description =
@@ -34,6 +34,9 @@ export default function PoolPage() {
         "Area per il divertimento dei bambini",
         "Collegata agli altri servizi del beach club",
       ]}
+      ctaLabel="Chiedi disponibilità della piscina"
+      ctaHref={poolWhatsapp}
+      ctaEvent="whatsapp_pool"
       telephone={beachPhoneNumber}
       schemaType="PublicSwimmingPool"
     />

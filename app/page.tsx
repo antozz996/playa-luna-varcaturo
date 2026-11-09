@@ -6,6 +6,7 @@ import { businessSchema, jsonLd } from "./lib/schema";
 import {
   beachWhatsapp,
   eventWhatsapp,
+  poolWhatsapp,
   restaurantPhoneHref,
   siteUrl,
 } from "./lib/site";
@@ -62,10 +63,11 @@ export default function Home() {
   };
 
   return (
-    <main>
+    <div className="page-shell">
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(structuredData)} />
 
       <SiteHeader />
+      <main id="main">
 
       <section className="hero" id="top" aria-labelledby="hero-title">
         <PageMedia
@@ -84,9 +86,9 @@ export default function Home() {
           <p className="display-title">Tutto il mare<br /><em>in un giorno.</em></p>
           <p className="hero-copy">Dal primo caffè al tramonto. Spiaggia, cucina, piscina e momenti da ricordare.</p>
         </div>
-        <div className="hero-actions shell" aria-label="Azioni principali">
+        <div className="hero-actions shell" role="group" aria-label="Azioni principali">
           <a href={beachWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_beach"><span>01</span> Prenota la tua giornata <b aria-hidden="true">↗</b></a>
-          <a href="/ristorante-sul-mare" data-event="restaurant_page_click"><span>02</span> Scopri il ristorante <b aria-hidden="true">↓</b></a>
+          <a href="/ristorante-sul-mare" data-event="restaurant_page_click"><span>02</span> Scopri il ristorante <b aria-hidden="true">→</b></a>
           <a href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events"><span>03</span> Organizza un evento <b aria-hidden="true">↗</b></a>
         </div>
       </section>
@@ -167,7 +169,7 @@ export default function Home() {
           <p>Ingredienti mediterranei, piatti da condividere e una sala aperta sulla luce del mare. Qui il pranzo è parte dell’esperienza, non una pausa dalla spiaggia.</p>
         </div>
 
-        <div className="food-gallery shell">
+        <div className="food-gallery shell" tabIndex={0} role="region" aria-label="Galleria piatti del ristorante">
           <figure className="food-large" style={{ position: "relative" }}>
             <PageMedia src="/images/playa-luna/home/restaurant-main.webp" alt="Paella all’astice servita al ristorante Playa Luna di Varcaturo, ideale da condividere in una location sul mare." sizes="(max-width: 800px) 78vw, 46vw" fill />
           </figure>
@@ -201,7 +203,7 @@ export default function Home() {
           <p className="eyebrow light">Piscina · Playa Luna</p>
           <h2 id="pool-title">Un tuffo<br /><em>nell’estate.</em></h2>
           <p>La piscina interna a Playa Luna completa la giornata al mare: uno spazio dedicato al divertimento dei più piccoli e al relax di tutta la famiglia.</p>
-          <a className="text-link light-link" href={beachWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_pool">Chiedi disponibilità <span aria-hidden="true">→</span></a>
+          <a className="text-link light-link" href={poolWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_pool">Chiedi disponibilità <span aria-hidden="true">→</span></a>
         </div>
       </section>
 
@@ -218,7 +220,7 @@ export default function Home() {
           <figure className="events-image" style={{ position: "relative", overflow: "hidden" }}>
             <PageMedia video="/videos/playa-luna/pvt-playa.mp4" alt="Allestimento elegante per un evento al Playa Luna" sizes="(max-width: 800px) 100vw, 52vw" fill />
           </figure>
-          <div className="event-types" aria-label="Tipologie di eventi">
+          <div className="event-types" role="group" aria-label="Tipologie di eventi">
             <div><span>01</span><h3>Private party</h3><p>Compleanni, lauree e feste su misura.</p></div>
             <div><span>02</span><h3>Wedding</h3><p>Ricevimenti e promesse a pochi passi dal mare.</p></div>
             <div><span>03</span><h3>Corporate</h3><p>Pranzi, meeting ed eventi aziendali.</p></div>
@@ -235,12 +237,13 @@ export default function Home() {
           <a className="pill-button linen" href={beachWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_beach">Prenota su WhatsApp <span aria-hidden="true">↗</span></a>
         </div>
       </section>
+      </main>
 
       <SiteFooter />
 
-      <a className="whatsapp-float" href={beachWhatsapp} target="_blank" rel="noreferrer" aria-label="Prenota Playa Luna su WhatsApp" data-event="whatsapp_sticky">
+      <a className="whatsapp-float" href={beachWhatsapp} target="_blank" rel="noreferrer" aria-label="Prenota su WhatsApp" data-event="whatsapp_sticky">
         <span aria-hidden="true">✦</span> Prenota
       </a>
-    </main>
+    </div>
   );
 }

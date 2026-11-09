@@ -39,6 +39,7 @@ export function BookingDepartmentDialog({ mobile = false }: { mobile?: boolean }
         className={mobile ? styles.mobileTrigger : `header-cta ${styles.desktopTrigger}`}
         aria-haspopup="dialog"
         aria-controls={id}
+        data-event="booking_dialog_open"
         onClick={() => dialogRef.current?.showModal()}
       >
         Prenota <span aria-hidden="true">↗</span>

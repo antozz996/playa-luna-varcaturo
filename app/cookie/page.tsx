@@ -16,8 +16,9 @@ export const metadata: Metadata = {
 
 export default function CookiePage() {
   return (
-    <main>
+    <div className="page-shell">
       <div className="legal-header"><SiteHeader /></div>
+      <main id="main">
       <article className="legal-page shell">
         <p className="eyebrow">Preferenze</p>
         <h1>Cookie Policy</h1>
@@ -32,7 +33,8 @@ export default function CookiePage() {
         <h2>Servizi esterni</h2>
         <p>I collegamenti verso WhatsApp, Google Maps, Instagram e Facebook portano a servizi esterni che applicano cookie e informative proprie dopo l’apertura del relativo sito o applicazione.</p>
       </article>
+      </main>
       <SiteFooter />
-    </main>
+    </div>
   );
 }

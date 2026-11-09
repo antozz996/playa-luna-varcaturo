@@ -8,6 +8,8 @@
   --sea: #64889a;
   --deep-sea: #335b68;
   --coral: #e76543;
+  /* Coral dark enough for white text (≈5:1, WCAG AA). */
+  --coral-strong: #b8452a;
   --white: #fffdf8;
   --line: rgba(39, 37, 31, 0.2);
 }
@@ -31,8 +33,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.page-shell,
 main {
   overflow: hidden;
+}
+
+main:focus {
+  outline: none;
 }
 
 a {
@@ -215,7 +222,7 @@ img {
   padding: 6px 8px;
   background: rgba(39, 37, 31, 0.84);
   color: #fffdf8;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.12em;
 }
@@ -236,7 +243,7 @@ img {
   padding: 6px 8px;
   background: rgba(255, 253, 248, 0.88);
   color: #27251f;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -271,7 +278,7 @@ img {
   min-height: auto;
   margin: 0 0 8px;
   color: #335b68;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -555,7 +562,7 @@ h2 {
 
 .hero-actions span {
   color: currentColor;
-  font-size: 10px;
+  font-size: 11px;
   opacity: 0.68;
 }
 
@@ -643,7 +650,7 @@ h2 {
   border-radius: 50%;
   background: rgba(25, 28, 26, 0.22);
   color: var(--white);
-  font-size: 10px;
+  font-size: 11px;
   place-items: center;
   backdrop-filter: blur(8px);
 }
@@ -684,8 +691,8 @@ h2 {
 }
 
 .experience-card:hover .round-arrow {
-  background: var(--coral);
-  border-color: var(--coral);
+  background: var(--coral-strong);
+  border-color: var(--coral-strong);
   color: var(--white);
   transform: rotate(45deg);
 }
@@ -748,7 +755,7 @@ h2 {
   gap: 34px;
   align-items: center;
   justify-content: space-between;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -762,7 +769,7 @@ h2 {
 
 .pill-button.dark:hover,
 .pill-button.dark:focus-visible {
-  background: var(--coral);
+  background: var(--coral-strong);
 }
 
 .beach-main-image {
@@ -777,7 +784,7 @@ h2 {
 
 .beach-main-image figcaption {
   margin-top: 10px;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -859,7 +866,7 @@ h2 {
 
 .restaurant-bottom > p {
   color: rgba(255, 255, 255, 0.62);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -867,7 +874,7 @@ h2 {
 
 .pill-button.coral {
   margin-top: 0;
-  background: var(--coral);
+  background: var(--coral-strong);
   color: var(--white);
 }
 
@@ -970,7 +977,7 @@ h2 {
   top: 35px;
   left: 0;
   color: color-mix(in srgb, var(--ink) 48%, transparent);
-  font-size: 9px;
+  font-size: 11px;
 }
 
 .event-types h3 {
@@ -1036,7 +1043,7 @@ h2 {
 
 .pill-button.linen:hover,
 .pill-button.linen:focus-visible {
-  background: var(--coral);
+  background: var(--coral-strong);
   color: var(--white);
 }
 
@@ -1068,8 +1075,8 @@ footer {
 }
 
 .footer-brand > p {
-  color: rgba(255, 255, 255, 0.52);
-  font-size: 9px;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -1077,8 +1084,8 @@ footer {
 
 .footer-label {
   margin-bottom: 24px;
-  color: rgba(255, 255, 255, 0.44);
-  font-size: 9px;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -1105,8 +1112,8 @@ footer {
   border-top: 1px solid rgba(255, 255, 255, 0.16);
   grid-template-columns: 1fr auto 1fr;
   gap: 30px;
-  color: rgba(255, 255, 255, 0.38);
-  font-size: 8px;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -1135,12 +1142,12 @@ footer {
   min-height: 52px;
   padding: 0 22px;
   border-radius: 999px;
-  background: var(--coral);
+  background: var(--coral-strong);
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2);
   color: var(--white);
   gap: 9px;
   align-items: center;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1192,7 +1199,7 @@ footer {
   margin-bottom: auto;
   color: rgba(255, 255, 255, 0.62);
   gap: 10px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1265,7 +1272,7 @@ footer {
 
 .service-facts span {
   color: color-mix(in srgb, var(--ink) 45%, transparent);
-  font-size: 9px;
+  font-size: 11px;
 }
 
 .service-facts p {
@@ -1314,13 +1321,13 @@ footer {
 
 .contact-options > a:hover,
 .contact-options > a:focus-visible {
-  background: var(--coral);
-  border-color: var(--coral);
+  background: var(--coral-strong);
+  border-color: var(--coral-strong);
   color: var(--white);
 }
 
 .contact-options span {
-  font-size: 9px;
+  font-size: 11px;
   opacity: 0.55;
 }
 
@@ -1338,7 +1345,7 @@ footer {
 .contact-options b {
   margin-top: auto;
   padding-top: 30px;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.13em;
   text-transform: uppercase;
 }
@@ -1424,7 +1431,7 @@ footer {
   display: inline-block;
   margin-top: 10px;
   border-bottom: 1px solid currentColor;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1442,7 +1449,7 @@ footer {
   background: transparent;
   color: var(--ink);
   cursor: pointer;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -1479,8 +1486,15 @@ footer {
   }
 
   .mobile-menu summary {
+    display: inline-flex;
+    min-width: 48px;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    margin: -16px -12px;
+    padding: 0 12px;
     cursor: pointer;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.14em;
     list-style: none;
@@ -1569,8 +1583,12 @@ footer {
     height: 50px;
   }
 
+  /* Keep "Prenota" one tap away on mobile, next to the Menu button. */
   .header-cta {
-    display: none;
+    margin-right: 76px;
+    padding: 8px 0;
+    gap: 8px;
+    font-size: 12px;
   }
 
   .mobile-menu {
@@ -1614,7 +1632,7 @@ footer {
     padding: 0 14px;
     border-right: 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.35);
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .hero-actions a:last-child {
@@ -1683,11 +1701,32 @@ footer {
     padding-bottom: 100px;
   }
 
+  /* Compact banner on mobile so the booking buttons stay reachable. */
   .cookie-banner {
-    right: 12px;
-    bottom: 12px;
-    width: calc(100% - 24px);
+    right: 10px;
+    bottom: 10px;
+    width: calc(100% - 20px);
+    padding: 14px 16px;
     grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .cookie-title {
+    font-size: 18px;
+  }
+
+  .cookie-banner div > p:not(.cookie-title) {
+    margin-top: 4px;
+    line-height: 1.42;
+  }
+
+  .cookie-banner a {
+    margin-top: 6px;
+  }
+
+  /* While the banner is open, lift the floating booking button above it. */
+  body:has(.cookie-banner) .whatsapp-float {
+    bottom: 236px;
   }
 
   .cookie-actions {
@@ -2068,7 +2107,7 @@ footer {
   bottom: 22px;
   left: 26px;
   color: var(--white);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -2117,7 +2156,7 @@ footer {
   display: block;
   margin-bottom: 90px;
   color: rgba(255, 255, 255, 0.45);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.16em;
 }
@@ -2249,7 +2288,7 @@ footer {
   bottom: 20px;
   left: 24px;
   color: var(--white);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -2532,4 +2571,60 @@ footer {
   .contact-hours dl {
     grid-template-columns: 1fr;
   }
+}
+
+/* Accessibilità — link "Vai al contenuto", visibile solo al focus da tastiera */
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: 12px;
+  left: 12px;
+  padding: 12px 18px;
+  background: var(--ink);
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 700;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* Pulsante pausa/riproduzione sui video in evidenza (WCAG 2.2.2) */
+.video-toggle {
+  position: absolute;
+  z-index: 5;
+  right: 16px;
+  bottom: 16px;
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 253, 248, 0.6);
+  border-radius: 50%;
+  background: rgba(39, 37, 31, 0.55);
+  color: var(--white);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* On full-screen heroes the bottom is taken by the booking buttons: place the toggle under the header. */
+.hero .video-toggle,
+.events-hero-v2 .video-toggle {
+  top: 104px;
+  bottom: auto;
+}
+
+.video-toggle:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 2px;
+}
+
+/* Gallerie a scorrimento orizzontale raggiungibili da tastiera */
+.food-gallery:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
 }

@@ -55,6 +55,7 @@ export default function RootLayout({
   return (
     <html lang="it">
       <body>
+        <a className="skip-link" href="#main">Vai al contenuto</a>
         {children}
         <AnalyticsConsent />
       </body>

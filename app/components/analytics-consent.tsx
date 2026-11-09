@@ -60,12 +60,17 @@ const deniedConsent = {
 
 export function AnalyticsConsent() {
   const [consent, setConsent] = useState<Consent>(null);
+  // The stored choice is only readable in the browser: render nothing until it has been read,
+  // so visitors who already chose never see the banner flash.
+  const [hydrated, setHydrated] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
     const stored = window.localStorage.getItem(consentKey);
-    if (stored !== "accepted" && stored !== "rejected") return;
-    const update = window.setTimeout(() => setConsent(stored), 0);
+    const update = window.setTimeout(() => {
+      if (stored === "accepted" || stored === "rejected") setConsent(stored);
+      setHydrated(true);
+    }, 0);
     return () => window.clearTimeout(update);
   }, []);
 
@@ -169,10 +174,10 @@ export function AnalyticsConsent() {
     setConsent(value);
   };
 
-  if (consent !== null) return null;
+  if (!hydrated || consent !== null) return null;
 
   return (
-    <aside className="cookie-banner" aria-label="Preferenze cookie" aria-live="polite">
+    <aside className="cookie-banner" aria-label="Preferenze cookie">
       <div>
         <p className="cookie-title">La tua privacy</p>
         <p>

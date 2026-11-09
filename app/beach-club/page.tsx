@@ -35,6 +35,7 @@ export default function BeachClubPage() {
         "Docce e servizi per gli ospiti",
         "Spazi adatti anche alle famiglie",
       ]}
+      ctaLabel="Prenota il tuo posto su WhatsApp"
       telephone={beachPhoneNumber}
       schemaType="Beach"
     />

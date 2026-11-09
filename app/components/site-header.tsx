@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { mainNavigation } from "../lib/site";
 import { BookingDepartmentDialog } from "./booking-department-dialog";
+import { MobileMenu } from "./mobile-menu";
 
 export function SiteHeader() {
   return (
@@ -18,15 +19,14 @@ export function SiteHeader() {
 
       <BookingDepartmentDialog />
 
-      <details className="mobile-menu">
-        <summary aria-label="Apri il menu">Menu</summary>
+      <MobileMenu>
         <nav aria-label="Navigazione mobile">
           {mainNavigation.map((item) => (
             <Link href={item.href} key={item.href}>{item.label}</Link>
           ))}
           <BookingDepartmentDialog mobile />
         </nav>
-      </details>
+      </MobileMenu>
     </header>
   );
 }
