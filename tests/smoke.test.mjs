@@ -1,7 +1,7 @@
 // Smoke tests on the prerendered HTML produced by `next build` (run via `npm test`).
 import assert from "node:assert/strict";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { join, sep } from "node:path";
 import { test } from "node:test";
 
 const root = process.cwd();
@@ -20,10 +20,35 @@ const pages = {
   "/cookie": "cookie.html",
 };
 
+// Locally and on GitHub the prerendered HTML is in .next/server/app; on Vercel the build may place it
+// elsewhere under .next, so fall back to searching the whole build folder.
+const nextDir = join(root, ".next");
+let buildFiles;
+function findInBuild(name) {
+  if (!buildFiles) {
+    const walk = (dir) => {
+      try {
+        return readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? (e.name === "cache" ? [] : walk(join(dir, e.name))) : [join(dir, e.name)]));
+      } catch {
+        return [];
+      }
+    };
+    buildFiles = walk(nextDir);
+  }
+  return buildFiles.find((f) => f.endsWith(`${sep}${name}`) && f.includes(`${sep}app${sep}`));
+}
+
+function locate(name) {
+  const direct = join(appDir, name);
+  if (existsSync(direct)) return direct;
+  const found = findInBuild(name);
+  if (found) return found;
+  const htmls = (buildFiles ?? []).filter((f) => f.endsWith(".html")).slice(0, 10).map((f) => f.replace(root, ""));
+  assert.fail(`missing prerendered file ${name} — run next build. HTML files found: ${htmls.join(", ") || "none"}`);
+}
+
 function read(path) {
-  const file = join(appDir, pages[path]);
-  assert.ok(existsSync(file), `${path}: missing prerendered file ${pages[path]} — run next build`);
-  return readFileSync(file, "utf8");
+  return readFileSync(locate(pages[path]), "utf8");
 }
 
 test("FAQ with FAQPage schema on the service and contact pages", () => {
@@ -54,9 +79,7 @@ test("opening hours are never hard-coded in pages (single source: app/lib/site.t
 });
 
 test("llms.txt is generated with hours and pages", () => {
-  const file = join(appDir, "llms.txt.body");
-  assert.ok(existsSync(file), "llms.txt prerendered");
-  const text = readFileSync(file, "utf8");
+  const text = readFileSync(locate("llms.txt.body"), "utf8");
   assert.match(text, /## Orari/);
   assert.match(text, /menu-ristorante/);
 });
