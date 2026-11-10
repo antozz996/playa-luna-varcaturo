@@ -129,6 +129,8 @@ Legenda: `[x]` risolto e verificato · `[~]` parziale · `[ ]` da fare · `[-]` 
 | 2026-11-09 | **Pubblicazione** | PR #13 unita in `main`, deploy di produzione su playaluna.it. Verificato sul sito vero: 10 pagine 200 con i nuovi title, CSP/HSTS/X-Frame attivi, media raggiungibili, video hero 3,5 MB con cache 7 giorni, `/gestione-foto` e `/studio` 404. |
 | 2026-11-09 | **Bug GA preesistente** | Google Analytics non aveva mai inviato dati: il codice originale metteva array nel `dataLayer`, che gtag.js ignora. Corretto (`arguments` come nello snippet ufficiale). Verificato in produzione: 0 richieste prima del consenso, hit `g/collect` e cookie `_ga` dopo "Accetta", cookie cancellati dopo "Rifiuta", 0 violazioni CSP. |
 
+| 2026-11-10 | Orari, contenuti | Bar tutti i giorni 9–18:30 tutto l'anno (sostituisce "bar e ristorante 9–19 ott–apr"); rimosso "Pozzuoli"; menu HTML, FAQ, PEC; variabili Vercel ripulite; redirect vercel.app; sitemap reinviata e indicizzazione richiesta per menu e contatti. |
+
 ## Stato finale
 
 Tutte le 7 fasi completate e online. Restano solo azioni fuori dal codice:
