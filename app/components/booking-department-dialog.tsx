@@ -1,29 +1,36 @@
 "use client";
 
 import { useId, useRef } from "react";
-import { beachWhatsapp, eventWhatsapp, restaurantPhoneHref } from "../lib/site";
+import { beachWhatsapp, eventWhatsapp, restaurantPhoneHref, restaurantWhatsapp } from "../lib/site";
 import styles from "./booking-department-dialog.module.css";
 
 const departments = [
   {
-    name: "Beach Club",
+    name: "Spiaggia",
     action: "WhatsApp",
     href: beachWhatsapp,
-    event: "whatsapp_beach",
+    event: "whatsapp_beach_dialog",
+    external: true,
+  },
+  {
+    name: "Ristorante",
+    action: "WhatsApp",
+    href: restaurantWhatsapp,
+    event: "whatsapp_restaurant_dialog",
     external: true,
   },
   {
     name: "Ristorante",
     action: "Chiama",
     href: restaurantPhoneHref,
-    event: "phone_restaurant",
+    event: "phone_restaurant_dialog",
     external: false,
   },
   {
-    name: "Eventi",
+    name: "Eventi e matrimoni",
     action: "WhatsApp",
     href: eventWhatsapp,
-    event: "whatsapp_events",
+    event: "whatsapp_events_dialog",
     external: true,
   },
 ] as const;
@@ -79,7 +86,7 @@ export function BookingDepartmentDialog({ mobile = false }: { mobile?: boolean }
           <div className={styles.options}>
             {departments.map((department) => (
               <a
-                key={department.name}
+                key={department.event}
                 href={department.href}
                 target={department.external ? "_blank" : undefined}
                 rel={department.external ? "noopener noreferrer" : undefined}

@@ -4,7 +4,7 @@ import { SiteHeader } from "../components/site-header";
 import { SiteFooter } from "../components/site-footer";
 import { allergens, drinks, formatPrice, kitchen, menuNotes, menuPdf, type MenuSection } from "../lib/menu";
 import { breadcrumbSchema, businessId, jsonLd } from "../lib/schema";
-import { openingHours, pageOpenGraph, restaurantPhoneHref, restaurantPhoneNumber, siteUrl } from "../lib/site";
+import { openingHours, pageOpenGraph, restaurantPhoneHref, restaurantPhoneNumber, restaurantWhatsapp, siteUrl } from "../lib/site";
 import styles from "./menu.module.css";
 
 const title = "Menu del ristorante sul mare";
@@ -83,7 +83,8 @@ export default function RestaurantMenuPage() {
           <p className={`display-title ${styles.title}`}>Il nostro <em>menu.</em></p>
           <p className={styles.lead}>
             Cucina di mare e piatti mediterranei, a pranzo tutti i giorni dalle {openingHours.restaurant.opens} alle{" "}
-            {openingHours.restaurant.closes}. Per prenotare un tavolo chiama il{" "}
+            {openingHours.restaurant.closes}. Per prenotare un tavolo{" "}
+            <a href={restaurantWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_restaurant_menu">scrivici su WhatsApp</a> o chiama il{" "}
             <a href={restaurantPhoneHref} data-event="phone_restaurant_menu">{restaurantPhoneNumber}</a>.
           </p>
           <div className={styles.actions}>

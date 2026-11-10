@@ -6,6 +6,7 @@ import {
   pageOpenGraph,
   restaurantPhoneHref,
   restaurantPhoneNumber,
+  restaurantWhatsapp,
   siteUrl,
 } from "../lib/site";
 
@@ -43,10 +44,11 @@ export default function RestaurantPage() {
       ]}
       menuHref="/menu-ristorante"
       faqs={restaurantFaqs}
-      ctaLabel="Prenota un tavolo"
-      floatLabel="Chiama"
-      ctaHref={restaurantPhoneHref}
-      ctaEvent="phone_restaurant"
+      ctaLabel="Prenota su WhatsApp"
+      floatLabel="Prenota un tavolo"
+      ctaHref={restaurantWhatsapp}
+      ctaEvent="whatsapp_restaurant"
+      secondaryCta={{ href: restaurantPhoneHref, label: `Chiama ${restaurantPhoneNumber}`, event: "phone_restaurant" }}
       telephone={restaurantPhoneNumber}
       schemaType="Restaurant"
       schemaExtra={{

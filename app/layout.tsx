@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./food-gallery-three.css";
 import { AnalyticsConsent } from "./components/analytics-consent";
+import { WhatsappSource } from "./components/whatsapp-source";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://playaluna.it"),
@@ -58,6 +59,7 @@ export default function RootLayout({
         <a className="skip-link" href="#main">Vai al contenuto</a>
         {children}
         <AnalyticsConsent />
+        <WhatsappSource />
       </body>
     </html>
   );

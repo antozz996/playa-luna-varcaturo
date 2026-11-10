@@ -34,6 +34,8 @@ type ServicePageProps = {
   faqs?: FaqItem[];
   /** Short seasonal notice shown under the hero intro (e.g. "Il lido riapre a maggio"). */
   notice?: string;
+  /** Optional second contact next to the main CTA (e.g. a phone call). */
+  secondaryCta?: { href: string; label: string; event: string };
   heroObjectPosition?: string;
   detailObjectPosition?: string;
 };
@@ -61,6 +63,7 @@ export function ServicePage({
   schemaExtra,
   faqs,
   notice,
+  secondaryCta,
   heroObjectPosition = "center 55%",
   detailObjectPosition = "50% 50%",
 }: ServicePageProps) {
@@ -123,6 +126,11 @@ export function ServicePage({
           <a className="pill-button dark" href={ctaHref} {...ctaTarget} data-event={ctaEvent}>
             {ctaLabel} <span aria-hidden="true">↗</span>
           </a>
+            {secondaryCta ? (
+              <a className="pill-button dark" href={secondaryCta.href} data-event={secondaryCta.event}>
+                {secondaryCta.label}
+              </a>
+            ) : null}
             {menuHref ? (
               <Link className="pill-button dark" href={menuHref} data-event="menu_view">
                 Consulta il menu <span aria-hidden="true">→</span>

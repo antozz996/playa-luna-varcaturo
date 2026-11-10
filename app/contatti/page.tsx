@@ -14,8 +14,8 @@ import {
   mapsUrl,
   openingHours,
   pageOpenGraph,
-  restaurantPhoneHref,
   restaurantPhoneNumber,
+  restaurantWhatsapp,
   siteUrl,
 } from "../lib/site";
 
@@ -49,7 +49,7 @@ export default function ContactsPage() {
       </section>
       <section className="contact-options shell section-space" aria-label="Contatti Playa Luna">
         <a href={beachWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_beach"><span>01</span><h2>Beach Club</h2><p>{beachPhoneNumber} · Prenota o chiedi disponibilità su WhatsApp.</p><b>Apri WhatsApp <span aria-hidden="true">↗</span></b></a>
-        <a href={restaurantPhoneHref} data-event="phone_restaurant"><span>02</span><h2>Ristorante</h2><p>Chiama {restaurantPhoneNumber} per prenotare un tavolo.</p><b>Chiama ora <span aria-hidden="true">↗</span></b></a>
+        <a href={restaurantWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_restaurant"><span>02</span><h2>Ristorante</h2><p>{restaurantPhoneNumber} · Prenota un tavolo su WhatsApp o chiamaci.</p><b>Apri WhatsApp <span aria-hidden="true">↗</span></b></a>
         <a href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events"><span>03</span><h2>Eventi</h2><p>{eventPhoneNumber} · Raccontaci che tipo di occasione vuoi organizzare.</p><b>Richiedi informazioni <span aria-hidden="true">↗</span></b></a>
         <a href={mapsUrl} target="_blank" rel="noreferrer" data-event="directions_click"><span>04</span><h2>Come arrivare</h2><p>{address.streetAddress} · {address.postalCode} {address.locality} ({address.region}), {address.area}.</p><b>Apri la mappa <span aria-hidden="true">↗</span></b></a>
       </section>

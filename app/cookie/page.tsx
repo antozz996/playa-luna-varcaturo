@@ -17,6 +17,7 @@ export const metadata: Metadata = {
 
 const technical = [
   { name: "playaluna-analytics-consent", provider: "Playa Luna (localStorage)", purpose: "Ricorda la tua scelta sul banner cookie", duration: "6 mesi" },
+  { name: "playaluna-source", provider: "Playa Luna (sessionStorage)", purpose: "Ricorda da dove sei arrivato (es. Instagram, Google) per indicarlo con un codice breve, come [IG], in fondo al messaggio WhatsApp che scegli di inviarci. Non viene inviato a nessuno finché non mandi tu il messaggio", duration: "Fino alla chiusura della scheda" },
 ];
 
 const analytics = [
@@ -56,7 +57,7 @@ export default function CookiePage() {
         <p className="legal-updated">Ultimo aggiornamento: 9 novembre 2026</p>
 
         <h2>Strumenti tecnici</h2>
-        <p>Sono necessari al funzionamento del sito e non richiedono consenso. Il sito non usa cookie tecnici propri: salva solo la tua scelta sul banner nella memoria del browser.</p>
+        <p>Sono necessari al funzionamento del sito e non richiedono consenso. Il sito non usa cookie tecnici propri: salva nella memoria del browser solo la tua scelta sul banner e, per la durata della visita, un codice di provenienza che resta sul tuo dispositivo.</p>
         <CookieTable caption="Strumenti tecnici" rows={technical} />
 
         <h2>Cookie di analisi (solo con consenso)</h2>

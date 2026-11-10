@@ -81,7 +81,7 @@ export const restaurantFaqs: FaqItem[] = [
   },
   {
     question: "Come si prenota un tavolo?",
-    answer: `Chiama il ristorante al ${restaurantPhoneNumber}.`,
+    answer: `Scrivici su WhatsApp o chiama il ristorante al ${restaurantPhoneNumber}, indicando data, orario e numero di persone.`,
   },
   {
     question: "Dove posso vedere il menu?",

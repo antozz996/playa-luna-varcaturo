@@ -15,21 +15,53 @@ export function pageOpenGraph(options: { path: string; title: string; descriptio
   };
 }
 
+/**
+ * WhatsApp link with a pre-filled message. Messages carry empty fields to fill in, so the
+ * staff gets date and party size in the first message. A source code (e.g. "[IG]") is
+ * appended on click by components/whatsapp-source.tsx.
+ */
+function whatsapp(number: string, lines: string[]) {
+  return `https://wa.me/${number}?text=${encodeURIComponent(lines.join("\n"))}`;
+}
+
 export const beachPhoneNumber = "+39 327 191 5427";
 export const beachPhoneHref = "tel:+393271915427";
-export const beachWhatsapp =
-  "https://wa.me/393271915427?text=Ciao%20Playa%20Luna%2C%20vorrei%20prenotare%20una%20giornata%20al%20mare.";
+export const beachWhatsapp = whatsapp("393271915427", [
+  "Ciao Playa Luna, vorrei prenotare in spiaggia.",
+  "Data: ",
+  "Persone: ",
+  "Ombrellone o lettini: ",
+]);
 
-export const poolWhatsapp =
-  "https://wa.me/393271915427?text=Ciao%20Playa%20Luna%2C%20vorrei%20conoscere%20la%20disponibilita%20della%20piscina.";
+export const poolWhatsapp = whatsapp("393271915427", [
+  "Ciao Playa Luna, vorrei informazioni sulla piscina per bambini.",
+  "Data: ",
+  "Adulti e bambini: ",
+]);
 
 export const restaurantPhoneNumber = "+39 392 405 3169";
 export const restaurantPhoneHref = "tel:+393924053169";
+export const restaurantWhatsapp = whatsapp("393924053169", [
+  "Ciao Playa Luna, vorrei prenotare un tavolo a pranzo.",
+  "Data: ",
+  "Orario: ",
+  "Persone: ",
+]);
 
 export const eventPhoneNumber = "+39 350 590 8393";
 export const eventPhoneHref = "tel:+393505908393";
-export const eventWhatsapp =
-  "https://wa.me/393505908393?text=Ciao%20Playa%20Luna%2C%20vorrei%20ricevere%20informazioni%20per%20un%20evento.";
+export const eventWhatsapp = whatsapp("393505908393", [
+  "Ciao Playa Luna, vorrei informazioni per un evento.",
+  "Tipo di evento: ",
+  "Data o periodo: ",
+  "Ospiti: ",
+]);
+export const weddingWhatsapp = whatsapp("393505908393", [
+  "Ciao Playa Luna, stiamo organizzando il nostro matrimonio.",
+  "Data o periodo: ",
+  "Invitati: ",
+  "Budget indicativo: ",
+]);
 
 export const mapsUrl =
   "https://www.google.com/maps/search/?api=1&query=Playa+Luna+Via+Marina+di+Varcaturo+42";

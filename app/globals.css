@@ -602,6 +602,16 @@ h2 {
   justify-content: space-between;
 }
 
+.cta-pair {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cta-pair .pill-button {
+  margin-top: 0;
+}
+
 .restaurant-bottom > p {
   color: rgba(255, 255, 255, 0.62);
   font-size: 11px;

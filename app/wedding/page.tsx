@@ -4,7 +4,7 @@ import { PageMedia } from "../components/page-media";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
 import { breadcrumbSchema, eventVenueSchema, jsonLd } from "../lib/schema";
-import { eventWhatsapp, pageOpenGraph, siteUrl } from "../lib/site";
+import { pageOpenGraph, siteUrl, weddingWhatsapp } from "../lib/site";
 
 const title = "Matrimonio sul mare a Varcaturo, Napoli";
 const description =
@@ -58,7 +58,7 @@ export default function WeddingPage() {
           <h1 className="eyebrow">Matrimoni e ricevimenti sul mare a Varcaturo, Napoli</h1>
           <p className="display-title">Il vostro sì,<br /><em>con il mare davanti.</em></p>
           <p>Un ricevimento mediterraneo, intimo e personale. Creato intorno a voi.</p>
-          <a className="pill-button light" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_wedding">
+          <a className="pill-button light" href={weddingWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_wedding_hero">
             Raccontateci il vostro giorno <span aria-hidden="true">↗</span>
           </a>
         </div>
@@ -126,7 +126,7 @@ export default function WeddingPage() {
           <p className="eyebrow">Cominciamo da voi</p>
           <h2>Immaginiamolo<br /><em>insieme.</em></h2>
           <p>Raccontateci la data, il numero di invitati e la sensazione che desiderate per il vostro ricevimento.</p>
-          <a className="pill-button light" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_wedding_bottom">
+          <a className="pill-button light" href={weddingWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_wedding_bottom">
             Parliamo del vostro matrimonio <span aria-hidden="true">↗</span>
           </a>
         </div>
@@ -134,7 +134,7 @@ export default function WeddingPage() {
 
       </main>
       <SiteFooter />
-      <a className="whatsapp-float" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_wedding_float"><span aria-hidden="true">✦</span> WhatsApp</a>
+      <a className="whatsapp-float" href={weddingWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_wedding_float"><span aria-hidden="true">✦</span> WhatsApp</a>
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(schema)} />
     </div>
   );

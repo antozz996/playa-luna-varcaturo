@@ -9,6 +9,7 @@ import {
   eventWhatsapp,
   poolWhatsapp,
   restaurantPhoneHref,
+  restaurantWhatsapp,
   seasonState,
   siteUrl,
 } from "./lib/site";
@@ -98,7 +99,7 @@ export default function Home() {
           </div>
         ) : (
           <div className="hero-actions shell" role="group" aria-label="Azioni principali">
-            <a href={restaurantPhoneHref} data-event="phone_restaurant_hero"><span>01</span> Prenota un tavolo <b aria-hidden="true">↗</b></a>
+            <a href={restaurantWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_restaurant_hero"><span>01</span> Prenota un tavolo <b aria-hidden="true">↗</b></a>
             <a href="/eventi" data-event="events_page_click"><span>02</span> Eventi e matrimoni 2027 <b aria-hidden="true">→</b></a>
             <a href="/ristorante-sul-mare" data-event="restaurant_page_click"><span>03</span> Scopri il ristorante <b aria-hidden="true">→</b></a>
           </div>
@@ -198,7 +199,10 @@ export default function Home() {
 
         <div className="restaurant-bottom shell">
           <p>Pranzo sul mare · Cucina mediterranea · Cocktail & aperitivo</p>
-          <a className="pill-button coral" href={restaurantPhoneHref} data-event="phone_restaurant">Prenota un tavolo <span aria-hidden="true">↗</span></a>
+          <div className="cta-pair">
+            <a className="pill-button coral" href={restaurantWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_restaurant">Prenota su WhatsApp <span aria-hidden="true">↗</span></a>
+            <a className="pill-button linen" href={restaurantPhoneHref} data-event="phone_restaurant">Chiama il ristorante</a>
+          </div>
         </div>
       </section>
 
@@ -259,7 +263,7 @@ export default function Home() {
             <span aria-hidden="true">✦</span> Prenota
           </a>
         ) : (
-          <a className="whatsapp-float" href={restaurantPhoneHref} data-event="phone_restaurant_float">
+          <a className="whatsapp-float" href={restaurantWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_restaurant_float">
             <span aria-hidden="true">✦</span> Prenota un tavolo
           </a>
         )}
