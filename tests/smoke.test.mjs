@@ -35,7 +35,11 @@ function findInBuild(name) {
     };
     buildFiles = walk(nextDir);
   }
-  return buildFiles.find((f) => f.endsWith(`${sep}${name}`) && f.includes(`${sep}app${sep}`));
+  const exact = buildFiles.find((f) => f.endsWith(`${sep}${name}`) && f.includes(`${sep}app${sep}`));
+  if (exact) return exact;
+  // Vercel build adapter: .next/output/functions/<route>.prerender-fallback.<ext>
+  const base = name.replace(/\.(html|body)$/, "");
+  return buildFiles.find((f) => f.split(sep).pop().startsWith(`${base}.prerender-fallback`));
 }
 
 function locate(name) {
