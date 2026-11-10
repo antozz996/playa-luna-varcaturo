@@ -44,6 +44,7 @@ const weddingGallery: GalleryItem[] = [
   { src: "/images/playa-luna/wedding/place-setting.webp", alt: "Dettaglio della mise en place bianca e azzurra", caption: "Una tavola che parla di voi" },
   { src: "/images/playa-luna/wedding/flowers.webp", alt: "Composizione floreale per un ricevimento al Playa Luna", caption: "Fiori, luce, materia" },
   { video: "/videos/playa-luna/wedding-gallery-03.mp4", alt: "Tavola elegante allestita davanti al mare", caption: "Davanti al mare" },
+  { src: "/images/playa-luna/wedding/table-by-sea.webp", alt: "Ospiti di un ricevimento sulla spiaggia del Playa Luna, tra divanetti e lettini davanti al mare", caption: "Il ricevimento all’aperto" },
   { src: "/images/playa-luna/wedding/white-table.webp", alt: "Tavola nuziale bianca con composizioni floreali", caption: "Eleganza, senza distanza" },
 ];
 
