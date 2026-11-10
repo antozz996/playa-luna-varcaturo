@@ -131,6 +131,8 @@ Legenda: `[x]` risolto e verificato · `[~]` parziale · `[ ]` da fare · `[-]` 
 
 | 2026-11-10 | Orari, contenuti | Bar tutti i giorni 9–18:30 tutto l'anno (sostituisce "bar e ristorante 9–19 ott–apr"); rimosso "Pozzuoli"; menu HTML, FAQ, PEC; variabili Vercel ripulite; redirect vercel.app; sitemap reinviata e indicizzazione richiesta per menu e contatti. |
 
+| 2026-11-10 | Report 15 specialisti, punto 1 | Home stagionale: dal 15/4 al 30/9 estiva, altrimenti "Prenota un tavolo" / "Eventi e matrimoni 2027" / "Scopri il ristorante"; avviso stagionale su home e spiaggia (`seasonState()` in `site.ts`, ora di Roma, rigenerazione giornaliera). Pulsante flottante della home nascosto finché la hero è visibile. |
+
 ## Stato finale
 
 Tutte le 7 fasi completate e online. Restano solo azioni fuori dal codice:

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FloatAfterHero } from "./components/float-after-hero";
 import { PageMedia } from "./components/page-media";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
@@ -8,13 +9,14 @@ import {
   eventWhatsapp,
   poolWhatsapp,
   restaurantPhoneHref,
+  seasonState,
   siteUrl,
 } from "./lib/site";
 
 const HERO_IMAGE = "/images/playa-luna/hero-beach.webp";
 
-// Rebuild weekly so the seasonal opening-hours dates in structured data stay current.
-export const revalidate = 604800;
+// Rebuild daily: the hero switches between summer and off-season on its own (see seasonState).
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: { absolute: "Playa Luna | Beach club e ristorante sul mare a Varcaturo" },
@@ -50,6 +52,7 @@ const experienceDefaults = [
 ] as const;
 
 export default function Home() {
+  const season = seasonState();
   const structuredData = {
     ...businessSchema(`${siteUrl}${HERO_IMAGE}`),
     hasOfferCatalog: {
@@ -85,12 +88,21 @@ export default function Home() {
           <h1 id="hero-title" className="eyebrow light">Beach club e ristorante a Marina di Varcaturo</h1>
           <p className="display-title">Tutto il mare<br /><em>in un giorno.</em></p>
           <p className="hero-copy">Dal primo caffè al tramonto. Spiaggia, cucina, piscina e momenti da ricordare.</p>
+          {season.notice ? <p className="season-notice">{season.notice}</p> : null}
         </div>
-        <div className="hero-actions shell" role="group" aria-label="Azioni principali">
-          <a href={beachWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_beach"><span>01</span> Prenota la tua giornata <b aria-hidden="true">↗</b></a>
-          <a href="/ristorante-sul-mare" data-event="restaurant_page_click"><span>02</span> Scopri il ristorante <b aria-hidden="true">→</b></a>
-          <a href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events"><span>03</span> Organizza un evento <b aria-hidden="true">↗</b></a>
-        </div>
+        {season.summer ? (
+          <div className="hero-actions shell" role="group" aria-label="Azioni principali">
+            <a href={beachWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_beach_hero"><span>01</span> Prenota la tua giornata <b aria-hidden="true">↗</b></a>
+            <a href="/ristorante-sul-mare" data-event="restaurant_page_click"><span>02</span> Scopri il ristorante <b aria-hidden="true">→</b></a>
+            <a href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events_hero"><span>03</span> Organizza un evento <b aria-hidden="true">↗</b></a>
+          </div>
+        ) : (
+          <div className="hero-actions shell" role="group" aria-label="Azioni principali">
+            <a href={restaurantPhoneHref} data-event="phone_restaurant_hero"><span>01</span> Prenota un tavolo <b aria-hidden="true">↗</b></a>
+            <a href="/eventi" data-event="events_page_click"><span>02</span> Eventi e matrimoni 2027 <b aria-hidden="true">→</b></a>
+            <a href="/ristorante-sul-mare" data-event="restaurant_page_click"><span>03</span> Scopri il ristorante <b aria-hidden="true">→</b></a>
+          </div>
+        )}
       </section>
 
       <section className="manifesto shell section-space" aria-labelledby="manifesto-title">
@@ -241,9 +253,17 @@ export default function Home() {
 
       <SiteFooter />
 
-      <a className="whatsapp-float" href={beachWhatsapp} target="_blank" rel="noreferrer" aria-label="Prenota su WhatsApp" data-event="whatsapp_sticky">
-        <span aria-hidden="true">✦</span> Prenota
-      </a>
+      <FloatAfterHero>
+        {season.summer ? (
+          <a className="whatsapp-float" href={beachWhatsapp} target="_blank" rel="noreferrer" aria-label="Prenota su WhatsApp" data-event="whatsapp_beach_float">
+            <span aria-hidden="true">✦</span> Prenota
+          </a>
+        ) : (
+          <a className="whatsapp-float" href={restaurantPhoneHref} data-event="phone_restaurant_float">
+            <span aria-hidden="true">✦</span> Prenota un tavolo
+          </a>
+        )}
+      </FloatAfterHero>
     </div>
   );
 }

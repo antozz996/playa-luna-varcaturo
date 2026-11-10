@@ -65,6 +65,26 @@ export const openingHours = {
   evening: "La sera la struttura è disponibile solo per eventi privati.",
 };
 
+/**
+ * Site seasons (Europe/Rome dates):
+ * - summer: from 15 April to 30 September the site promotes the beach (bookings for May open early);
+ * - lidoOpen: the beach is actually open from 1 May to 30 September.
+ * Pages using this must revalidate daily so the switch happens on its own.
+ */
+export function seasonState(now: Date = new Date()) {
+  const parts = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Rome", month: "numeric", day: "numeric" }).formatToParts(now);
+  const month = Number(parts.find((p) => p.type === "month")?.value);
+  const day = Number(parts.find((p) => p.type === "day")?.value);
+  const lidoOpen = month >= 5 && month <= 9;
+  const summer = lidoOpen || (month === 4 && day >= 15);
+  const notice = lidoOpen
+    ? undefined
+    : summer
+      ? "Il lido apre il 1° maggio · Prenota già ora il tuo posto"
+      : "Il lido riapre a maggio · Bar e ristorante aperti tutti i giorni";
+  return { summer, lidoOpen, notice };
+}
+
 /** Confirmed amenities (used in page copy, FAQ and structured data). */
 export const amenities = {
   freeParking: true,

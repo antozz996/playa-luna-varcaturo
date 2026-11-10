@@ -2385,6 +2385,44 @@ footer {
   }
 }
 
+/* Pulsante flottante della home: nascosto finché la hero (con i suoi pulsanti) è visibile */
+.float-after-hero .whatsapp-float {
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.float-after-hero[data-hidden="true"] .whatsapp-float {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px);
+}
+
+/* Avviso stagionale (home e pagina spiaggia) */
+.season-notice {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 20px;
+  padding: 9px 16px;
+  border: 1px solid rgba(255, 253, 248, 0.45);
+  border-radius: 999px;
+  background: rgba(39, 37, 31, 0.42);
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.season-notice::before {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f2c879;
+  content: "";
+}
+
 /* FAQ */
 .faq {
   padding-top: clamp(64px, 8vw, 120px);

@@ -32,6 +32,8 @@ type ServicePageProps = {
   /** Extra schema.org properties for this department (e.g. opening hours). */
   schemaExtra?: Record<string, unknown>;
   faqs?: FaqItem[];
+  /** Short seasonal notice shown under the hero intro (e.g. "Il lido riapre a maggio"). */
+  notice?: string;
   heroObjectPosition?: string;
   detailObjectPosition?: string;
 };
@@ -58,6 +60,7 @@ export function ServicePage({
   schemaType = "LocalBusiness",
   schemaExtra,
   faqs,
+  notice,
   heroObjectPosition = "center 55%",
   detailObjectPosition = "50% 50%",
 }: ServicePageProps) {
@@ -107,6 +110,7 @@ export function ServicePage({
           <h1 id="service-title" className="eyebrow light">{heading}</h1>
           <p className="display-title">{title}<br /><em>{emphasis}</em></p>
           <p>{intro}</p>
+          {notice ? <p className="season-notice">{notice}</p> : null}
         </div>
       </section>
 

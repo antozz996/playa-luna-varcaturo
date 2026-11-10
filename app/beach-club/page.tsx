@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { ServicePage } from "../components/service-page";
 import { beachFaqs } from "../lib/faqs";
-import { beachPhoneNumber, openingHours, pageOpenGraph } from "../lib/site";
+import { beachPhoneNumber, openingHours, pageOpenGraph, seasonState } from "../lib/site";
+
+// Rebuild daily so the seasonal notice switches on its own.
+export const revalidate = 86400;
 
 const title = "Lido e beach club a Marina di Varcaturo";
 const description =
@@ -19,6 +22,7 @@ export default function BeachClubPage() {
   return (
     <ServicePage
       slug="beach-club"
+      notice={seasonState().notice}
       eyebrow="Beach Club"
       heading="Lido e spiaggia attrezzata a Marina di Varcaturo"
       title="La tua estate,"
