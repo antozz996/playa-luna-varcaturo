@@ -203,6 +203,7 @@ export default function Home() {
           <div className="cta-pair">
             <a className="pill-button coral" href={restaurantWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_restaurant">Prenota su WhatsApp <span aria-hidden="true">↗</span></a>
             <a className="pill-button linen" href={restaurantPhoneHref} data-event="phone_restaurant">Chiama il ristorante</a>
+            <a className="pill-button linen" href="/menu-ristorante" data-event="menu_view_home">Vedi il menu</a>
           </div>
         </div>
       </section>

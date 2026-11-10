@@ -42,6 +42,25 @@ test("menu is readable HTML with prices and Menu schema", () => {
   assert.match(html, /Allergeni:/);
 });
 
+test("opening hours are never hard-coded in pages (single source: app/lib/site.ts)", () => {
+  const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)]));
+  const pages = walk(join(root, "app")).filter((f) => f.endsWith(".tsx"));
+  for (const file of pages) {
+    const source = readFileSync(file, "utf8");
+    // Hour ranges use an en dash ("8–19", "12:30–16"); legal references like "artt. 15–22" are excluded.
+    const match = source.match(/(?<!artt\.\s)\b\d{1,2}(:\d{2})?\s*–\s*\d{1,2}(:\d{2})?\b(?![\d/])/);
+    assert.equal(match, null, `${file}: hard-coded hours "${match?.[0]}" — use hoursLabel/openingHours`);
+  }
+});
+
+test("llms.txt is generated with hours and pages", () => {
+  const file = join(appDir, "llms.txt.body");
+  assert.ok(existsSync(file), "llms.txt prerendered");
+  const text = readFileSync(file, "utf8");
+  assert.match(text, /## Orari/);
+  assert.match(text, /menu-ristorante/);
+});
+
 test("every video has a poster and a mobile version", () => {
   const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)]));
   const videos = walk(join(root, "public", "videos")).filter((f) => f.endsWith(".mp4") && !f.endsWith("-mobile.mp4"));

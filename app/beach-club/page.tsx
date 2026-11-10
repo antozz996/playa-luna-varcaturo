@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { ServicePage } from "../components/service-page";
 import { beachFaqs } from "../lib/faqs";
-import { beachPhoneNumber, openingHours, pageOpenGraph, seasonState } from "../lib/site";
+import { beachPhoneNumber, hoursLabel, openingHours, pageOpenGraph, seasonState } from "../lib/site";
 
 // Rebuild daily so the seasonal notice switches on its own.
 export const revalidate = 86400;
 
 const title = "Lido e beach club a Marina di Varcaturo";
 const description =
-  "Spiaggia attrezzata con ombrelloni e lettini, bar e servizi family al Playa Luna di Marina di Varcaturo. Aperto tutti i giorni 8–19 da maggio a settembre.";
+  `Spiaggia attrezzata con ombrelloni e lettini, bar e servizi family al Playa Luna di Marina di Varcaturo. Aperto tutti i giorni ${hoursLabel.lido} da maggio a settembre.`;
 
 export const metadata: Metadata = {
   title,

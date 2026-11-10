@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { ServicePage } from "../components/service-page";
 import { poolFaqs } from "../lib/faqs";
-import { beachPhoneNumber, pageOpenGraph, poolFacts, poolWhatsapp, seasonState } from "../lib/site";
+import { beachPhoneNumber, hoursLabel, pageOpenGraph, poolFacts, poolWhatsapp, seasonState } from "../lib/site";
 
 // Rebuild daily so the seasonal notice switches on its own.
 export const revalidate = 86400;
 
 const title = "Piscina per bambini a Varcaturo";
 const description =
-  "Piscina all'aperto per bambini al Playa Luna di Marina di Varcaturo, aperta tutti i giorni 8–19 da maggio a settembre, accanto a spiaggia e ristorante.";
+  `Piscina all'aperto per bambini al Playa Luna di Marina di Varcaturo, aperta tutti i giorni ${hoursLabel.lido} da maggio a settembre, accanto a spiaggia e ristorante.`;
 
 export const metadata: Metadata = {
   title,

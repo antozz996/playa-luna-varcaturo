@@ -3,6 +3,7 @@ import { ServicePage } from "../components/service-page";
 import { restaurantFaqs } from "../lib/faqs";
 import { restaurantOpeningHours } from "../lib/schema";
 import {
+  hoursLabel,
   openingHours,
   pageOpenGraph,
   restaurantPhoneHref,
@@ -13,7 +14,7 @@ import {
 
 const title = "Ristorante sul mare a Varcaturo";
 const description =
-  "Cucina mediterranea e piatti di mare al ristorante Playa Luna di Marina di Varcaturo. Pranzo tutti i giorni 12:30–16, tutto l'anno. Prenota un tavolo.";
+  `Cucina mediterranea e piatti di mare al ristorante Playa Luna di Marina di Varcaturo. Pranzo tutti i giorni ${hoursLabel.lunch}, tutto l'anno. Prenota un tavolo.`;
 
 export const metadata: Metadata = {
   title,
@@ -38,7 +39,7 @@ export default function RestaurantPage() {
       detailImage="/images/playa-luna/restaurant/detail-carpaccio.webp"
       detailAlt="Carpaccio gourmet servito al ristorante Playa Luna di Varcaturo, con ingredienti selezionati e impiattamento curato."
       features={[
-        "Pranzo tutti i giorni, 12:30–16",
+        `Pranzo tutti i giorni, ${hoursLabel.lunch}`,
         "Cucina mediterranea e piatti di pesce",
         "Colazione, bar e aperitivo",
         "Cene solo per eventi privati",

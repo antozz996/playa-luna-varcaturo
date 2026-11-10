@@ -157,6 +157,20 @@ export const amenities = {
   poolSeparateFee: true,
 };
 
+/** "08:00" → "8", "18:30" → "18:30" */
+function shortTime(time: string) {
+  const [h, m] = time.split(":");
+  return m === "00" ? String(Number(h)) : `${Number(h)}:${m}`;
+}
+
+/** Short hour ranges for copy and meta descriptions, always derived from openingHours. */
+export const hoursLabel = {
+  lido: `${shortTime(openingHours.beachSeason.opens)}–${shortTime(openingHours.beachSeason.closes)}`,
+  barSummer: `${shortTime(openingHours.barSummer.opens)}–${shortTime(openingHours.barSummer.closes)}`,
+  barWinter: `${shortTime(openingHours.barWinter.opens)}–${shortTime(openingHours.barWinter.closes)}`,
+  lunch: `${shortTime(openingHours.restaurant.opens)}–${shortTime(openingHours.restaurant.closes)}`,
+};
+
 export const mainNavigation = [
   { href: "/beach-club", label: "Spiaggia" },
   { href: "/ristorante-sul-mare", label: "Ristorante" },

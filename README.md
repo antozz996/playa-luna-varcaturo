@@ -17,6 +17,10 @@ npm test           # build + smoke test su tutte le pagine (tests/smoke.test.mjs
 
 Funziona su Windows, macOS e Linux. Node >= 22.13.
 
+**Controlli automatici.** Vercel pubblica solo se passano lint, TypeScript, build e smoke test
+(`buildCommand` in `vercel.json`): se un controllo fallisce, il sito resta alla versione precedente.
+Gli stessi controlli girano su GitHub Actions (`.github/workflows/ci.yml`) a ogni push.
+
 ## Struttura
 
 - `app/` — pagine (`page.tsx` per rotta), componenti in `app/components/`
@@ -47,8 +51,11 @@ Menu PDF: sostituisci il file in `public/menus/` e aggiorna `menuPdf` in `app/me
 
 ## Orari e contatti
 
-Si cambiano in un solo punto: `app/lib/site.ts` (`openingHours`, telefoni, WhatsApp).
-Pagina contatti, footer e dati strutturati per Google si aggiornano da soli.
+Si cambiano in un solo punto: `app/lib/site.ts` (`openingHours`, telefoni, WhatsApp, `eventFacts`,
+`poolFacts`). Pagina contatti, FAQ, descrizioni, `/llms.txt` e dati strutturati per Google si aggiornano
+da soli; un test fallisce se un orario viene scritto a mano in una pagina.
+
+La home cambia da sola con la stagione (`seasonState()`): estiva dal 15 aprile al 30 settembre.
 
 ## Analytics e privacy
 

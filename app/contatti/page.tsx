@@ -11,6 +11,7 @@ import {
   beachWhatsapp,
   eventPhoneNumber,
   eventWhatsapp,
+  hoursLabel,
   mapsUrl,
   openingHours,
   pageOpenGraph,
@@ -24,7 +25,7 @@ export const revalidate = 604800;
 
 const title = "Contatti, orari e come arrivare";
 const description =
-  "Orari, telefono e indicazioni per Playa Luna a Marina di Varcaturo: lido 8–19 e bar 8–19:15 da maggio a settembre, bar 9–18:30 da ottobre ad aprile, pranzo 12:30–16 tutto l'anno.";
+  `Orari, telefono e indicazioni per Playa Luna a Marina di Varcaturo: lido ${hoursLabel.lido} e bar ${hoursLabel.barSummer} da maggio a settembre, bar ${hoursLabel.barWinter} da ottobre ad aprile, pranzo ${hoursLabel.lunch} tutto l'anno.`;
 
 export const metadata: Metadata = {
   title,

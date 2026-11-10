@@ -4,12 +4,12 @@ import { SiteHeader } from "../components/site-header";
 import { SiteFooter } from "../components/site-footer";
 import { allergens, drinks, formatPrice, kitchen, menuNotes, menuPdf, type MenuSection } from "../lib/menu";
 import { breadcrumbSchema, businessId, jsonLd } from "../lib/schema";
-import { openingHours, pageOpenGraph, restaurantPhoneHref, restaurantPhoneNumber, restaurantWhatsapp, siteUrl } from "../lib/site";
+import { hoursLabel, openingHours, pageOpenGraph, restaurantPhoneHref, restaurantPhoneNumber, restaurantWhatsapp, siteUrl } from "../lib/site";
 import styles from "./menu.module.css";
 
 const title = "Menu del ristorante sul mare";
 const description =
-  "Il menu 2026 del ristorante Playa Luna a Marina di Varcaturo: antipasti di mare, primi, secondi di pesce, dessert, vini e drink, con prezzi e allergeni. Pranzo tutti i giorni 12:30–16.";
+  `Il menu 2026 del ristorante Playa Luna a Marina di Varcaturo: antipasti di mare, primi, secondi di pesce, dessert, vini e drink, con prezzi e allergeni. Pranzo tutti i giorni ${hoursLabel.lunch}.`;
 
 export const metadata: Metadata = {
   title,
