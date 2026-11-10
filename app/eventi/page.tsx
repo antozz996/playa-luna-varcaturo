@@ -3,6 +3,8 @@ import Link from "next/link";
 import { PageMedia } from "../components/page-media";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
+import { Faq } from "../components/faq";
+import { eventFaqs } from "../lib/faqs";
 import { breadcrumbSchema, eventVenueSchema, jsonLd } from "../lib/schema";
 import { eventWhatsapp, pageOpenGraph, siteUrl } from "../lib/site";
 
@@ -115,6 +117,8 @@ export default function EventsPage() {
           </div>
         </div>
       </section>
+
+      <Faq items={eventFaqs} />
 
       <section className="shell events-brief-v2">
         <p className="eyebrow">Il prossimo evento</p>

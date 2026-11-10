@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ServicePage } from "../components/service-page";
+import { poolFaqs } from "../lib/faqs";
 import { beachPhoneNumber, pageOpenGraph, poolWhatsapp } from "../lib/site";
 
 const title = "Piscina per bambini a Varcaturo";
@@ -29,11 +30,12 @@ export default function PoolPage() {
       detailImage="/images/playa-luna/pool-detail-2f8a1100.webp"
       detailAlt="Lettino davanti alla piscina Playa Luna con il logo della struttura"
       features={[
-        "Piscina interna a Playa Luna",
-        "Spazio dedicato alle famiglie",
-        "Area per il divertimento dei bambini",
-        "Collegata agli altri servizi del beach club",
+        "Piscina all'interno della struttura Playa Luna",
+        "Spazio pensato per bambini e famiglie",
+        "Ingresso separato dalla spiaggia",
+        "Docce, spogliatoi e parcheggio gratuito",
       ]}
+      faqs={poolFaqs}
       ctaLabel="Chiedi disponibilità della piscina"
       ctaHref={poolWhatsapp}
       ctaEvent="whatsapp_pool"

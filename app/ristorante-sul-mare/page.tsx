@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ServicePage } from "../components/service-page";
+import { restaurantFaqs } from "../lib/faqs";
 import { restaurantOpeningHours } from "../lib/schema";
 import {
   pageOpenGraph,
@@ -41,6 +42,7 @@ export default function RestaurantPage() {
         "Cene solo per eventi privati",
       ]}
       menuHref="/menu-ristorante"
+      faqs={restaurantFaqs}
       ctaLabel="Prenota un tavolo"
       floatLabel="Chiama"
       ctaHref={restaurantPhoneHref}

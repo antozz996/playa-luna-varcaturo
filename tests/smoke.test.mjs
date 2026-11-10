@@ -26,6 +26,22 @@ function read(path) {
   return readFileSync(file, "utf8");
 }
 
+test("FAQ with FAQPage schema on the service and contact pages", () => {
+  for (const path of ["/beach-club", "/ristorante-sul-mare", "/piscina", "/eventi", "/contatti"]) {
+    const html = read(path);
+    assert.match(html, /"@type":"FAQPage"/, `${path}: FAQPage schema`);
+    assert.match(html, /<details><summary>/, `${path}: visible FAQ`);
+  }
+});
+
+test("menu is readable HTML with prices and Menu schema", () => {
+  const html = read("/menu-ristorante");
+  assert.match(html, /Linguina all’astice con pomodorini/);
+  assert.match(html, /30,00 €/);
+  assert.match(html, /"@type":"Menu"/);
+  assert.match(html, /Allergeni:/);
+});
+
 for (const path of Object.keys(pages)) {
   test(`${path} renders a complete, valid page`, () => {
     const html = read(path);

@@ -2,7 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
+import type { FaqItem } from "../lib/faqs";
 import { breadcrumbSchema, departmentSchema, jsonLd } from "../lib/schema";
+import { Faq } from "./faq";
 import { beachWhatsapp, siteUrl } from "../lib/site";
 
 type ServicePageProps = {
@@ -29,6 +31,7 @@ type ServicePageProps = {
   schemaType?: "Beach" | "Restaurant" | "EventVenue" | "LocalBusiness" | "PublicSwimmingPool";
   /** Extra schema.org properties for this department (e.g. opening hours). */
   schemaExtra?: Record<string, unknown>;
+  faqs?: FaqItem[];
   heroObjectPosition?: string;
   detailObjectPosition?: string;
 };
@@ -54,6 +57,7 @@ export function ServicePage({
   telephone,
   schemaType = "LocalBusiness",
   schemaExtra,
+  faqs,
   heroObjectPosition = "center 55%",
   detailObjectPosition = "50% 50%",
 }: ServicePageProps) {
@@ -143,6 +147,8 @@ export function ServicePage({
           />
         </figure>
       </section>
+
+      {faqs?.length ? <Faq items={faqs} /> : null}
 
       <section className="service-cta">
         <div className="shell">

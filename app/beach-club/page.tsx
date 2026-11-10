@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ServicePage } from "../components/service-page";
+import { beachFaqs } from "../lib/faqs";
 import { beachPhoneNumber, openingHours, pageOpenGraph } from "../lib/site";
 
 const title = "Lido e beach club a Marina di Varcaturo";
@@ -31,10 +32,11 @@ export default function BeachClubPage() {
       detailAlt="Vista del mare dagli spazi mediterranei di Playa Luna"
       features={[
         "Spiaggia attrezzata con ombrelloni e lettini",
-        "Bar e proposte per il pranzo",
-        "Docce e servizi per gli ospiti",
-        "Spazi adatti anche alle famiglie",
+        "Bagnino, docce, spogliatoi e Wi-Fi",
+        "Bar e ristorante per il pranzo",
+        "Parcheggio gratuito, animali ammessi, struttura accessibile",
       ]}
+      faqs={beachFaqs}
       ctaLabel="Prenota il tuo posto su WhatsApp"
       telephone={beachPhoneNumber}
       schemaType="Beach"

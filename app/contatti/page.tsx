@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
+import { Faq } from "../components/faq";
+import { contactFaqs } from "../lib/faqs";
 import { breadcrumbSchema, businessSchema, jsonLd } from "../lib/schema";
 import {
   address,
@@ -61,6 +63,7 @@ export default function ContactsPage() {
         </dl>
         <p>{openingHours.evening}</p>
       </section>
+      <Faq items={contactFaqs} />
       </main>
       <SiteFooter />
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd([businessSchema(`${siteUrl}/images/playa-luna/sunset-view.webp`), breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Contatti", path: "/contatti" }])])} />

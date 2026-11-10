@@ -42,7 +42,7 @@ export const legalEntity = {
   name: "Lido Playaluna S.r.l.",
   vatNumber: "09146931218",
   registeredOffice: "Via Epitaffio 15, 80014 Giugliano in Campania (NA)",
-  pec: "", // indirizzo PEC: shown in the privacy policy when filled in
+  pec: "lidoplayaluna@pec.it",
   email: "info@playaluna.it",
 };
 
@@ -63,6 +63,18 @@ export const openingHours = {
   offSeason: { label: "Bar e ristorante", months: "ottobre – aprile", from: "1 ottobre", to: "30 aprile", opens: "09:00", closes: "19:00", validFrom: "10-01", validThrough: "04-30" },
   restaurant: { label: "Ristorante (pranzo)", months: "tutto l'anno", opens: "12:30", closes: "16:00" },
   evening: "La sera la struttura è disponibile solo per eventi privati.",
+};
+
+/** Confirmed amenities (used in page copy, FAQ and structured data). */
+export const amenities = {
+  freeParking: true,
+  petsAllowed: true,
+  showersAndChangingRooms: true,
+  wifi: true,
+  wheelchairAccessible: true,
+  lifeguard: true,
+  /** The children's pool has a separate entrance fee. */
+  poolSeparateFee: true,
 };
 
 export const mainNavigation = [

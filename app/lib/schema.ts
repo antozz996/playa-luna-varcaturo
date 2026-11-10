@@ -1,5 +1,6 @@
 import {
   address,
+  amenities,
   beachPhoneNumber,
   eventPhoneNumber,
   legalEntity,
@@ -66,6 +67,14 @@ export function businessSchema(image: string) {
     hasMenu: `${siteUrl}/menu-ristorante`,
     acceptsReservations: true,
     openingHoursSpecification: businessOpeningHours,
+    amenityFeature: [
+      ["Parcheggio gratuito", amenities.freeParking],
+      ["Animali ammessi", amenities.petsAllowed],
+      ["Docce e spogliatoi", amenities.showersAndChangingRooms],
+      ["Wi-Fi", amenities.wifi],
+      ["Accessibile in sedia a rotelle", amenities.wheelchairAccessible],
+      ["Servizio di salvataggio", amenities.lifeguard],
+    ].map(([name, value]) => ({ "@type": "LocationFeatureSpecification", name, value })),
     contactPoint: [
       { "@type": "ContactPoint", contactType: "Beach Club", telephone: beachPhoneNumber, availableLanguage: "it" },
       { "@type": "ContactPoint", contactType: "Ristorante", telephone: restaurantPhoneNumber, availableLanguage: "it" },

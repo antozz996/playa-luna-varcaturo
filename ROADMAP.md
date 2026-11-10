@@ -137,8 +137,10 @@ Tutte le 7 fasi completate e online. Restano solo azioni fuori dal codice:
 - [ ] **Vercel → Environment Variables**: rimuovere `NEXT_PUBLIC_SANITY_*`, `SANITY_*`, `BLOB_READ_WRITE_TOKEN`, `MEDIA_ADMIN_PASSWORD`; impostare `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` (SEO4) o verificare il dominio via DNS in Search Console e inviare `https://playaluna.it/sitemap.xml`.
 - [ ] **Vercel → Storage**: eliminare lo store Blob (non più usato).
 - [ ] **Sanity**: archiviare il progetto `7xx613y2`.
-- [ ] **PEC** della società da aggiungere in `legalEntity.pec` (`app/lib/site.ts`).
-- [ ] **SEO8**: pagine più ricche + FAQ + menu in HTML (serve materiale: servizi, prezzi indicativi, parcheggio, testo del menu).
+- [x] **PEC** — `lidoplayaluna@pec.it` (trovata su ufficiocamerale.it, confermata dall'utente) in privacy policy.
+- [x] **SEO8 · Contenuti** — menu 2026 completo in HTML (`app/lib/menu.ts`: cucina, vini, bollicine, drink, distillati, prezzi, allergeni, note) con indice sticky e schema `Menu`; FAQ con schema `FAQPage` su spiaggia, piscina, ristorante, eventi e contatti (`app/lib/faqs.ts`), solo con dati confermati: orari, parcheggio gratuito, animali ammessi, docce/spogliatoi, Wi-Fi, accesso disabili, bagnino, piscina con ingresso separato, prezzi su WhatsApp, servizio 10% non incluso. Servizi anche in `amenityFeature` dello schema. Test 22/22.
+- [ ] **Vercel** (in attesa del login CLI dell'utente): redirect vercel.app, pulizia variabili, eliminazione store Blob.
+- [ ] **Search Console** (in attesa del codice "tag HTML"): verifica e invio sitemap.
 - [ ] Far rileggere privacy e cookie policy a un consulente.
 
 ## Da fare su Vercel/Sanity dopo il deploy
