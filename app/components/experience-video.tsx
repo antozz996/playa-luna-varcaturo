@@ -112,12 +112,16 @@ export function ExperienceVideo({
     return () => observer.disconnect();
   }, [priority]);
 
-  // Load once when it comes into view.
-  useEffect(() => {
+  // Setting src already starts the download: an extra video.load() here aborted that request and
+  // Chrome then failed the second one on the busy cache entry (ERR_CACHE_OPERATION_NOT_SUPPORTED).
+  // If a load still fails, retry once.
+  const retried = useRef(false);
+  const handleError = () => {
     const video = videoRef.current;
-    if (!shouldLoad || !video) return;
-    video.load();
-  }, [shouldLoad, source]);
+    if (!video || retried.current || !shouldLoad) return;
+    retried.current = true;
+    window.setTimeout(() => video.load(), 800);
+  };
 
   // Play or stop following the page-wide pause and the reduced-motion preference.
   // The hero is server-rendered with autoplay, so it must be stopped explicitly too.
@@ -150,6 +154,7 @@ export function ExperienceVideo({
         autoPlay={!reducedMotion && !paused}
         preload={shouldLoad ? "metadata" : "none"}
         onLoadedData={() => setIsReady(true)}
+        onError={handleError}
         aria-hidden="true"
         tabIndex={-1}
       />
