@@ -120,6 +120,14 @@ test("English pages: translated menu, English WhatsApp, links to the Italian pag
   assert.match(home, /class="lang-switch" href="\/"/, "language switch back to Italian");
 });
 
+test("no tracker is in the HTML before consent (GA, Clarity, Meta Pixel load from the banner only)", () => {
+  for (const path of Object.keys(pages)) {
+    const html = read(path);
+    assert.doesNotMatch(html, /<script[^>]+src="https:\/\/(connect\.facebook\.net|www\.googletagmanager\.com|www\.clarity\.ms)/, `${path}: tracker script in HTML`);
+    assert.doesNotMatch(html, /facebook\.com\/tr\?/, `${path}: Meta noscript pixel`);
+  }
+});
+
 test("paired pages declare each other with hreflang", () => {
   const abs = (p) => `https://playaluna.it${p === "/" ? "" : p}`;
   for (const [it, en] of Object.entries(pairs)) {

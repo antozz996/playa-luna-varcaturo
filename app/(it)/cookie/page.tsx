@@ -29,6 +29,12 @@ const analytics = [
   { name: "CLID, MUID", provider: "Microsoft (clarity.ms, bing.com)", purpose: "Identificativi tecnici del servizio Clarity", duration: "1 anno" },
 ];
 
+const marketing = [
+  { name: "_fbp", provider: "Meta (Pixel di Meta)", purpose: "Riconosce il browser per misurare le visite arrivate dalle inserzioni e i contatti (WhatsApp, telefono)", duration: "3 mesi" },
+  { name: "_fbc", provider: "Meta (Pixel di Meta)", purpose: "Ricorda il clic su un’inserzione Facebook o Instagram che ti ha portato sul sito", duration: "3 mesi" },
+  { name: "fr", provider: "Meta (facebook.com)", purpose: "Pubblicità: mostrare e misurare le inserzioni a chi ha visitato il sito. È impostato da Meta sul proprio dominio se hai un account o hai usato i suoi servizi", duration: "3 mesi" },
+];
+
 function CookieTable({ caption, rows }: { caption: string; rows: typeof analytics }) {
   return (
     <div className="legal-table-wrap">
@@ -55,7 +61,7 @@ export default function CookiePage() {
       <article className="legal-page shell">
         <p className="eyebrow">Preferenze</p>
         <h1>Cookie Policy</h1>
-        <p className="legal-updated">Ultimo aggiornamento: 9 novembre 2026</p>
+        <p className="legal-updated">Ultimo aggiornamento: 10 novembre 2026</p>
 
         <h2>Strumenti tecnici</h2>
         <p>Sono necessari al funzionamento del sito e non richiedono consenso. Il sito non usa cookie tecnici propri: salva nella memoria del browser solo la tua scelta sul banner e, per la durata della visita, un codice di provenienza che resta sul tuo dispositivo.</p>
@@ -70,8 +76,18 @@ export default function CookiePage() {
         </p>
         <CookieTable caption="Cookie di analisi" rows={analytics} />
 
+        <h2>Cookie di marketing (solo con consenso)</h2>
+        <p>
+          Con lo stesso consenso (“Accetta”) attiviamo il <strong>Pixel di Meta</strong>, che comunica a Meta le pagine
+          visitate e i clic su WhatsApp e telefono. Lo usiamo per misurare i risultati delle nostre inserzioni su Facebook e
+          Instagram e per mostrarle a chi ha già visitato il sito. Prima del consenso il sito non invia dati a Meta. Per la
+          raccolta e la trasmissione dei dati Playa Luna e Meta sono contitolari del trattamento: i dettagli sono nella{" "}
+          <Link href="/privacy">privacy policy</Link>.
+        </p>
+        <CookieTable caption="Cookie di marketing" rows={marketing} />
+
         <h2>Come cambiare scelta</h2>
-        <p>Puoi rivedere o revocare il consenso in qualsiasi momento con il pulsante qui sotto: il banner verrà mostrato di nuovo. Se rifiuti, i cookie di analisi già presenti vengono cancellati. La scelta viene comunque richiesta di nuovo dopo 6 mesi o se cambiano gli strumenti utilizzati.</p>
+        <p>Puoi rivedere o revocare il consenso in qualsiasi momento con il pulsante qui sotto: il banner verrà mostrato di nuovo. Se rifiuti, i cookie di analisi e di marketing impostati dal sito vengono cancellati (il cookie “fr” è sul dominio di Meta e si gestisce dalle impostazioni del tuo account Facebook o del browser). La scelta viene comunque richiesta di nuovo dopo 6 mesi o se cambiano gli strumenti utilizzati.</p>
         <CookiePreferencesButton />
 
         <h2>Servizi esterni</h2>

@@ -5,7 +5,7 @@ export type ConsentValue = "accepted" | "rejected";
 
 const STORAGE_KEY = "playaluna-analytics-consent";
 /** Bump when the purposes or the third parties change: everyone is asked again. */
-export const CONSENT_VERSION = 2;
+export const CONSENT_VERSION = 3; // 3: Meta Pixel added (2026-11-10)
 /** Garante linee guida 2021: do not ask again before 6 months. */
 const MAX_AGE_MS = 1000 * 60 * 60 * 24 * 182;
 

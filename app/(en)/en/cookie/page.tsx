@@ -29,6 +29,12 @@ const analytics = [
   { name: "CLID, MUID", provider: "Microsoft (clarity.ms, bing.com)", purpose: "Technical identifiers of the Clarity service", duration: "1 year" },
 ];
 
+const marketing = [
+  { name: "_fbp", provider: "Meta (Meta Pixel)", purpose: "Recognises the browser to measure visits coming from our ads and contacts (WhatsApp, phone)", duration: "3 months" },
+  { name: "_fbc", provider: "Meta (Meta Pixel)", purpose: "Remembers the click on a Facebook or Instagram ad that brought you to the site", duration: "3 months" },
+  { name: "fr", provider: "Meta (facebook.com)", purpose: "Advertising: showing and measuring ads to people who visited the site. Set by Meta on its own domain if you have an account or have used its services", duration: "3 months" },
+];
+
 function CookieTable({ caption, rows }: { caption: string; rows: typeof analytics }) {
   return (
     <div className="legal-table-wrap">
@@ -74,8 +80,18 @@ export default function CookiePageEn() {
         </p>
         <CookieTable caption="Analytics cookies" rows={analytics} />
 
+        <h2>Marketing cookies (only with consent)</h2>
+        <p>
+          With the same consent (“Accept”) we turn on the <strong>Meta Pixel</strong>, which tells Meta the pages visited
+          and the clicks on WhatsApp and phone. We use it to measure the results of our ads on Facebook and Instagram and to
+          show them to people who have already visited the site. Before consent the site sends no data to Meta. For the
+          collection and transmission of the data Playa Luna and Meta are joint controllers: details are in the{" "}
+          <Link href="/en/privacy">privacy policy</Link>.
+        </p>
+        <CookieTable caption="Marketing cookies" rows={marketing} />
+
         <h2>How to change your choice</h2>
-        <p>You can review or withdraw consent at any time with the button below: the banner will be shown again. If you reject, any analytics cookies already set are deleted. You will be asked again after 6 months or if the tools we use change.</p>
+        <p>You can review or withdraw consent at any time with the button below: the banner will be shown again. If you reject, the analytics and marketing cookies set by the site are deleted (the “fr” cookie is on Meta’s domain and is managed from your Facebook account or browser settings). You will be asked again after 6 months or if the tools we use change.</p>
         <CookiePreferencesButton locale="en" />
 
         <h2>External services</h2>

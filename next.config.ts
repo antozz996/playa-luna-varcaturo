@@ -5,12 +5,12 @@ const isDev = process.env.NODE_ENV !== "production";
 // Third parties: Google Analytics (gtag) and Microsoft Clarity, loaded by analytics-consent.tsx.
 const contentSecurityPolicy = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com https://www.clarity.ms https://*.clarity.ms`,
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.googletagmanager.com https://www.clarity.ms https://*.clarity.ms https://connect.facebook.net`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://*.google-analytics.com https://*.googletagmanager.com https://*.clarity.ms https://c.bing.com",
+  "img-src 'self' data: blob: https://*.google-analytics.com https://*.googletagmanager.com https://*.clarity.ms https://c.bing.com https://www.facebook.com",
   "font-src 'self' data:",
   "media-src 'self'",
-  "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.clarity.ms https://c.bing.com",
+  "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.clarity.ms https://c.bing.com https://www.facebook.com https://connect.facebook.net",
   "object-src 'self'",
   "frame-src 'self'",
   "frame-ancestors 'none'",

@@ -55,6 +55,8 @@ export default function PrivacyPageEn() {
           <strong>Cookie preference:</strong> the choice you make in the banner is stored on your device.{" "}
           <strong>Usage statistics:</strong> only if you consent, Google Analytics and Microsoft Clarity collect data on
           how the site is used (pages visited, clicks, device, approximate location).{" "}
+          <strong>Advertising data:</strong> only if you consent, the Meta Pixel tells Meta the pages visited, the clicks on
+          WhatsApp and phone and technical browser identifiers (cookies, IP address, device).{" "}
           <strong>Data you send us:</strong> when you contact us by phone, WhatsApp or email we process the data you
           choose to share (name, number, date and details of the booking or event). The site has no data collection
           forms.
@@ -65,9 +67,10 @@ export default function PrivacyPageEn() {
           <li><strong>Answering your requests and managing bookings and events</strong> — pre-contractual and contractual measures you request (art. 6.1.b GDPR).</li>
           <li><strong>Running the site and protecting it from abuse</strong> — legitimate interest of the controller (art. 6.1.f GDPR).</li>
           <li><strong>Statistics and site improvement</strong> with Google Analytics and Microsoft Clarity — only with your consent (art. 6.1.a GDPR), which you can withdraw at any time.</li>
+          <li><strong>Measuring and showing our ads</strong> on Facebook and Instagram with the Meta Pixel — only with your consent (art. 6.1.a GDPR), which you can withdraw at any time.</li>
           <li><strong>Legal obligations</strong> (for example tax and accounting) — art. 6.1.c GDPR.</li>
         </ul>
-        <p>Providing data is optional, but without contact details we cannot answer requests or manage bookings. We do not carry out automated decision-making or profiling.</p>
+        <p>Providing data is optional, but without contact details we cannot answer requests or manage bookings. We do not carry out automated decision-making. Only with your consent may Meta use the data collected by the Pixel to show you our ads (personalised advertising).</p>
 
         <h2>4. Recipients and processors</h2>
         <p>Data may be processed on behalf of the controller, within the limits of their roles, by:</p>
@@ -77,16 +80,23 @@ export default function PrivacyPageEn() {
           <li><strong>Microsoft Ireland Operations Ltd / Microsoft Corporation</strong> — Microsoft Clarity (only with consent);</li>
           <li>advisers and suppliers supporting administration and accounting.</li>
         </ul>
+        <p>
+          For the Meta Pixel, <strong>Meta Platforms Ireland Ltd</strong> (Merrion Road, Dublin 4, Ireland) is joint
+          controller with us for the collection and transmission of the data (art. 26 GDPR); further processing is carried
+          out by Meta as an independent controller under its own{" "}
+          <a href="https://www.facebook.com/privacy/policy" target="_blank" rel="noreferrer">privacy policy</a>. You can
+          also exercise your rights directly with Meta.
+        </p>
         <p>When you use the links to WhatsApp, Google Maps, Instagram or Facebook you move to services of Meta and Google, which process your data as independent controllers under their own policies.</p>
 
         <h2>5. Transfers outside the European Union</h2>
-        <p>Some providers (Vercel, Google, Microsoft) may process data in the United States. Transfers are based on the EU-U.S. Data Privacy Framework, which these providers have joined, and/or on the standard contractual clauses approved by the European Commission.</p>
+        <p>Some providers (Vercel, Google, Microsoft, Meta) may process data in the United States. Transfers are based on the EU-U.S. Data Privacy Framework, which these providers have joined, and/or on the standard contractual clauses approved by the European Commission.</p>
 
         <h2>6. How long we keep data</h2>
         <ul>
           <li>Requests and bookings: as long as needed to handle them; tax data for the period required by law (10 years).</li>
           <li>Technical browsing data: for the period strictly necessary for the security of the service.</li>
-          <li>Google Analytics: up to 14 months. Microsoft Clarity: up to 13 months.</li>
+          <li>Google Analytics: up to 14 months. Microsoft Clarity: up to 13 months. Meta Pixel cookies: 3 months.</li>
           <li>Cookie preference: 6 months, after which you will be asked again.</li>
         </ul>
 
@@ -94,7 +104,7 @@ export default function PrivacyPageEn() {
         <p>
           You can ask at any time for access, rectification, erasure, restriction of processing and data portability,
           and object to processing based on legitimate interest (arts. 15–22 GDPR), by writing to{" "}
-          <a href={`mailto:${email}`}>{email}</a>. You can withdraw consent to statistics from the{" "}
+          <a href={`mailto:${email}`}>{email}</a>. You can withdraw consent to statistics and advertising from the{" "}
           <Link href="/en/cookie">cookie page</Link>, without affecting processing already carried out. You also have the
           right to lodge a complaint with the Italian data protection authority, Garante per la protezione dei dati
           personali (<a href="https://www.garanteprivacy.it" target="_blank" rel="noreferrer">www.garanteprivacy.it</a>).

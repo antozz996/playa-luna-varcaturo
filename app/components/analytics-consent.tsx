@@ -8,10 +8,22 @@ type AnalyticsWindow = Window & {
   dataLayer?: unknown[][];
   gtag?: (...args: unknown[]) => void;
   clarity?: ((...args: unknown[]) => void) & { q?: unknown[][] };
+  fbq?: MetaPixel;
+  _fbq?: MetaPixel;
+};
+
+type MetaPixel = ((...args: unknown[]) => void) & {
+  callMethod?: (...args: unknown[]) => void;
+  queue: unknown[][];
+  push: MetaPixel;
+  loaded: boolean;
+  version: string;
 };
 
 const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim();
 const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID?.trim();
+/** Meta Pixel (dataset "Playa Luna – sito", portfolio Playa Luna Beach & Wedding). Public ID. */
+const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID?.trim() || "1431239211986258";
 
 const analyticsCookieNames = [
   "_ga",
@@ -19,6 +31,8 @@ const analyticsCookieNames = [
   "_gid",
   "_clck",
   "_clsk",
+  "_fbp",
+  "_fbc",
 ].filter((name): name is string => Boolean(name));
 
 function deleteCookie(name: string) {
@@ -95,10 +109,56 @@ function startClarity() {
   injectScript(`https://www.clarity.ms/tag/${encodeURIComponent(clarityId)}`, "clarity-id", clarityId);
 }
 
+/**
+ * Meta Pixel: loaded only after consent (official snippet, rewritten without document.write).
+ * PageView is sent by the page-view effect, so client-side navigations are counted too.
+ */
+function startMetaPixel() {
+  if (!metaPixelId) return;
+  const w = window as AnalyticsWindow;
+  if (!w.fbq) {
+    const fbq = function (...args: unknown[]) {
+      if (fbq.callMethod) fbq.callMethod(...args);
+      else fbq.queue.push(args);
+    } as MetaPixel;
+    fbq.push = fbq;
+    fbq.loaded = true;
+    fbq.version = "2.0";
+    fbq.queue = [];
+    w.fbq = fbq;
+    w._fbq = w._fbq ?? fbq;
+    w.fbq("init", metaPixelId);
+  }
+  w.fbq("consent", "grant");
+  injectScript("https://connect.facebook.net/en_US/fbevents.js", "meta-pixel", metaPixelId);
+}
+
+/** Pages whose visit is a ViewContent for Meta (interest in the restaurant). */
+const metaViewContentPages: Record<string, string> = {
+  "/menu-ristorante": "menu",
+  "/en/menu": "menu",
+};
+
+/**
+ * WhatsApp/phone clicks: Lead for events and weddings (quote requests), Contact otherwise.
+ * The department travels as content_category to build audiences per area.
+ */
+function trackMetaClick(eventName: string) {
+  const w = window as AnalyticsWindow;
+  if (!w.fbq) return;
+  const { name, params } = describeClick(eventName);
+  if (name !== "whatsapp_click" && name !== "phone_click") return;
+  const department = (params as { department?: string }).department ?? "general";
+  const channel = name === "whatsapp_click" ? "whatsapp" : "phone";
+  const isLead = department === "events" || department === "wedding";
+  w.fbq("track", isLead ? "Lead" : "Contact", { content_category: department, content_name: channel });
+}
+
 function stopAnalytics() {
   const ga = window as AnalyticsWindow;
   ga.gtag?.("consent", "update", { analytics_storage: "denied" });
   ga.clarity?.("consentv2", { ad_Storage: "denied", analytics_Storage: "denied" });
+  ga.fbq?.("consent", "revoke");
   clearAnalyticsCookies();
 }
 
@@ -121,9 +181,9 @@ function describeClick(eventName: string) {
 const bannerText = {
   it: {
     aria: "Preferenze cookie",
-    close: "Chiudi: continua senza cookie di analisi",
+    close: "Chiudi: continua senza cookie facoltativi",
     title: "La tua privacy",
-    body: "Con il tuo consenso usiamo Google Analytics e Microsoft Clarity per capire come viene usato il sito. Senza consenso nessuno dei due viene attivato.",
+    body: "Con il tuo consenso usiamo Google Analytics e Microsoft Clarity per capire come viene usato il sito, e il Pixel di Meta per misurare e mostrare le nostre inserzioni su Facebook e Instagram. Senza consenso nessuno di questi strumenti viene attivato.",
     cookie: { href: "/cookie", label: "Cookie policy" },
     privacy: { href: "/privacy", label: "Privacy" },
     reject: "Rifiuta",
@@ -131,9 +191,9 @@ const bannerText = {
   },
   en: {
     aria: "Cookie preferences",
-    close: "Close: continue without analytics cookies",
+    close: "Close: continue without optional cookies",
     title: "Your privacy",
-    body: "With your consent we use Google Analytics and Microsoft Clarity to understand how the site is used. Without consent neither is turned on.",
+    body: "With your consent we use Google Analytics and Microsoft Clarity to understand how the site is used, and the Meta Pixel to measure and show our ads on Facebook and Instagram. Without consent none of these tools is turned on.",
     cookie: { href: "/en/cookie", label: "Cookie policy" },
     privacy: { href: "/en/privacy", label: "Privacy" },
     reject: "Reject",
@@ -163,18 +223,27 @@ export function AnalyticsConsent({ locale = "it" }: { locale?: "it" | "en" }) {
     if (consent === "accepted") {
       startGoogleAnalytics();
       startClarity();
+      startMetaPixel();
     } else if (consent === "rejected") {
       stopAnalytics();
     }
   }, [consent]);
 
   useEffect(() => {
-    if (consent !== "accepted" || !gaId || !isProductionHost()) return;
-    analyticsWindow().gtag("event", "page_view", {
-      page_path: pathname,
-      page_location: window.location.href,
-      page_title: document.title,
-    });
+    if (consent !== "accepted" || !isProductionHost()) return;
+    if (gaId) {
+      analyticsWindow().gtag("event", "page_view", {
+        page_path: pathname,
+        page_location: window.location.href,
+        page_title: document.title,
+      });
+    }
+    const fbq = (window as AnalyticsWindow).fbq;
+    if (fbq) {
+      fbq("track", "PageView");
+      const content = metaViewContentPages[pathname];
+      if (content) fbq("track", "ViewContent", { content_name: content, content_category: "restaurant" });
+    }
   }, [pathname, consent]);
 
   useEffect(() => {
@@ -188,6 +257,7 @@ export function AnalyticsConsent({ locale = "it" }: { locale?: "it" | "en" }) {
       const { name, params } = describeClick(eventName);
       ga.gtag("event", name, params);
       ga.clarity?.("event", eventName);
+      trackMetaClick(eventName);
     };
 
     document.addEventListener("click", trackClick);
