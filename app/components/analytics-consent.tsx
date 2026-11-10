@@ -127,6 +127,8 @@ function startMetaPixel() {
     fbq.queue = [];
     w.fbq = fbq;
     w._fbq = w._fbq ?? fbq;
+    // No automatic button-click events (SubscribedButtonClick): they duplicate Contact/Lead and send button texts.
+    w.fbq("set", "autoConfig", false, metaPixelId);
     w.fbq("init", metaPixelId);
   }
   w.fbq("consent", "grant");
