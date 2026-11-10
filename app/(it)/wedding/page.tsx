@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PageMedia } from "../components/page-media";
-import { SiteFooter } from "../components/site-footer";
-import { SiteHeader } from "../components/site-header";
-import { Faq } from "../components/faq";
-import { KeyFacts } from "../components/key-facts";
-import { weddingFaqs } from "../lib/faqs";
-import { breadcrumbSchema, eventVenueSchema, jsonLd } from "../lib/schema";
-import { eventFacts, pageOpenGraph, siteUrl, weddingWhatsapp } from "../lib/site";
+import { PageMedia } from "@/app/components/page-media";
+import { SiteFooter } from "@/app/components/site-footer";
+import { SiteHeader } from "@/app/components/site-header";
+import { Faq } from "@/app/components/faq";
+import { KeyFacts } from "@/app/components/key-facts";
+import { weddingFaqs } from "@/app/lib/faqs";
+import { breadcrumbSchema, eventVenueSchema, jsonLd } from "@/app/lib/schema";
+import { eventFacts, pageOpenGraph, siteUrl, weddingWhatsapp } from "@/app/lib/site";
 
 const weddingKeyFacts = [
   { label: "Invitati", value: `Fino a ${eventFacts.maxGuestsSeated} con cena seduta` },

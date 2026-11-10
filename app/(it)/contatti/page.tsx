@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { SiteFooter } from "../components/site-footer";
-import { SiteHeader } from "../components/site-header";
-import { Faq } from "../components/faq";
-import { contactFaqs } from "../lib/faqs";
-import { breadcrumbSchema, businessSchema, jsonLd } from "../lib/schema";
+import { SiteFooter } from "@/app/components/site-footer";
+import { SiteHeader } from "@/app/components/site-header";
+import { Faq } from "@/app/components/faq";
+import { contactFaqs } from "@/app/lib/faqs";
+import { breadcrumbSchema, businessSchema, jsonLd } from "@/app/lib/schema";
 import {
   address,
   beachPhoneNumber,
@@ -18,7 +18,7 @@ import {
   restaurantPhoneNumber,
   restaurantWhatsapp,
   siteUrl,
-} from "../lib/site";
+} from "@/app/lib/site";
 
 // Rebuild weekly so the seasonal opening-hours dates in structured data stay current.
 export const revalidate = 604800;

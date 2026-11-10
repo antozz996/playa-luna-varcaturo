@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SiteFooter } from "../components/site-footer";
-import { SiteHeader } from "../components/site-header";
-import { address, hasLegalEntity, legalEntity, pageOpenGraph } from "../lib/site";
+import { SiteFooter } from "@/app/components/site-footer";
+import { SiteHeader } from "@/app/components/site-header";
+import { address, hasLegalEntity, legalEntity, pageOpenGraph } from "@/app/lib/site";
 
 const description = "Informativa sul trattamento dei dati personali del sito Playa Luna (art. 13 Regolamento UE 2016/679).";
 

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SiteHeader } from "../components/site-header";
-import { SiteFooter } from "../components/site-footer";
-import { allergens, drinks, formatPrice, kitchen, menuNotes, menuPdf, type MenuSection } from "../lib/menu";
-import { breadcrumbSchema, businessId, jsonLd } from "../lib/schema";
-import { hoursLabel, openingHours, pageOpenGraph, restaurantPhoneHref, restaurantPhoneNumber, restaurantWhatsapp, siteUrl } from "../lib/site";
+import { SiteHeader } from "@/app/components/site-header";
+import { SiteFooter } from "@/app/components/site-footer";
+import { allergens, drinks, formatPrice, kitchen, menuNotes, menuPdf, type MenuSection } from "@/app/lib/menu";
+import { breadcrumbSchema, businessId, jsonLd } from "@/app/lib/schema";
+import { hoursLabel, openingHours, pageOpenGraph, restaurantPhoneHref, restaurantPhoneNumber, restaurantWhatsapp, siteUrl } from "@/app/lib/site";
 import styles from "./menu.module.css";
 
 const title = "Menu del ristorante sul mare";

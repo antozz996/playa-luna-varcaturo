@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { ServicePage } from "../components/service-page";
-import { poolFaqs } from "../lib/faqs";
-import { beachPhoneNumber, hoursLabel, pageOpenGraph, poolFacts, poolWhatsapp, seasonState } from "../lib/site";
+import { ServicePage } from "@/app/components/service-page";
+import { poolFaqs } from "@/app/lib/faqs";
+import { beachPhoneNumber, hoursLabel, pageOpenGraph, poolFacts, poolWhatsapp, seasonState } from "@/app/lib/site";
 
 // Rebuild daily so the seasonal notice switches on its own.
 export const revalidate = 86400;

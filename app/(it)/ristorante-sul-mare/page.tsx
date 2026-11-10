@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { ServicePage } from "../components/service-page";
-import { restaurantFaqs } from "../lib/faqs";
-import { restaurantOpeningHours } from "../lib/schema";
+import { ServicePage } from "@/app/components/service-page";
+import { restaurantFaqs } from "@/app/lib/faqs";
+import { restaurantOpeningHours } from "@/app/lib/schema";
 import {
   hoursLabel,
   openingHours,
@@ -10,7 +10,7 @@ import {
   restaurantPhoneNumber,
   restaurantWhatsapp,
   siteUrl,
-} from "../lib/site";
+} from "@/app/lib/site";
 
 const title = "Ristorante sul mare a Varcaturo";
 const description =

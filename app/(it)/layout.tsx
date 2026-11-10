@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import "./globals.css";
-import "./food-gallery-three.css";
-import { AnalyticsConsent } from "./components/analytics-consent";
-import { WhatsappSource } from "./components/whatsapp-source";
+import "../globals.css";
+import "../food-gallery-three.css";
+import { AnalyticsConsent } from "@/app/components/analytics-consent";
+import { WhatsappSource } from "@/app/components/whatsapp-source";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://playaluna.it"),

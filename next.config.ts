@@ -32,6 +32,10 @@ const securityHeaders = [
 const staticAssetCache = [{ key: "Cache-Control", value: "public, max-age=604800, stale-while-revalidate=86400" }];
 
 const nextConfig: NextConfig = {
+  // Two root layouts ((it) with lang="it", (en) with lang="en") need a global 404 page.
+  experimental: {
+    globalNotFound: true,
+  },
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },

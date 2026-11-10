@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SiteFooter } from "../components/site-footer";
-import { SiteHeader } from "../components/site-header";
-import { CookiePreferencesButton } from "../components/cookie-preferences-button";
-import { pageOpenGraph } from "../lib/site";
+import { SiteFooter } from "@/app/components/site-footer";
+import { SiteHeader } from "@/app/components/site-header";
+import { CookiePreferencesButton } from "@/app/components/cookie-preferences-button";
+import { pageOpenGraph } from "@/app/lib/site";
 
 const description = "Cookie e strumenti di memorizzazione usati dal sito Playa Luna, con fornitore, finalità e durata.";
 

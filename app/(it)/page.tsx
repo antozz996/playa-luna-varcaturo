@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { FloatAfterHero } from "./components/float-after-hero";
-import { PageMedia } from "./components/page-media";
-import { SiteFooter } from "./components/site-footer";
-import { SiteHeader } from "./components/site-header";
-import { businessSchema, jsonLd } from "./lib/schema";
+import { FloatAfterHero } from "@/app/components/float-after-hero";
+import { PageMedia } from "@/app/components/page-media";
+import { SiteFooter } from "@/app/components/site-footer";
+import { SiteHeader } from "@/app/components/site-header";
+import { businessSchema, jsonLd } from "@/app/lib/schema";
 import {
   beachWhatsapp,
   eventWhatsapp,
@@ -12,7 +12,7 @@ import {
   restaurantWhatsapp,
   seasonState,
   siteUrl,
-} from "./lib/site";
+} from "@/app/lib/site";
 
 const HERO_IMAGE = "/images/playa-luna/hero-beach.webp";
 
