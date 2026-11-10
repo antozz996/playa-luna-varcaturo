@@ -139,8 +139,11 @@ Tutte le 7 fasi completate e online. Restano solo azioni fuori dal codice:
 - [ ] **Sanity**: archiviare il progetto `7xx613y2`.
 - [x] **PEC** — `lidoplayaluna@pec.it` (trovata su ufficiocamerale.it, confermata dall'utente) in privacy policy.
 - [x] **SEO8 · Contenuti** — menu 2026 completo in HTML (`app/lib/menu.ts`: cucina, vini, bollicine, drink, distillati, prezzi, allergeni, note) con indice sticky e schema `Menu`; FAQ con schema `FAQPage` su spiaggia, piscina, ristorante, eventi e contatti (`app/lib/faqs.ts`), solo con dati confermati: orari, parcheggio gratuito, animali ammessi, docce/spogliatoi, Wi-Fi, accesso disabili, bagnino, piscina con ingresso separato, prezzi su WhatsApp, servizio 10% non incluso. Servizi anche in `amenityFeature` dello schema. Test 22/22.
-- [ ] **Vercel** (in attesa del login CLI dell'utente): redirect vercel.app, pulizia variabili, eliminazione store Blob.
-- [ ] **Search Console** (in attesa del codice "tag HTML"): verifica e invio sitemap.
+- [x] **SEO3 · vercel.app** — redirect 308 da `playa-luna-varcaturo-delta.vercel.app/*` a `https://playaluna.it/*` (in `next.config.ts`, le anteprime restano raggiungibili). Verificato.
+- [x] **Variabili Vercel** — rimosse le 13 inutilizzate (Sanity, Blob, password pannello). Restano solo `NEXT_PUBLIC_GA_ID` e `NEXT_PUBLIC_CLARITY_ID`.
+- [ ] **Store Blob** `store_oNhBO3F4WH7yWIqV` (sospeso, 0 file): Vercel vieta agli agenti di eliminarlo. _Azione utente_: Vercel → Storage → store → Settings → Delete, oppure `vercel blob delete-store store_oNhBO3F4WH7yWIqV` in un terminale.
+- [ ] **Token Sanity**: revocare i token API (in particolare quello di scrittura) su sanity.io/manage e archiviare il progetto `7xx613y2`. _Azione utente._
+- [x] **SEO4 · Search Console** — la proprietà di dominio `playaluna.it` era già verificata (nessun codice necessario). Sitemap reinviata: **8 pagine rilevate**. Stato indicizzazione: home, beach-club, ristorante, piscina, eventi, wedding già indicizzate; `/menu-ristorante` (escluso per il vecchio canonical con slash, già corretto) e `/contatti` (mai scansionata) → **indicizzazione richiesta** il 2026-11-10.
 - [ ] Far rileggere privacy e cookie policy a un consulente.
 
 ## Da fare su Vercel/Sanity dopo il deploy
