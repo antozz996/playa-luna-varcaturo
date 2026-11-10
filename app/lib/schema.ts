@@ -25,20 +25,21 @@ export const postalAddress = {
 const everyDay = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const year = new Date().getFullYear();
 
-function seasonal(opens: string, closes: string, validFrom: string, validThrough: string, crossesYear = false) {
+function seasonal(opens: string, closes: string, validFrom: string, validThrough: string) {
   return {
     "@type": "OpeningHoursSpecification",
     dayOfWeek: everyDay,
     opens,
     closes,
     validFrom: `${year}-${validFrom}`,
-    validThrough: `${crossesYear ? year + 1 : year}-${validThrough}`,
+    validThrough: `${year}-${validThrough}`,
   };
 }
 
+/** Bar hours all year; during the beach season the structure follows the lido hours. */
 export const businessOpeningHours = [
+  { "@type": "OpeningHoursSpecification", dayOfWeek: everyDay, opens: openingHours.bar.opens, closes: openingHours.bar.closes },
   seasonal(openingHours.beachSeason.opens, openingHours.beachSeason.closes, openingHours.beachSeason.validFrom, openingHours.beachSeason.validThrough),
-  seasonal(openingHours.offSeason.opens, openingHours.offSeason.closes, openingHours.offSeason.validFrom, openingHours.offSeason.validThrough, true),
 ];
 
 export const restaurantOpeningHours = [

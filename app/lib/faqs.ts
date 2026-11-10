@@ -14,7 +14,7 @@ const fullAddress = `${address.streetAddress}, ${address.postalCode} ${address.l
 
 const hours: FaqItem = {
   question: "Quali sono gli orari di Playa Luna?",
-  answer: `Siamo aperti tutti i giorni. Il lido è aperto dalle ${h.beachSeason.opens} alle ${h.beachSeason.closes} da maggio a settembre; da ottobre ad aprile bar e ristorante sono aperti dalle ${h.offSeason.opens} alle ${h.offSeason.closes}. Il pranzo si serve dalle ${h.restaurant.opens} alle ${h.restaurant.closes} tutto l'anno. La sera la struttura è disponibile solo per eventi privati.`,
+  answer: `Siamo aperti tutti i giorni. Il bar è aperto dalle ${h.bar.opens} alle ${h.bar.closes} tutto l'anno e il pranzo si serve dalle ${h.restaurant.opens} alle ${h.restaurant.closes}. Da maggio a settembre il lido è aperto dalle ${h.beachSeason.opens} alle ${h.beachSeason.closes}. La sera la struttura è disponibile solo per eventi privati.`,
 };
 
 const where: FaqItem = {
@@ -77,7 +77,7 @@ export const poolFaqs: FaqItem[] = [
 export const restaurantFaqs: FaqItem[] = [
   {
     question: "Quando è aperto il ristorante?",
-    answer: `Il pranzo si serve tutti i giorni dalle ${h.restaurant.opens} alle ${h.restaurant.closes}, tutto l'anno. Il bar è aperto dal mattino per colazione e aperitivo. La sera il ristorante apre solo per eventi privati.`,
+    answer: `Il pranzo si serve tutti i giorni dalle ${h.restaurant.opens} alle ${h.restaurant.closes}, tutto l'anno. Il bar è aperto tutti i giorni dalle ${h.bar.opens} alle ${h.bar.closes}, dalla colazione all'aperitivo. La sera il ristorante apre solo per eventi privati.`,
   },
   {
     question: "Come si prenota un tavolo?",

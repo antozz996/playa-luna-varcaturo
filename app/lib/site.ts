@@ -60,7 +60,7 @@ export const address = {
 /** Opening hours shown on the site and in structured data. Every day of the week. */
 export const openingHours = {
   beachSeason: { label: "Lido", months: "maggio – settembre", from: "1 maggio", to: "30 settembre", opens: "08:00", closes: "19:00", validFrom: "05-01", validThrough: "09-30" },
-  offSeason: { label: "Bar e ristorante", months: "ottobre – aprile", from: "1 ottobre", to: "30 aprile", opens: "09:00", closes: "19:00", validFrom: "10-01", validThrough: "04-30" },
+  bar: { label: "Bar", months: "tutto l'anno", opens: "09:00", closes: "18:30" },
   restaurant: { label: "Ristorante (pranzo)", months: "tutto l'anno", opens: "12:30", closes: "16:00" },
   evening: "La sera la struttura è disponibile solo per eventi privati.",
 };
