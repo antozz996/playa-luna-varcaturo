@@ -62,7 +62,7 @@ export function businessSchema(image: string) {
     priceRange: "€€",
     address: postalAddress,
     hasMap: mapsUrl,
-    areaServed: ["Varcaturo", "Giugliano in Campania", "Pozzuoli", "Napoli"],
+    areaServed: ["Varcaturo", "Giugliano in Campania", "Napoli"],
     servesCuisine: ["Mediterranea", "Pesce"],
     hasMenu: `${siteUrl}/menu-ristorante`,
     acceptsReservations: true,

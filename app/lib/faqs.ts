@@ -19,7 +19,7 @@ const hours: FaqItem = {
 
 const where: FaqItem = {
   question: "Dove si trova Playa Luna?",
-  answer: `Siamo in ${fullAddress}, sul litorale a nord di Napoli, vicino a Pozzuoli.`,
+  answer: `Siamo in ${fullAddress}, sul litorale a nord di Napoli.`,
 };
 
 const parking: FaqItem = {

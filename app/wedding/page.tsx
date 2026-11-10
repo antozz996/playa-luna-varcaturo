@@ -8,7 +8,7 @@ import { eventWhatsapp, pageOpenGraph, siteUrl } from "../lib/site";
 
 const title = "Matrimonio sul mare a Varcaturo, Napoli";
 const description =
-  "Ricevimenti di matrimonio sul mare al Playa Luna di Marina di Varcaturo, a pochi minuti da Napoli e Pozzuoli: luce naturale, cucina e allestimenti personalizzati.";
+  "Ricevimenti di matrimonio sul mare al Playa Luna di Marina di Varcaturo, a pochi minuti da Napoli: luce naturale, cucina e allestimenti personalizzati.";
 
 export const metadata: Metadata = {
   title,
