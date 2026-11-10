@@ -37,6 +37,7 @@ export function PageMedia({
     return (
       <ExperienceVideo
         src={video}
+        mobileSrc={video.replace(/\.mp4$/, "-mobile.mp4")}
         poster={video.replace(/\.mp4$/, "-poster.webp")}
         objectPosition={position}
         fill={fill}

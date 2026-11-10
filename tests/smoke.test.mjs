@@ -1,6 +1,6 @@
 // Smoke tests on the prerendered HTML produced by `next build` (run via `npm test`).
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
 
@@ -40,6 +40,16 @@ test("menu is readable HTML with prices and Menu schema", () => {
   assert.match(html, /30,00 €/);
   assert.match(html, /"@type":"Menu"/);
   assert.match(html, /Allergeni:/);
+});
+
+test("every video has a poster and a mobile version", () => {
+  const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)]));
+  const videos = walk(join(root, "public", "videos")).filter((f) => f.endsWith(".mp4") && !f.endsWith("-mobile.mp4"));
+  assert.ok(videos.length > 0, "videos found");
+  for (const video of videos) {
+    assert.ok(existsSync(video.replace(/\.mp4$/, "-poster.webp")), `${video}: missing poster`);
+    assert.ok(existsSync(video.replace(/\.mp4$/, "-mobile.mp4")), `${video}: missing mobile version`);
+  }
 });
 
 for (const path of Object.keys(pages)) {

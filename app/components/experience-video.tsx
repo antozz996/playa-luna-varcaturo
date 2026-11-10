@@ -5,6 +5,8 @@ import styles from "./experience-video.module.css";
 
 type ExperienceVideoProps = {
   src: string;
+  /** Lighter 720p version for phones (max-width 800px). */
+  mobileSrc?: string;
   poster?: string;
   objectPosition?: string;
   fill?: boolean;
@@ -30,6 +32,23 @@ function usePrefersReducedMotion() {
   return useSyncExternalStore(subscribeReducedMotion, () => window.matchMedia(REDUCED_MOTION).matches, () => false);
 }
 
+/* ---- Phone or computer: decides which file to download. "unknown" during server render ---- */
+const PHONE = "(max-width: 800px)";
+
+function subscribeViewport(onChange: () => void) {
+  const query = window.matchMedia(PHONE);
+  query.addEventListener("change", onChange);
+  return () => query.removeEventListener("change", onChange);
+}
+
+function useViewport(): "phone" | "desktop" | "unknown" {
+  return useSyncExternalStore(
+    subscribeViewport,
+    () => (window.matchMedia(PHONE).matches ? "phone" : "desktop"),
+    () => "unknown",
+  );
+}
+
 /* ---- Page-wide pause (WCAG 2.2.2): any pause button stops every video on the page ---- */
 let allPaused = false;
 const pauseListeners = new Set<() => void>();
@@ -50,6 +69,7 @@ function useAllPaused() {
 
 export function ExperienceVideo({
   src,
+  mobileSrc,
   poster,
   objectPosition = "50% 50%",
   fill = false,
@@ -62,9 +82,14 @@ export function ExperienceVideo({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const reducedMotion = usePrefersReducedMotion();
   const paused = useAllPaused();
+  const viewport = useViewport();
   const [inView, setInView] = useState(priority);
   const [isReady, setIsReady] = useState(false);
-  const shouldLoad = inView && !reducedMotion;
+  // Wait until we know phone vs computer, so only one file is ever downloaded.
+  const shouldLoad = inView && !reducedMotion && viewport !== "unknown";
+  const source = viewport === "phone" && mobileSrc ? mobileSrc : src;
+  // Below-the-fold posters load only when the video gets close to the screen.
+  const activePoster = priority || inView ? poster : undefined;
 
   useEffect(() => {
     if (priority) return;
@@ -90,7 +115,7 @@ export function ExperienceVideo({
     const video = videoRef.current;
     if (!shouldLoad || !video) return;
     video.load();
-  }, [shouldLoad, src]);
+  }, [shouldLoad, source]);
 
   // Play or stop following the page-wide pause and the reduced-motion preference.
   // The hero is server-rendered with autoplay, so it must be stopped explicitly too.
@@ -107,15 +132,15 @@ export function ExperienceVideo({
   }, [reducedMotion, paused, shouldLoad, isReady]);
 
   // With a poster the element is visible immediately; without one it fades in on first frame.
-  const visible = Boolean(poster) || isReady;
+  const visible = Boolean(activePoster) || isReady;
 
   return (
     <>
       <video
         ref={videoRef}
         className={`${styles.video} ${fill ? styles.fill : ""} ${visible ? styles.ready : ""} ${className}`}
-        src={shouldLoad ? src : undefined}
-        poster={poster}
+        src={shouldLoad ? source : undefined}
+        poster={activePoster}
         style={{ objectPosition, zIndex }}
         muted
         loop
