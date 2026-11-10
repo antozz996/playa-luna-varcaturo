@@ -144,7 +144,7 @@ Tutte le 7 fasi completate e online. Restano solo azioni fuori dal codice:
 - [x] **SEO3 · vercel.app** — redirect 308 da `playa-luna-varcaturo-delta.vercel.app/*` a `https://playaluna.it/*` (in `next.config.ts`, le anteprime restano raggiungibili). Verificato.
 - [x] **Variabili Vercel** — rimosse le 13 inutilizzate (Sanity, Blob, password pannello). Restano solo `NEXT_PUBLIC_GA_ID` e `NEXT_PUBLIC_CLARITY_ID`.
 - [ ] **Store Blob** `store_oNhBO3F4WH7yWIqV` (sospeso, 0 file): Vercel vieta agli agenti di eliminarlo. _Azione utente_: Vercel → Storage → store → Settings → Delete, oppure `vercel blob delete-store store_oNhBO3F4WH7yWIqV` in un terminale.
-- [ ] **Token Sanity**: revocare i token API (in particolare quello di scrittura) su sanity.io/manage e archiviare il progetto `7xx613y2`. _Azione utente._
+- [x] **Token Sanity** — revocati il 2026-11-10 entrambi i token API ("Editor token for Vercel" e "Viewer token for Vercel"). Il progetto `Playa_Luna_Manager` (7xx613y2) resta come archivio, per scelta dell'utente: nessun token attivo, nessun costo.
 - [x] **SEO4 · Search Console** — la proprietà di dominio `playaluna.it` era già verificata (nessun codice necessario). Sitemap reinviata: **8 pagine rilevate**. Stato indicizzazione: home, beach-club, ristorante, piscina, eventi, wedding già indicizzate; `/menu-ristorante` (escluso per il vecchio canonical con slash, già corretto) e `/contatti` (mai scansionata) → **indicizzazione richiesta** il 2026-11-10.
 - [ ] Far rileggere privacy e cookie policy a un consulente.
 
