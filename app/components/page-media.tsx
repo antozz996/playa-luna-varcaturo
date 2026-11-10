@@ -17,6 +17,7 @@ type PageMediaProps = {
   videoZIndex?: number;
   /** Pause button on the video. Set false when the media sits inside a link. */
   videoControls?: boolean;
+  locale?: "it" | "en";
 };
 
 export function PageMedia({
@@ -32,6 +33,7 @@ export function PageMedia({
   position = "50% 50%",
   videoZIndex,
   videoControls = true,
+  locale,
 }: PageMediaProps) {
   if (video) {
     return (
@@ -46,6 +48,7 @@ export function PageMedia({
         zIndex={videoZIndex}
         label={alt}
         controls={videoControls}
+        locale={locale}
       />
     );
   }

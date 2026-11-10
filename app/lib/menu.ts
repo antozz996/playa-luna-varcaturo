@@ -192,6 +192,94 @@ export const menuNotes = [
   "Il servizio del 10% non è incluso.",
 ];
 
-export function formatPrice(price?: number) {
-  return price === undefined ? "—" : `${price.toFixed(2).replace(".", ",")} €`;
+export function formatPrice(price?: number, locale: "it" | "en" = "it") {
+  if (price === undefined) return "—";
+  return locale === "en" ? `€${price.toFixed(2)}` : `${price.toFixed(2).replace(".", ",")} €`;
+}
+
+/* ---- English translations (dish names in English only; wines and spirits keep their names) ---- */
+
+export const sectionTitlesEn: Record<string, string> = {
+  antipasti: "Starters",
+  primi: "Pasta",
+  secondi: "Main courses",
+  contorni: "Sides",
+  dessert: "Desserts",
+  frutta: "Fruit",
+  "vini-bianchi": "White wines",
+  "vini-rossi-rosati": "Red and rosé wines",
+  bollicine: "Sparkling wines",
+  drinklist: "Cocktails",
+  distillati: "Spirits and digestifs",
+};
+
+export const itemNamesEn: Record<string, string> = {
+  "Polpo all’insalata con crema di patate viola e olive taggiasche": "Octopus salad with purple potato cream and Taggiasca olives",
+  "Tiramisù di baccalà cotto a bassa temperatura con mascarpone, patate e cacao": "Slow-cooked salt cod “tiramisù” with mascarpone, potatoes and cocoa",
+  "Osmosi di seppia cotta a bassa temperatura con carciofini": "Slow-cooked cuttlefish with baby artichokes",
+  "Gambero in tempura in pane panko (5 pz)": "Panko tempura prawns (5 pcs)",
+  "Sashimi di ricciola con leche de tigre (5 pz)": "Amberjack sashimi with leche de tigre (5 pcs)",
+  "Lupini alla brace con timo, rosmarino e citronette": "Grilled lupini clams with thyme, rosemary and citronette",
+  "Caprese di bufala": "Buffalo mozzarella caprese",
+  "Fiori di zucca in tempura ripieni di ricotta e salame (3 pz)": "Tempura courgette flowers stuffed with ricotta and salami (3 pcs)",
+  "Parmigiana 2.0 al forno": "Baked aubergine parmigiana 2.0",
+  "Linguina all’astice con pomodorini": "Linguine with lobster and cherry tomatoes",
+  "Spaghetti alle vongole": "Spaghetti with clams",
+  "Pasta e fagioli con cozze e ’nduja": "Pasta and beans with mussels and ’nduja",
+  "Raviolo ripieno di gamberi con salsa ai crostacei": "Prawn ravioli with shellfish sauce",
+  "Tagliolini con seppia e fiori di zucca": "Tagliolini with cuttlefish and courgette flowers",
+  "Tagliatelle all’Alfredo con gambero rosso": "Tagliatelle Alfredo with red prawns",
+  "Spaghetti alla Nerano": "Spaghetti alla Nerano (courgettes and cheese)",
+  "Fuori menu del giorno": "Today’s special",
+  "Calamaro e gambero alla griglia": "Grilled squid and prawns",
+  "Polpo alla brace con rosmarino, timo, patate erborizzate e maionese giapponese": "Grilled octopus with rosemary, thyme, herbed potatoes and Japanese mayonnaise",
+  "Ricciola scottata con burro salato francese e porro arrostito": "Seared amberjack with French salted butter and roasted leek",
+  "Frittura di gamberi e calamari": "Fried prawns and squid",
+  "Cubo di salmone su letto di patate e salsa di porro": "Salmon on potatoes with leek sauce",
+  "Manzetta prussiana con patate al forno": "Prussian beef with roast potatoes",
+  "Insalatina di spinacini con pera e ricotta salata": "Baby spinach salad with pear and ricotta salata",
+  "Insalata di carciofini baby con avocado e scaglie di grana": "Baby artichoke salad with avocado and Grana shavings",
+  "Patata al forno": "Baked potato",
+  "Tiramisù": "Tiramisù",
+  "Brownie con caramello salato e gelato alla vaniglia": "Brownie with salted caramel and vanilla ice cream",
+  "Namelaka": "Namelaka cream",
+  "Tagliata di frutta per 2 persone": "Sliced fruit platter for 2",
+  "Dessert frutta e gelato": "Fruit and ice cream dessert",
+  "Negroni e i suoi twist": "Negroni and its twists",
+  "Grappa bianca": "Clear grappa",
+  "Grappa barricata": "Barrel-aged grappa",
+};
+
+export const allergensEn: Record<number, string> = {
+  1: "Gluten",
+  2: "Crustaceans",
+  3: "Eggs",
+  4: "Fish",
+  5: "Peanuts",
+  6: "Soy",
+  7: "Milk",
+  8: "Tree nuts",
+  9: "Celery",
+  10: "Mustard",
+  11: "Sesame",
+  12: "Sulphites",
+  13: "Molluscs",
+  14: "Lupin",
+};
+
+export const menuNotesEn = [
+  "Our dishes may contain allergens (EU Regulation 1169/2011): if you have allergies, intolerances or follow a vegetarian diet, please tell our staff before ordering.",
+  "All dishes may contain traces of sesame or soy. Wines and drinks may contain sulphites.",
+  "* Some ingredients may be frozen at source or bought fresh and blast-chilled by us, in line with food safety rules.",
+  "Raw fish and seafood are blast-frozen at −20 °C for at least 24 hours, as required by law.",
+  "A 10% service charge is not included.",
+];
+
+/** Menu sections translated to English (names fall back to the Italian name: wines, spirits). */
+export function translateSections(sections: MenuSection[]): MenuSection[] {
+  return sections.map((section) => ({
+    ...section,
+    title: sectionTitlesEn[section.id] ?? section.title,
+    items: section.items.map((item) => ({ ...item, name: itemNamesEn[item.name] ?? item.name })),
+  }));
 }

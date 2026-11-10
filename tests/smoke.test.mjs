@@ -18,6 +18,24 @@ const pages = {
   "/contatti": "contatti.html",
   "/privacy": "privacy.html",
   "/cookie": "cookie.html",
+  "/en": "en.html",
+  "/en/beach-club": "en/beach-club.html",
+  "/en/restaurant": "en/restaurant.html",
+  "/en/menu": "en/menu.html",
+  "/en/contact": "en/contact.html",
+  "/en/privacy": "en/privacy.html",
+  "/en/cookie": "en/cookie.html",
+};
+
+// IT page -> EN page (hreflang pairs, see app/lib/i18n.ts).
+const pairs = {
+  "/": "/en",
+  "/beach-club": "/en/beach-club",
+  "/ristorante-sul-mare": "/en/restaurant",
+  "/menu-ristorante": "/en/menu",
+  "/contatti": "/en/contact",
+  "/privacy": "/en/privacy",
+  "/cookie": "/en/cookie",
 };
 
 // Locally and on GitHub the prerendered HTML is in .next/server/app; on Vercel the build may place it
@@ -35,11 +53,19 @@ function findInBuild(name) {
     };
     buildFiles = walk(nextDir);
   }
-  const exact = buildFiles.find((f) => f.endsWith(`${sep}${name}`) && f.includes(`${sep}app${sep}`));
+  // "en/menu.html" must only match a file inside an "en" folder, "menu.html" never one inside "en".
+  const parts = name.split("/");
+  const file = parts.pop();
+  const folder = parts.join(sep);
+  const inRightFolder = (f) => {
+    const dir = f.split(sep).slice(0, -1).join(sep);
+    return folder ? dir.endsWith(`${sep}${folder}`) : !dir.endsWith(`${sep}en`);
+  };
+  const exact = buildFiles.find((f) => f.endsWith(`${sep}${file}`) && f.includes(`${sep}app${sep}`) && inRightFolder(f));
   if (exact) return exact;
   // Vercel build adapter: .next/output/functions/<route>.prerender-fallback.<ext>
-  const base = name.replace(/\.(html|body)$/, "");
-  return buildFiles.find((f) => f.split(sep).pop().startsWith(`${base}.prerender-fallback`));
+  const base = file.replace(/\.(html|body)$/, "");
+  return buildFiles.find((f) => f.split(sep).pop().startsWith(`${base}.prerender-fallback`) && inRightFolder(f));
 }
 
 function locate(name) {
@@ -77,8 +103,33 @@ test("opening hours are never hard-coded in pages (single source: app/lib/site.t
   for (const file of pages) {
     const source = readFileSync(file, "utf8");
     // Hour ranges use an en dash ("8–19", "12:30–16"); legal references like "artt. 15–22" are excluded.
-    const match = source.match(/(?<!artt\.\s)\b\d{1,2}(:\d{2})?\s*–\s*\d{1,2}(:\d{2})?\b(?![\d/])/);
+    const match = source.match(/(?<!(?:artt|arts)\.\s)\b\d{1,2}(:\d{2})?\s*–\s*\d{1,2}(:\d{2})?\b(?![\d/])/);
     assert.equal(match, null, `${file}: hard-coded hours "${match?.[0]}" — use hoursLabel/openingHours`);
+  }
+});
+
+test("English pages: translated menu, English WhatsApp, links to the Italian pages", () => {
+  const menu = read("/en/menu");
+  assert.match(menu, /Lobster linguine|linguine/i);
+  assert.match(menu, /€30\.00/);
+  assert.match(menu, /Allergens:/);
+  assert.doesNotMatch(menu, /Allergeni:/);
+  const home = read("/en");
+  assert.match(home, /wa\.me\/[0-9]+\?text=Hi%20Playa%20Luna/, "WhatsApp message in English");
+  assert.doesNotMatch(home, /text=Ciao/, "no Italian WhatsApp messages");
+  assert.match(home, /class="lang-switch" href="\/"/, "language switch back to Italian");
+});
+
+test("paired pages declare each other with hreflang", () => {
+  const abs = (p) => `https://playaluna.it${p === "/" ? "" : p}`;
+  for (const [it, en] of Object.entries(pairs)) {
+    for (const path of [it, en]) {
+      const html = read(path);
+      for (const [lang, target] of [["it", it], ["en", en], ["x-default", it]]) {
+        const href = abs(target).replace(/[.]/g, "\\.");
+        assert.match(html, new RegExp(`<link rel="alternate" hrefLang="${lang}" href="${href}/?"`), `${path}: hreflang ${lang}`);
+      }
+    }
   }
 });
 
@@ -102,7 +153,8 @@ for (const path of Object.keys(pages)) {
   test(`${path} renders a complete, valid page`, () => {
     const html = read(path);
 
-    assert.match(html, /<html lang="it"/, "lang=it");
+    const lang = path.startsWith("/en") ? "en" : "it";
+    assert.match(html, new RegExp(`<html lang="${lang}"`), `lang=${lang}`);
     assert.match(html, /<title>[^<]{10,}<\/title>/, "has a title");
     assert.match(html, /<link rel="canonical" href="https:\/\/playaluna\.it[^"]*"/, "has an absolute canonical");
     assert.match(html, /<meta name="description" content="[^"]{40,}"/, "has a meta description");

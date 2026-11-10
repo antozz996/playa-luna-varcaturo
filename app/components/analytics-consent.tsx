@@ -118,7 +118,31 @@ function describeClick(eventName: string) {
   };
 }
 
-export function AnalyticsConsent() {
+const bannerText = {
+  it: {
+    aria: "Preferenze cookie",
+    close: "Chiudi: continua senza cookie di analisi",
+    title: "La tua privacy",
+    body: "Con il tuo consenso usiamo Google Analytics e Microsoft Clarity per capire come viene usato il sito. Senza consenso nessuno dei due viene attivato.",
+    cookie: { href: "/cookie", label: "Cookie policy" },
+    privacy: { href: "/privacy", label: "Privacy" },
+    reject: "Rifiuta",
+    accept: "Accetta",
+  },
+  en: {
+    aria: "Cookie preferences",
+    close: "Close: continue without analytics cookies",
+    title: "Your privacy",
+    body: "With your consent we use Google Analytics and Microsoft Clarity to understand how the site is used. Without consent neither is turned on.",
+    cookie: { href: "/en/cookie", label: "Cookie policy" },
+    privacy: { href: "/en/privacy", label: "Privacy" },
+    reject: "Reject",
+    accept: "Accept",
+  },
+};
+
+export function AnalyticsConsent({ locale = "it" }: { locale?: "it" | "en" }) {
+  const text = bannerText[locale];
   const [consent, setConsent] = useState<ConsentValue | null>(null);
   // The stored choice is only readable in the browser: render nothing until it has been read,
   // so visitors who already chose never see the banner flash.
@@ -178,29 +202,26 @@ export function AnalyticsConsent() {
   if (!hydrated || consent !== null) return null;
 
   return (
-    <aside className="cookie-banner" aria-label="Preferenze cookie">
+    <aside className="cookie-banner" aria-label={text.aria}>
       <button
         type="button"
         className="cookie-close"
         onClick={() => choose("rejected")}
-        aria-label="Chiudi: continua senza cookie di analisi"
+        aria-label={text.close}
       >
         <span aria-hidden="true">×</span>
       </button>
       <div>
-        <p className="cookie-title">La tua privacy</p>
-        <p>
-          Con il tuo consenso usiamo Google Analytics e Microsoft Clarity per capire come viene
-          usato il sito. Senza consenso nessuno dei due viene attivato.
-        </p>
+        <p className="cookie-title">{text.title}</p>
+        <p>{text.body}</p>
         <p className="cookie-links">
-          <a href="/cookie">Cookie policy</a>
-          <a href="/privacy">Privacy</a>
+          <a href={text.cookie.href}>{text.cookie.label}</a>
+          <a href={text.privacy.href}>{text.privacy.label}</a>
         </p>
       </div>
       <div className="cookie-actions">
-        <button type="button" onClick={() => choose("rejected")}>Rifiuta</button>
-        <button className="accept" type="button" onClick={() => choose("accepted")}>Accetta</button>
+        <button type="button" onClick={() => choose("rejected")}>{text.reject}</button>
+        <button className="accept" type="button" onClick={() => choose("accepted")}>{text.accept}</button>
       </div>
     </aside>
   );

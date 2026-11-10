@@ -174,3 +174,78 @@ export const weddingFaqs: FaqItem[] = [
 ];
 
 export const contactFaqs: FaqItem[] = [hours, where, parking, pets, accessibility];
+
+/* ---- English FAQs (same confirmed facts) ---- */
+const fullAddressEn = `${address.streetAddress}, ${address.postalCode} ${address.locality} (${address.region}), in ${address.area}`;
+
+const hoursEn: FaqItem = {
+  question: "What are Playa Luna's opening hours?",
+  answer: `We are open every day. From May to September the beach is open from ${h.beachSeason.opens} to ${h.beachSeason.closes} and the bar from ${h.barSummer.opens} to ${h.barSummer.closes}; from October to April the bar is open from ${h.barWinter.opens} to ${h.barWinter.closes}. Lunch is served from ${h.restaurant.opens} to ${h.restaurant.closes} all year round. In the evening the venue is open for private events only.`,
+};
+
+const whereEn: FaqItem = {
+  question: "Where is Playa Luna?",
+  answer: `We are at ${fullAddressEn}, on the coast north of Naples.`,
+};
+
+const parkingEn: FaqItem = {
+  question: "Is there parking?",
+  answer: "Yes, parking is free for our guests.",
+};
+
+const petsEn: FaqItem = {
+  question: "Can I bring my dog?",
+  answer: "Yes, pets are welcome.",
+};
+
+const accessibilityEn: FaqItem = {
+  question: "Is the venue wheelchair accessible?",
+  answer: "Yes, the venue is accessible to people with disabilities. If you have specific needs, message us before you arrive and we will get ready for you.",
+};
+
+export const beachFaqsEn: FaqItem[] = [
+  {
+    question: "How do I book an umbrella and sunbeds?",
+    answer: `Message us on WhatsApp or call ${beachPhoneNumber} with the date and number of people: we will confirm availability and price.`,
+  },
+  {
+    question: "How much does a beach day cost?",
+    answer: "Prices depend on the period, the day of the week and the spot: ask us on WhatsApp and we will send you the current rate.",
+  },
+  {
+    question: "When is the beach open?",
+    answer: `The beach is open every day from ${h.beachSeason.opens} to ${h.beachSeason.closes}, from May to September.`,
+  },
+  {
+    question: "What facilities are there on the beach?",
+    answer: "Umbrellas and sunbeds, showers and changing rooms, Wi-Fi, lifeguard service, a bar and a seafront restaurant. The venue is accessible to people with disabilities.",
+  },
+  parkingEn,
+  petsEn,
+];
+
+export const restaurantFaqsEn: FaqItem[] = [
+  {
+    question: "When is the restaurant open?",
+    answer: `Lunch is served every day from ${h.restaurant.opens} to ${h.restaurant.closes}, all year round. The bar is open every day from breakfast to aperitivo: ${h.barSummer.opens}–${h.barSummer.closes} from May to September, ${h.barWinter.opens}–${h.barWinter.closes} from October to April. In the evening the restaurant opens for private events only.`,
+  },
+  {
+    question: "How do I book a table?",
+    answer: `Message us on WhatsApp or call the restaurant on ${restaurantPhoneNumber} with the date, time and number of people.`,
+  },
+  {
+    question: "Where can I see the menu?",
+    answer: "The full menu with prices and allergens is on the Menu page, in English. The printable PDF is in Italian.",
+  },
+  {
+    question: "Do you cater for allergies or intolerances?",
+    answer: "The menu lists the allergens of every dish. If you have allergies, intolerances or follow a vegetarian diet, please tell our staff before ordering.",
+  },
+  {
+    question: "Is service included in the prices?",
+    answer: "No, a 10% service charge is not included.",
+  },
+  parkingEn,
+];
+
+export const contactFaqsEn: FaqItem[] = [hoursEn, whereEn, parkingEn, petsEn, accessibilityEn];

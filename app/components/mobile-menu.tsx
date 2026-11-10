@@ -3,7 +3,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 
 /** Mobile <details> menu that also closes with Escape and on outside tap. */
-export function MobileMenu({ children }: { children: ReactNode }) {
+export function MobileMenu({ children, label = "Menu" }: { children: ReactNode; label?: string }) {
   const ref = useRef<HTMLDetailsElement | null>(null);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export function MobileMenu({ children }: { children: ReactNode }) {
   return (
     <details className="mobile-menu" ref={ref}>
       {/* Visible text is the accessible name; <summary> exposes the open/closed state natively. */}
-      <summary>Menu</summary>
+      <summary>{label}</summary>
       {children}
     </details>
   );

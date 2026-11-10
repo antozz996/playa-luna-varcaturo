@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { languageAlternates } from "@/app/lib/i18n";
 import Image from "next/image";
 import { SiteFooter } from "@/app/components/site-footer";
 import { SiteHeader } from "@/app/components/site-header";
@@ -30,14 +31,14 @@ const description =
 export const metadata: Metadata = {
   title,
   description,
-  alternates: { canonical: "/contatti" },
+  alternates: languageAlternates("it", "/contatti"),
   openGraph: pageOpenGraph({ path: "/contatti", title: `${title} | Playa Luna`, description }),
 };
 
 export default function ContactsPage() {
   return (
     <div className="page-shell">
-      <SiteHeader />
+      <SiteHeader path="/contatti" />
       <main id="main">
       <section className="contact-hero">
         <Image src="/images/playa-luna/sunset-view.webp" alt="Vista del mare da Playa Luna a Marina di Varcaturo" width={960} height={1200} priority sizes="100vw" />

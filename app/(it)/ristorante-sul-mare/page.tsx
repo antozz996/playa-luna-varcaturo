@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { languageAlternates } from "@/app/lib/i18n";
 import { ServicePage } from "@/app/components/service-page";
 import { restaurantFaqs } from "@/app/lib/faqs";
 import { restaurantOpeningHours } from "@/app/lib/schema";
@@ -19,7 +20,7 @@ const description =
 export const metadata: Metadata = {
   title,
   description,
-  alternates: { canonical: "/ristorante-sul-mare" },
+  alternates: languageAlternates("it", "/ristorante-sul-mare"),
   openGraph: pageOpenGraph({ path: "/ristorante-sul-mare", title: `${title} | Playa Luna`, description }),
 };
 

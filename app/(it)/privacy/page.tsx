@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { languageAlternates } from "@/app/lib/i18n";
 import Link from "next/link";
 import { SiteFooter } from "@/app/components/site-footer";
 import { SiteHeader } from "@/app/components/site-header";
@@ -9,7 +10,7 @@ const description = "Informativa sul trattamento dei dati personali del sito Pla
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description,
-  alternates: { canonical: "/privacy" },
+  alternates: languageAlternates("it", "/privacy"),
   robots: { index: false, follow: true },
   openGraph: pageOpenGraph({ path: "/privacy", title: "Privacy Policy | Playa Luna", description }),
 };
@@ -18,7 +19,7 @@ export default function PrivacyPage() {
   const email = legalEntity.email;
   return (
     <div className="page-shell">
-      <div className="legal-header"><SiteHeader /></div>
+      <div className="legal-header"><SiteHeader path="/privacy" /></div>
       <main id="main">
       <article className="legal-page shell">
         <p className="eyebrow">Informativa ai sensi dell’art. 13 GDPR</p>

@@ -56,7 +56,7 @@ const schema = [
 export default function WeddingPage() {
   return (
     <div className="page-shell wedding-editorial-v2">
-      <SiteHeader />
+      <SiteHeader path="/wedding" />
       <main id="main">
 
       <section className="wedding-hero-v2">

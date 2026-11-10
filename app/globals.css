@@ -193,6 +193,41 @@ h2 {
   transform: scaleX(1);
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  justify-self: end;
+}
+
+.lang-switch {
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  opacity: 0.9;
+}
+
+.lang-switch:hover {
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.nav-note {
+  margin-left: 3px;
+  padding: 1px 4px;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  vertical-align: 2px;
+}
+
 .header-cta {
   display: inline-flex;
   padding: 12px 0;
@@ -1296,7 +1331,7 @@ footer {
     display: none;
   }
 
-  .header-cta {
+  .header-actions {
     margin-right: 80px;
   }
 
@@ -1406,8 +1441,12 @@ footer {
   }
 
   /* Keep "Prenota" one tap away on mobile, next to the Menu button. */
+  .header-actions {
+    margin-right: 66px;
+    gap: 6px;
+  }
+
   .header-cta {
-    margin-right: 76px;
     padding: 8px 0;
     gap: 8px;
     font-size: 12px;

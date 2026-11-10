@@ -2,7 +2,7 @@
 
 import { clearConsent } from "../lib/consent";
 
-export function CookiePreferencesButton() {
+export function CookiePreferencesButton({ locale = "it" }: { locale?: "it" | "en" }) {
   const reopenPreferences = () => {
     clearConsent();
     window.location.reload();
@@ -10,7 +10,7 @@ export function CookiePreferencesButton() {
 
   return (
     <button className="pill-button" type="button" onClick={reopenPreferences}>
-      Rivedi le preferenze cookie
+      {locale === "en" ? "Review cookie preferences" : "Rivedi le preferenze cookie"}
     </button>
   );
 }

@@ -46,7 +46,7 @@ const schema = [
 export default function EventsPage() {
   return (
     <div className="page-shell events-editorial-v2">
-      <SiteHeader />
+      <SiteHeader path="/eventi" />
       <main id="main">
 
       <section className="events-hero-v2">

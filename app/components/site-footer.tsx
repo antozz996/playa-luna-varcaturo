@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ui, type Locale } from "../lib/i18n";
 import {
+  address,
   beachPhoneHref,
   beachPhoneNumber,
   eventPhoneHref,
@@ -12,40 +14,42 @@ import {
   restaurantPhoneNumber,
 } from "../lib/site";
 
-export function SiteFooter() {
+export function SiteFooter({ locale = "it" }: { locale?: Locale }) {
+  const t = ui[locale];
+  const f = t.footer;
   return (
     <footer id="contact">
       <div className="shell footer-grid">
         <div className="footer-brand">
-          <Link className="brand-logo-link footer-logo-link" href="/" aria-label="Playa Luna, torna alla homepage">
+          <Link className="brand-logo-link footer-logo-link" href={locale === "en" ? "/en" : "/"} aria-label={t.homeLabel}>
             <Image className="brand-logo footer-brand-logo" src="/playaluna-logo.svg" alt="" width={524} height={344} unoptimized />
           </Link>
-          <p>Beach club · Ristorante · Eventi</p>
+          <p>{f.tagline}</p>
         </div>
         <div>
-          <p className="footer-label">Dove siamo</p>
+          <p className="footer-label">{f.where}</p>
           <a href={mapsUrl} target="_blank" rel="noreferrer" data-event="directions_click">
-            Via Marina di Varcaturo, 42<br />80014 Giugliano in Campania (NA)
+            {address.streetAddress}<br />{address.postalCode} {address.locality} ({address.region}){locale === "en" ? ", Italy" : ""}
           </a>
         </div>
         <div>
-          <p className="footer-label">Contatti</p>
-          <a href={beachPhoneHref} data-event="phone_beach">Spiaggia · {beachPhoneNumber}</a>
-          <a href={restaurantPhoneHref} data-event="phone_restaurant">Ristorante · {restaurantPhoneNumber}</a>
-          <a href={eventPhoneHref} data-event="phone_events">Eventi · {eventPhoneNumber}</a>
+          <p className="footer-label">{f.contacts}</p>
+          <a href={beachPhoneHref} data-event="phone_beach">{f.beach} · {beachPhoneNumber}</a>
+          <a href={restaurantPhoneHref} data-event="phone_restaurant">{f.restaurant} · {restaurantPhoneNumber}</a>
+          <a href={eventPhoneHref} data-event="phone_events">{f.events} · {eventPhoneNumber}</a>
         </div>
         <div>
-          <p className="footer-label">Seguici</p>
-          <a href="https://www.instagram.com/lidoplayaluna/" target="_blank" rel="noreferrer" data-event="instagram_click">Instagram ↗</a>
-          <a href="https://www.facebook.com/Complesso.Playa.Luna/" target="_blank" rel="noreferrer" data-event="facebook_click">Facebook ↗</a>
+          <p className="footer-label">{f.follow}</p>
+          <a href="https://www.instagram.com/lidoplayaluna/" target="_blank" rel="noreferrer" data-event="instagram_click">Instagram <span aria-hidden="true">↗</span></a>
+          <a href="https://www.facebook.com/Complesso.Playa.Luna/" target="_blank" rel="noreferrer" data-event="facebook_click">Facebook <span aria-hidden="true">↗</span></a>
         </div>
       </div>
       <div className="shell footer-bottom">
         <p>
-          © {new Date().getFullYear()} {hasLegalEntity ? `${legalEntity.name} · P.IVA ${legalEntity.vatNumber}` : "Playa Luna"}
+          © {new Date().getFullYear()} {hasLegalEntity ? `${legalEntity.name} · ${f.vat} ${legalEntity.vatNumber}` : "Playa Luna"}
         </p>
-        <div><Link href="/privacy">Privacy</Link><Link href="/cookie">Cookie</Link></div>
-        <p>Pensato con il Mediterraneo nel cuore.</p>
+        <div><Link href={f.privacy}>Privacy</Link><Link href={f.cookie}>Cookie</Link></div>
+        <p>{f.motto}</p>
       </div>
     </footer>
   );

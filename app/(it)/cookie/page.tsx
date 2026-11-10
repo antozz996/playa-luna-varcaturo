@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { languageAlternates } from "@/app/lib/i18n";
 import Link from "next/link";
 import { SiteFooter } from "@/app/components/site-footer";
 import { SiteHeader } from "@/app/components/site-header";
@@ -10,7 +11,7 @@ const description = "Cookie e strumenti di memorizzazione usati dal sito Playa L
 export const metadata: Metadata = {
   title: "Cookie Policy",
   description,
-  alternates: { canonical: "/cookie" },
+  alternates: languageAlternates("it", "/cookie"),
   robots: { index: false, follow: true },
   openGraph: pageOpenGraph({ path: "/cookie", title: "Cookie Policy | Playa Luna", description }),
 };
@@ -49,7 +50,7 @@ function CookieTable({ caption, rows }: { caption: string; rows: typeof analytic
 export default function CookiePage() {
   return (
     <div className="page-shell">
-      <div className="legal-header"><SiteHeader /></div>
+      <div className="legal-header"><SiteHeader path="/cookie" /></div>
       <main id="main">
       <article className="legal-page shell">
         <p className="eyebrow">Preferenze</p>

@@ -17,6 +17,7 @@ type ExperienceVideoProps = {
   label?: string;
   /** Show the pause/play button. Off for videos inside links (a button can't sit inside <a>). */
   controls?: boolean;
+  locale?: "it" | "en";
 };
 
 /* ---- prefers-reduced-motion ---- */
@@ -78,6 +79,7 @@ export function ExperienceVideo({
   zIndex,
   label,
   controls = true,
+  locale = "it",
 }: ExperienceVideoProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const reducedMotion = usePrefersReducedMotion();
@@ -157,7 +159,7 @@ export function ExperienceVideo({
           type="button"
           className="video-toggle"
           onClick={() => setAllPaused(!paused)}
-          aria-label={paused ? "Riproduci i video" : "Metti in pausa i video"}
+          aria-label={locale === "en" ? (paused ? "Play the videos" : "Pause the videos") : paused ? "Riproduci i video" : "Metti in pausa i video"}
         >
           <span aria-hidden="true">{paused ? "▶" : "❚❚"}</span>
         </button>

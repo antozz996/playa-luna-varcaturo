@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { languageAlternates } from "@/app/lib/i18n";
 import { ServicePage } from "@/app/components/service-page";
 import { beachFaqs } from "@/app/lib/faqs";
 import { beachPhoneNumber, hoursLabel, openingHours, pageOpenGraph, seasonState } from "@/app/lib/site";
@@ -13,7 +14,7 @@ const description =
 export const metadata: Metadata = {
   title,
   description,
-  alternates: { canonical: "/beach-club" },
+  alternates: languageAlternates("it", "/beach-club"),
   openGraph: pageOpenGraph({ path: "/beach-club", title: `${title} | Playa Luna`, description }),
 };
 

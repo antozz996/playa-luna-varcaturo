@@ -6,7 +6,8 @@ import type { FaqItem } from "../lib/faqs";
 import { breadcrumbSchema, departmentSchema, jsonLd } from "../lib/schema";
 import { Faq } from "./faq";
 import { KeyFacts, type KeyFact } from "./key-facts";
-import { beachWhatsapp, siteUrl } from "../lib/site";
+import { ui, whatsappLinks, type Locale } from "../lib/i18n";
+import { siteUrl } from "../lib/site";
 
 type ServicePageProps = {
   slug: string;
@@ -33,6 +34,7 @@ type ServicePageProps = {
   /** Extra schema.org properties for this department (e.g. opening hours). */
   schemaExtra?: Record<string, unknown>;
   faqs?: FaqItem[];
+  locale?: Locale;
   /** Short seasonal notice shown under the hero intro (e.g. "Il lido riapre a maggio"). */
   notice?: string;
   /** Optional second contact next to the main CTA (e.g. a phone call). */
@@ -59,9 +61,10 @@ export function ServicePage({
   detailImage,
   detailAlt,
   features,
-  ctaLabel = "Chiedi informazioni",
-  floatLabel = "Prenota",
-  ctaHref = beachWhatsapp,
+  locale = "it",
+  ctaLabel = ui[locale].defaultCta,
+  floatLabel = ui[locale].floatBook,
+  ctaHref = whatsappLinks[locale].beach,
   ctaEvent = "whatsapp_beach",
   menuHref,
   telephone,
@@ -76,20 +79,23 @@ export function ServicePage({
   heroObjectPosition = "center 55%",
   detailObjectPosition = "50% 50%",
 }: ServicePageProps) {
+  const t = ui[locale];
+  const home = locale === "en" ? "/en" : "/";
+  const path = locale === "en" ? `/en/${slug}` : `/${slug}`;
   const structuredImage = image.startsWith("http") ? image : `${siteUrl}${image}`;
 
   const structuredData = [
     departmentSchema({
       type: schemaType,
       name: `Playa Luna · ${eyebrow}`,
-      path: `/${slug}`,
+      path,
       image: structuredImage,
       telephone,
-      extra: schemaExtra,
+      extra: { ...schemaExtra, ...(locale === "en" ? { inLanguage: "en" } : {}) },
     }),
     breadcrumbSchema([
-      { name: "Home", path: "/" },
-      { name: eyebrow, path: `/${slug}` },
+      { name: t.breadcrumbHome, path: home },
+      { name: eyebrow, path },
     ]),
   ];
 
@@ -99,7 +105,7 @@ export function ServicePage({
   return (
     <div className="page-shell">
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(structuredData)} />
-      <SiteHeader />
+      <SiteHeader locale={locale} path={path} />
       <main id="main">
 
       <section className="service-hero" aria-labelledby="service-title">
@@ -116,8 +122,8 @@ export function ServicePage({
         <div className="service-hero-shade" />
 
         <div className="shell service-hero-copy">
-          <nav className="breadcrumbs" aria-label="Percorso">
-            <Link href="/">Home</Link><span>/</span><span>{eyebrow}</span>
+          <nav className="breadcrumbs" aria-label={locale === "en" ? "Breadcrumb" : "Percorso"}>
+            <Link href={home}>{t.breadcrumbHome}</Link><span>/</span><span>{eyebrow}</span>
           </nav>
           <h1 id="service-title" className="eyebrow light">{heading}</h1>
           <p className="display-title">{title}<br /><em>{emphasis}</em></p>
@@ -126,11 +132,11 @@ export function ServicePage({
         </div>
       </section>
 
-      {facts?.length ? <KeyFacts id="info-rapide" title="Info rapide" facts={facts} /> : null}
+      {facts?.length ? <KeyFacts id="info-rapide" title={t.quickInfo} facts={facts} /> : null}
 
       <section className="service-content shell section-space">
         <div className="service-main-copy">
-          <p className="eyebrow">Informazioni</p>
+          <p className="eyebrow">{t.info}</p>
           <h2>{infoHeading[0]}{" "}<br /><em>{infoHeading[1]}</em></h2>
           <p>{body}</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
@@ -144,13 +150,13 @@ export function ServicePage({
             ) : null}
             {menuHref ? (
               <Link className="pill-button dark" href={menuHref} data-event="menu_view">
-                Consulta il menu <span aria-hidden="true">→</span>
+                {t.seeMenu} <span aria-hidden="true">→</span>
               </Link>
             ) : null}
           </div>
         </div>
 
-        <div className="service-facts" role="group" aria-label={`Caratteristiche ${eyebrow}`}>
+        <div className="service-facts" role="group" aria-label={`${t.featuresOf} ${eyebrow}`}>
           {features.map((feature, index) => (
             <div key={feature}>
               <span>{String(index + 1).padStart(2, "0")}</span>
@@ -171,7 +177,7 @@ export function ServicePage({
         </figure>
       </section>
 
-      {faqs?.length ? <Faq items={faqs} /> : null}
+      {faqs?.length ? <Faq items={faqs} locale={locale} /> : null}
 
       <section className="service-cta">
         <div className="shell">
@@ -184,7 +190,7 @@ export function ServicePage({
       </section>
       </main>
 
-      <SiteFooter />
+      <SiteFooter locale={locale} />
       <a className="whatsapp-float" href={ctaHref} {...ctaTarget} data-event={ctaEvent}>
         <span aria-hidden="true">✦</span> {floatLabel}
       </a>

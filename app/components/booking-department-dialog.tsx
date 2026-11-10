@@ -1,43 +1,26 @@
 "use client";
 
 import { useId, useRef } from "react";
-import { beachWhatsapp, eventWhatsapp, restaurantPhoneHref, restaurantWhatsapp } from "../lib/site";
+import { ui, whatsappLinks, type Locale } from "../lib/i18n";
+import { restaurantPhoneHref } from "../lib/site";
 import styles from "./booking-department-dialog.module.css";
 
-const departments = [
-  {
-    name: "Spiaggia",
-    action: "WhatsApp",
-    href: beachWhatsapp,
-    event: "whatsapp_beach_dialog",
-    external: true,
-  },
-  {
-    name: "Ristorante",
-    action: "WhatsApp",
-    href: restaurantWhatsapp,
-    event: "whatsapp_restaurant_dialog",
-    external: true,
-  },
-  {
-    name: "Ristorante",
-    action: "Chiama",
-    href: restaurantPhoneHref,
-    event: "phone_restaurant_dialog",
-    external: false,
-  },
-  {
-    name: "Eventi e matrimoni",
-    action: "WhatsApp",
-    href: eventWhatsapp,
-    event: "whatsapp_events_dialog",
-    external: true,
-  },
-] as const;
+function departmentsFor(locale: Locale) {
+  const t = ui[locale].dialog;
+  const wa = whatsappLinks[locale];
+  return [
+    { name: t.beach, action: "WhatsApp", href: wa.beach, event: "whatsapp_beach_dialog", external: true },
+    { name: t.restaurant, action: "WhatsApp", href: wa.restaurant, event: "whatsapp_restaurant_dialog", external: true },
+    { name: t.restaurant, action: t.call, href: restaurantPhoneHref, event: "phone_restaurant_dialog", external: false },
+    { name: t.events, action: "WhatsApp", href: wa.events, event: "whatsapp_events_dialog", external: true },
+  ];
+}
 
-export function BookingDepartmentDialog({ mobile = false }: { mobile?: boolean }) {
+export function BookingDepartmentDialog({ mobile = false, locale = "it" }: { mobile?: boolean; locale?: Locale }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const id = useId();
+  const t = ui[locale];
+  const departments = departmentsFor(locale);
 
   return (
     <>
@@ -49,7 +32,7 @@ export function BookingDepartmentDialog({ mobile = false }: { mobile?: boolean }
         data-event="booking_dialog_open"
         onClick={() => dialogRef.current?.showModal()}
       >
-        Prenota <span aria-hidden="true">↗</span>
+        {t.book} <span aria-hidden="true">↗</span>
       </button>
 
       <dialog
@@ -66,11 +49,11 @@ export function BookingDepartmentDialog({ mobile = false }: { mobile?: boolean }
       >
         <div className={styles.content}>
           <div className={styles.topRow}>
-            <p className={styles.eyebrow}>Playa Luna / Prenotazioni</p>
+            <p className={styles.eyebrow}>{t.dialog.eyebrow}</p>
             <button
               type="button"
               className={styles.close}
-              aria-label="Chiudi il popup"
+              aria-label={t.dialog.close}
               onClick={() => dialogRef.current?.close()}
             >
               <span aria-hidden="true">×</span>
@@ -78,9 +61,9 @@ export function BookingDepartmentDialog({ mobile = false }: { mobile?: boolean }
           </div>
 
           {/* Not a heading element: the dialog is in the header, before each page's H1. It stays the dialog's accessible name via aria-labelledby. */}
-          <p id={id + "-title"} className={styles.title}>Cosa vuoi prenotare?</p>
+          <p id={id + "-title"} className={styles.title}>{t.dialog.title}</p>
           <p id={id + "-description"} className={styles.intro}>
-            Scegli il reparto da contattare.
+            {t.dialog.intro}
           </p>
 
           <div className={styles.options}>

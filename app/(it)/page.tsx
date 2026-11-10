@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { languageAlternates } from "@/app/lib/i18n";
 import { FloatAfterHero } from "@/app/components/float-after-hero";
 import { PageMedia } from "@/app/components/page-media";
 import { SiteFooter } from "@/app/components/site-footer";
@@ -22,7 +23,7 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: { absolute: "Playa Luna | Beach club e ristorante sul mare a Varcaturo" },
   description: "Beach club, ristorante sul mare, piscina per bambini ed eventi a Marina di Varcaturo. Lido aperto da maggio a settembre, ristorante tutto l'anno. Prenota su WhatsApp.",
-  alternates: { canonical: "/" },
+  alternates: languageAlternates("it", "/"),
 };
 
 const experienceDefaults = [
@@ -70,7 +71,7 @@ export default function Home() {
     <div className="page-shell">
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(structuredData)} />
 
-      <SiteHeader />
+      <SiteHeader path="/" />
       <main id="main">
 
       <section className="hero" id="top" aria-labelledby="hero-title">

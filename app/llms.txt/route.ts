@@ -61,6 +61,13 @@ Società: ${legalEntity.name}, P.IVA ${legalEntity.vatNumber}.
 - [Eventi](${siteUrl}/eventi): feste private, aziendali e FAQ.
 - [Matrimoni](${siteUrl}/wedding): ricevimenti, rito civile e simbolico, FAQ.
 - [Contatti](${siteUrl}/contatti): orari, telefoni e indicazioni.
+
+## English pages
+- [Home](${siteUrl}/en): beach club and seafood restaurant near Naples.
+- [Beach club](${siteUrl}/en/beach-club): beach, facilities and FAQ.
+- [Restaurant](${siteUrl}/en/restaurant): seafood lunch and FAQ.
+- [Menu](${siteUrl}/en/menu): full menu in English with prices and allergens.
+- [Contact](${siteUrl}/en/contact): opening hours, phone numbers and directions.
 `;
 
   return new Response(text, {

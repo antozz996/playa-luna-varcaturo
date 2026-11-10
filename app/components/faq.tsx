@@ -1,11 +1,14 @@
+import { ui, type Locale } from "../lib/i18n";
 import { jsonLd } from "../lib/schema";
 import type { FaqItem } from "../lib/faqs";
 
 /** Accessible FAQ list (native <details>) plus FAQPage structured data. */
-export function Faq({ items, title = "Domande frequenti", id = "faq" }: { items: FaqItem[]; title?: string; id?: string }) {
+export function Faq({ items, title, id = "faq", locale = "it" }: { items: FaqItem[]; title?: string; id?: string; locale?: Locale }) {
+  const t = ui[locale];
   const schema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    inLanguage: locale,
     mainEntity: items.map((item) => ({
       "@type": "Question",
       name: item.question,
@@ -15,8 +18,8 @@ export function Faq({ items, title = "Domande frequenti", id = "faq" }: { items:
 
   return (
     <section className="faq shell" aria-labelledby={`${id}-title`}>
-      <p className="eyebrow">Informazioni utili</p>
-      <h2 id={`${id}-title`}>{title}</h2>
+      <p className="eyebrow">{t.faqEyebrow}</p>
+      <h2 id={`${id}-title`}>{title ?? t.faqTitle}</h2>
       <div className="faq-list">
         {items.map((item) => (
           <details key={item.question}>

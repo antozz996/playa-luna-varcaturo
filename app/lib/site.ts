@@ -3,10 +3,11 @@ import type { Metadata } from "next";
 export const siteUrl = "https://playaluna.it";
 
 /** Complete Open Graph block for a page (Next replaces, not merges, the parent's openGraph). */
-export function pageOpenGraph(options: { path: string; title: string; description: string; image?: string }): Metadata["openGraph"] {
+export function pageOpenGraph(options: { path: string; title: string; description: string; image?: string; locale?: "it" | "en" }): Metadata["openGraph"] {
   return {
     type: "website",
-    locale: "it_IT",
+    locale: options.locale === "en" ? "en_GB" : "it_IT",
+    alternateLocale: options.locale === "en" ? ["it_IT"] : ["en_GB"],
     siteName: "Playa Luna",
     url: options.path,
     title: options.title,
@@ -104,7 +105,7 @@ export const openingHours = {
  * - lidoOpen: the beach is actually open from 1 May to 30 September.
  * Pages using this must revalidate daily so the switch happens on its own.
  */
-export function seasonState(now: Date = new Date()) {
+export function seasonState(now: Date = new Date(), locale: "it" | "en" = "it") {
   const parts = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Rome", month: "numeric", day: "numeric" }).formatToParts(now);
   const month = Number(parts.find((p) => p.type === "month")?.value);
   const day = Number(parts.find((p) => p.type === "day")?.value);
@@ -113,8 +114,8 @@ export function seasonState(now: Date = new Date()) {
   const notice = lidoOpen
     ? undefined
     : summer
-      ? "Il lido apre il 1° maggio · Prenota già ora il tuo posto"
-      : "Il lido riapre a maggio · Bar e ristorante aperti tutti i giorni";
+      ? locale === "en" ? "The beach opens on 1 May · Book your spot now" : "Il lido apre il 1° maggio · Prenota già ora il tuo posto"
+      : locale === "en" ? "The beach reopens in May · Bar and restaurant open every day" : "Il lido riapre a maggio · Bar e ristorante aperti tutti i giorni";
   return { summer, lidoOpen, notice };
 }
 
