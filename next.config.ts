@@ -59,10 +59,22 @@ const nextConfig: NextConfig = {
       ["/privacy-policy", "/privacy"],
     ];
 
-    return legacyRoutes.flatMap(([source, destination]) => [
-      { source, destination, permanent: true },
-      { source: `${source}/`, destination, permanent: true },
-    ]);
+    // The old production alias on vercel.app duplicates the site for search engines:
+    // send it to the real domain. Preview URLs (other *.vercel.app hosts) are unaffected.
+    const canonicalHost = {
+      source: "/:path*",
+      has: [{ type: "host" as const, value: "playa-luna-varcaturo-delta.vercel.app" }],
+      destination: "https://playaluna.it/:path*",
+      permanent: true,
+    };
+
+    return [
+      canonicalHost,
+      ...legacyRoutes.flatMap(([source, destination]) => [
+        { source, destination, permanent: true },
+        { source: `${source}/`, destination, permanent: true },
+      ]),
+    ];
   },
   images: {
     formats: ["image/avif", "image/webp"],
