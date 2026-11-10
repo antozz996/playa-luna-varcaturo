@@ -15,7 +15,7 @@ const fullAddress = `${address.streetAddress}, ${address.postalCode} ${address.l
 
 const hours: FaqItem = {
   question: "Quali sono gli orari di Playa Luna?",
-  answer: `Siamo aperti tutti i giorni. Il bar è aperto dalle ${h.bar.opens} alle ${h.bar.closes} tutto l'anno e il pranzo si serve dalle ${h.restaurant.opens} alle ${h.restaurant.closes}. Da maggio a settembre il lido è aperto dalle ${h.beachSeason.opens} alle ${h.beachSeason.closes}. La sera la struttura è disponibile solo per eventi privati.`,
+  answer: `Siamo aperti tutti i giorni. Da maggio a settembre il lido è aperto dalle ${h.beachSeason.opens} alle ${h.beachSeason.closes} e il bar dalle ${h.barSummer.opens} alle ${h.barSummer.closes}; da ottobre ad aprile il bar è aperto dalle ${h.barWinter.opens} alle ${h.barWinter.closes}. Il pranzo si serve dalle ${h.restaurant.opens} alle ${h.restaurant.closes} tutto l'anno. La sera la struttura è disponibile solo per eventi privati.`,
 };
 
 const where: FaqItem = {
@@ -82,7 +82,7 @@ export const poolFaqs: FaqItem[] = [
 export const restaurantFaqs: FaqItem[] = [
   {
     question: "Quando è aperto il ristorante?",
-    answer: `Il pranzo si serve tutti i giorni dalle ${h.restaurant.opens} alle ${h.restaurant.closes}, tutto l'anno. Il bar è aperto tutti i giorni dalle ${h.bar.opens} alle ${h.bar.closes}, dalla colazione all'aperitivo. La sera il ristorante apre solo per eventi privati.`,
+    answer: `Il pranzo si serve tutti i giorni dalle ${h.restaurant.opens} alle ${h.restaurant.closes}, tutto l'anno. Il bar è aperto tutti i giorni dalla colazione all'aperitivo: ${h.barSummer.opens}–${h.barSummer.closes} da maggio a settembre, ${h.barWinter.opens}–${h.barWinter.closes} da ottobre ad aprile. La sera il ristorante apre solo per eventi privati.`,
   },
   {
     question: "Come si prenota un tavolo?",
@@ -124,7 +124,7 @@ export const eventFaqs: FaqItem[] = [
   },
   {
     question: "Come si richiede un preventivo?",
-    answer: `Scrivici su WhatsApp o chiama il ${eventPhoneNumber} indicando data, numero di ospiti e tipo di occasione.`,
+    answer: `Scriveteci su WhatsApp o chiamate il ${eventPhoneNumber} indicando data, numero di ospiti e tipo di occasione.`,
   },
   parking,
   accessibility,

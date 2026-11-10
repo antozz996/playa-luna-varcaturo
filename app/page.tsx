@@ -37,7 +37,7 @@ const experienceDefaults = [
   {
     number: "02",
     title: "Beach Club",
-    text: "Il mare davanti, l'isola all'orizzonte e tutto quello che serve per staccare davvero.",
+    text: "Il mare davanti, Ischia e Procida all'orizzonte e tutto quello che serve per staccare davvero.",
     image: "/images/playa-luna/beach-card-2f8a3359.webp",
     video: undefined,
     href: "/beach-club",
@@ -77,7 +77,7 @@ export default function Home() {
         <PageMedia
           video="/videos/home-hero.mp4"
           src={HERO_IMAGE}
-          alt="La spiaggia di Playa Luna con il mare e l'isola all'orizzonte"
+          alt="La spiaggia di Playa Luna con il mare e Ischia e Procida all'orizzonte"
           sizes="100vw"
           fill
           priority
@@ -88,7 +88,7 @@ export default function Home() {
         <div className="hero-content shell">
           <h1 id="hero-title" className="eyebrow light">Beach club e ristorante a Marina di Varcaturo</h1>
           <p className="display-title">Tutto il mare<br /><em>in un giorno.</em></p>
-          <p className="hero-copy">Dal primo caffè al tramonto. Spiaggia, cucina, piscina e momenti da ricordare.</p>
+          <p className="hero-copy">Dal primo caffè all’aperitivo. Spiaggia, cucina, piscina e Ischia e Procida di fronte.</p>
           {season.notice ? <p className="season-notice">{season.notice}</p> : null}
         </div>
         {season.summer ? (
@@ -113,7 +113,7 @@ export default function Home() {
         </div>
         <div className="manifesto-copy">
           <p>
-            Playa Luna è la libertà di arrivare al mattino senza decidere quando andare via.
+            Playa Luna è la libertà di arrivare al mattino e restare fino a sera.
             Il profumo del mare, un tavolo all’ombra, un piatto da condividere, la musica che
             cambia insieme alla luce.
           </p>
@@ -147,7 +147,7 @@ export default function Home() {
         <div className="shell beach-grid">
           <div className="beach-copy">
             <p className="eyebrow">Beach Club</p>
-            <h2 id="beach-title">La tua estate,<br /><em>senza orari.</em></h2>
+            <h2 id="beach-title">La tua estate,{" "}<br /><em>con Ischia e Procida di fronte.</em></h2>
             <p>Ombrelloni, lettini e un tratto di costa da vivere con calma. Spazi curati, servizi per tutta la famiglia e il mare sempre davanti agli occhi.</p>
             <ul className="feature-list" aria-label="Servizi beach club">
               <li><span>01</span> Spiaggia attrezzata</li>
@@ -230,7 +230,7 @@ export default function Home() {
             <h2 id="events-title">Momenti da<br /><em>a(mare).</em></h2>
           </div>
           <div className="events-copy">
-            <p>Diciottesimi, compleanni, cerimonie, matrimoni ed eventi aziendali. Costruiamo ogni occasione intorno alle persone, con il mare come scenografia naturale.</p>
+            <p>Diciottesimi, compleanni, cerimonie, matrimoni ed eventi aziendali. Fino a 250 ospiti, una sola festa per sera e la cucina di casa: costruiamo ogni occasione intorno alle persone.</p>
             <a className="pill-button dark" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events">Richiedi informazioni <span aria-hidden="true">↗</span></a>
           </div>
           <figure className="events-image" style={{ position: "relative", overflow: "hidden" }}>

@@ -43,7 +43,7 @@ type GalleryItem = { src?: string; video?: string; alt: string; caption: string 
 const weddingGallery: GalleryItem[] = [
   { src: "/images/playa-luna/wedding/place-setting.webp", alt: "Dettaglio della mise en place bianca e azzurra", caption: "Una tavola che parla di voi" },
   { src: "/images/playa-luna/wedding/flowers.webp", alt: "Composizione floreale per un ricevimento al Playa Luna", caption: "Fiori, luce, materia" },
-  { video: "/videos/playa-luna/wedding-gallery-03.mp4", alt: "Tavola elegante allestita davanti al mare", caption: "Il mare come scenografia" },
+  { video: "/videos/playa-luna/wedding-gallery-03.mp4", alt: "Tavola elegante allestita davanti al mare", caption: "Davanti al mare" },
   { src: "/images/playa-luna/wedding/white-table.webp", alt: "Tavola nuziale bianca con composizioni floreali", caption: "Eleganza, senza distanza" },
 ];
 

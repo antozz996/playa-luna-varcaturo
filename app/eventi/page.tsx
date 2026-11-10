@@ -24,7 +24,7 @@ const eventTypes = [
   { number: "01", title: "Diciottesimi", text: "Musica, luci e una regia capace di trasformare una festa in un ricordo condiviso." },
   { number: "02", title: "Feste private", text: "Compleanni, lauree e ricorrenze costruite intorno al vostro modo di stare insieme." },
   { number: "03", title: "Cerimonie", text: "Tavole curate, cucina e accoglienza in una cornice mediterranea, davanti al mare." },
-  { number: "04", title: "Corporate", text: "Pranzi, cene e appuntamenti aziendali con spazi flessibili e un’identità riconoscibile." },
+  { number: "04", title: "Corporate", text: "Pranzi, cene e appuntamenti aziendali per gruppi fino a 250 persone, con menu su misura." },
 ];
 
 type GalleryItem = { src?: string; video?: string; alt: string; caption: string; wide?: boolean };
@@ -32,7 +32,7 @@ type GalleryItem = { src?: string; video?: string; alt: string; caption: string;
 const eventGallery: GalleryItem[] = [
   { src: "/images/playa-luna/events/gathering.webp", alt: "Ospiti durante un evento negli spazi del Playa Luna", caption: "Persone, atmosfera, mare", wide: true },
   { src: "/images/playa-luna/events/night-01.webp", alt: "La sala e la pista illuminate durante una festa serale al Playa Luna", caption: "Quando la notte prende vita" },
-  { src: "/images/playa-luna/events/night-05.webp", alt: "Bottiglia celebrativa con luci da festa", caption: "Brindisi che restano" },
+  { src: "/images/playa-luna/events/night-05.webp", alt: "Bottiglia celebrativa con luci da festa", caption: "Il brindisi" },
   { src: "/images/playa-luna/events/gallery-07-2f8a1650.webp", alt: "Buffet preparato per un evento al Playa Luna", caption: "La cucina entra in scena", wide: true },
   { video: "/videos/playa-luna/events-gallery-08.mp4", alt: "Torta con scintille durante una festa al Playa Luna", caption: "Il momento più atteso" },
   { src: "/images/playa-luna/events/corporate.webp", alt: "Dettaglio di un’esperienza organizzata durante un evento", caption: "Dettagli che danno carattere", wide: true },
@@ -62,9 +62,9 @@ export default function EventsPage() {
         <div className="shell events-hero-copy-v2">
           <h1 className="eyebrow">Eventi e feste private sul mare a Varcaturo</h1>
           <p className="display-title">La tua storia<br /><em>prende vita.</em></p>
-          <p className="events-hero-lead-v2">Il mare come scenografia. Tutto il resto prende forma intorno a voi.</p>
+          <p className="events-hero-lead-v2">Spazi sul mare, cucina di casa e una sola festa per sera: la vostra.</p>
           <a className="pill-button light" href={eventWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_events">
-            Raccontaci il tuo evento <span aria-hidden="true">↗</span>
+            Raccontateci il vostro evento <span aria-hidden="true">↗</span>
           </a>
         </div>
       </section>
@@ -118,7 +118,7 @@ export default function EventsPage() {
         <div className="shell">
           <div className="events-formats-heading-v2">
             <p className="eyebrow">Il tuo formato</p>
-            <h2>Una serata che<br /><em>parla di te.</em></h2>
+            <h2>Una serata che{" "}<br /><em>parla di voi.</em></h2>
           </div>
           <div className="events-format-grid-v2">
             {eventTypes.map((item) => (

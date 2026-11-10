@@ -34,7 +34,9 @@ export default function BeachClubPage() {
       eyebrow="Beach Club"
       heading="Lido e spiaggia attrezzata a Marina di Varcaturo"
       title="La tua estate,"
-      emphasis="senza orari."
+      emphasis="con Ischia e Procida di fronte."
+      infoHeading={["Il mare,", "con calma."]}
+      ctaHeading={["Ti teniamo", "un ombrellone?"]}
       intro="Una giornata sul litorale di Varcaturo con spiaggia attrezzata, servizi e il mare sempre davanti."
       body={`Playa Luna è pensato per chi vuole vivere il mare con semplicità, senza rinunciare ai servizi. Puoi prenotare la tua postazione, fermarti per pranzo e alternare la spiaggia agli altri spazi della struttura. Il lido è aperto tutti i giorni dalle ${Number(season.opens.slice(0, 2))} alle ${Number(season.closes.slice(0, 2))}, da ${season.months.replace(" – ", " a ")}.`}
       image="/images/playa-luna/beach-day.webp"

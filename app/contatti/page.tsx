@@ -24,7 +24,7 @@ export const revalidate = 604800;
 
 const title = "Contatti, orari e come arrivare";
 const description =
-  "Orari, telefono e indicazioni per Playa Luna a Marina di Varcaturo: bar tutti i giorni 9–18:30, pranzo 12:30–16 tutto l'anno, lido 8–19 da maggio a settembre.";
+  "Orari, telefono e indicazioni per Playa Luna a Marina di Varcaturo: lido 8–19 e bar 8–19:15 da maggio a settembre, bar 9–18:30 da ottobre ad aprile, pranzo 12:30–16 tutto l'anno.";
 
 export const metadata: Metadata = {
   title,
@@ -57,7 +57,8 @@ export default function ContactsPage() {
         <p className="eyebrow">Tutti i giorni</p>
         <h2 id="hours-title">Orari di <em>apertura.</em></h2>
         <dl>
-          <div><dt>{openingHours.bar.label}</dt><dd>{openingHours.bar.opens} – {openingHours.bar.closes}<span>{openingHours.bar.months}</span></dd></div>
+          <div><dt>{openingHours.barSummer.label}</dt><dd>{openingHours.barSummer.opens} – {openingHours.barSummer.closes}<span>{openingHours.barSummer.months}</span></dd></div>
+          <div><dt>{openingHours.barWinter.label}</dt><dd>{openingHours.barWinter.opens} – {openingHours.barWinter.closes}<span>{openingHours.barWinter.months}</span></dd></div>
           <div><dt>{openingHours.beachSeason.label}</dt><dd>{openingHours.beachSeason.opens} – {openingHours.beachSeason.closes}<span>{openingHours.beachSeason.months}</span></dd></div>
           <div><dt>{openingHours.restaurant.label}</dt><dd>{openingHours.restaurant.opens} – {openingHours.restaurant.closes}<span>{openingHours.restaurant.months}</span></dd></div>
         </dl>

@@ -92,7 +92,8 @@ export const address = {
 /** Opening hours shown on the site and in structured data. Every day of the week. */
 export const openingHours = {
   beachSeason: { label: "Lido", months: "maggio – settembre", from: "1 maggio", to: "30 settembre", opens: "08:00", closes: "19:00", validFrom: "05-01", validThrough: "09-30" },
-  bar: { label: "Bar", months: "tutto l'anno", opens: "09:00", closes: "18:30" },
+  barSummer: { label: "Bar d'estate", months: "maggio – settembre", opens: "08:00", closes: "19:15", validFrom: "05-01", validThrough: "09-30" },
+  barWinter: { label: "Bar d'inverno", months: "ottobre – aprile", opens: "09:00", closes: "18:30" },
   restaurant: { label: "Ristorante (pranzo)", months: "tutto l'anno", opens: "12:30", closes: "16:00" },
   evening: "La sera la struttura è disponibile solo per eventi privati.",
 };
@@ -142,7 +143,7 @@ export const poolFacts = {
 };
 
 /** The island on the horizon. */
-export const islandOnHorizon = "Ischia";
+export const islandOnHorizon = "Ischia e Procida";
 
 /** Confirmed amenities (used in page copy, FAQ and structured data). */
 export const amenities = {

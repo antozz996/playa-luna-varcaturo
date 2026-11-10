@@ -39,6 +39,9 @@ type ServicePageProps = {
   secondaryCta?: { href: string; label: string; event: string };
   /** "Info rapide" block shown right after the hero. */
   facts?: KeyFact[];
+  /** Two-line headings (second line in italics) for the info and closing CTA sections. */
+  infoHeading?: [string, string];
+  ctaHeading?: [string, string];
   heroObjectPosition?: string;
   detailObjectPosition?: string;
 };
@@ -68,6 +71,8 @@ export function ServicePage({
   notice,
   secondaryCta,
   facts,
+  infoHeading = ["Quello che", "trovi qui."],
+  ctaHeading = ["Organizza la tua", "giornata sul mare."],
   heroObjectPosition = "center 55%",
   detailObjectPosition = "50% 50%",
 }: ServicePageProps) {
@@ -126,7 +131,7 @@ export function ServicePage({
       <section className="service-content shell section-space">
         <div className="service-main-copy">
           <p className="eyebrow">Informazioni</p>
-          <h2>Quello che<br /><em>trovi qui.</em></h2>
+          <h2>{infoHeading[0]}{" "}<br /><em>{infoHeading[1]}</em></h2>
           <p>{body}</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
           <a className="pill-button dark" href={ctaHref} {...ctaTarget} data-event={ctaEvent}>
@@ -171,7 +176,7 @@ export function ServicePage({
       <section className="service-cta">
         <div className="shell">
           <p className="eyebrow light">Playa Luna · Marina di Varcaturo</p>
-          <h2>Organizza la tua<br /><em>giornata sul mare.</em></h2>
+          <h2>{ctaHeading[0]}{" "}<br /><em>{ctaHeading[1]}</em></h2>
           <a className="pill-button linen" href={ctaHref} {...ctaTarget} data-event={ctaEvent}>
             {ctaLabel} <span aria-hidden="true">↗</span>
           </a>

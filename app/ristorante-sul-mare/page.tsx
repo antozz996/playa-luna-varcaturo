@@ -3,6 +3,7 @@ import { ServicePage } from "../components/service-page";
 import { restaurantFaqs } from "../lib/faqs";
 import { restaurantOpeningHours } from "../lib/schema";
 import {
+  openingHours,
   pageOpenGraph,
   restaurantPhoneHref,
   restaurantPhoneNumber,
@@ -29,8 +30,8 @@ export default function RestaurantPage() {
       heading="Ristorante sul mare a Marina di Varcaturo"
       title="Il sapore"
       emphasis="del mare."
-      intro="Il ristorante è parte della giornata Playa Luna: una sala aperta sulla luce, cucina mediterranea e tavoli da condividere."
-      body="La proposta accompagna il ritmo del lido, dalla colazione all'aperitivo, con il pranzo servito tutti i giorni dalle 12:30 alle 16, tutto l'anno. Il mare resta il filo conduttore, insieme a ingredienti mediterranei, piatti curati e un ambiente informale ma attento ai dettagli. La sera la struttura apre solo per eventi privati."
+      intro={`Sashimi di ricciola, polpo alla brace, linguina all’astice, spaghetti alle vongole: cucina di mare a pranzo tutti i giorni, dalle ${openingHours.restaurant.opens} alle ${openingHours.restaurant.closes}, tutto l’anno.`}
+      body="La proposta accompagna il ritmo del lido, dalla colazione all'aperitivo al bar, fino al pranzo in sala. Il mare resta il filo conduttore, insieme a ingredienti mediterranei, piatti curati e un ambiente informale ma attento ai dettagli. La sera la struttura apre solo per eventi privati."
       image="/images/playa-luna/restaurant/hero-2f8a7552.webp"
       imageAlt="La sala luminosa del ristorante Playa Luna durante il servizio"
       heroObjectPosition="50% 35%"
@@ -42,6 +43,8 @@ export default function RestaurantPage() {
         "Colazione, bar e aperitivo",
         "Cene solo per eventi privati",
       ]}
+      infoHeading={["A tavola,", "vista mare."]}
+      ctaHeading={["Ti teniamo", "un tavolo?"]}
       menuHref="/menu-ristorante"
       faqs={restaurantFaqs}
       ctaLabel="Prenota su WhatsApp"

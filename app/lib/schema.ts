@@ -37,10 +37,10 @@ function seasonal(opens: string, closes: string, validFrom: string, validThrough
   };
 }
 
-/** Bar hours all year; during the beach season the structure follows the lido hours. */
+/** Regular hours = winter bar; from May to September the structure opens 8–19:15 (summer bar, lido 8–19). */
 export const businessOpeningHours = [
-  { "@type": "OpeningHoursSpecification", dayOfWeek: everyDay, opens: openingHours.bar.opens, closes: openingHours.bar.closes },
-  seasonal(openingHours.beachSeason.opens, openingHours.beachSeason.closes, openingHours.beachSeason.validFrom, openingHours.beachSeason.validThrough),
+  { "@type": "OpeningHoursSpecification", dayOfWeek: everyDay, opens: openingHours.barWinter.opens, closes: openingHours.barWinter.closes },
+  seasonal(openingHours.barSummer.opens, openingHours.barSummer.closes, openingHours.barSummer.validFrom, openingHours.barSummer.validThrough),
 ];
 
 export const restaurantOpeningHours = [

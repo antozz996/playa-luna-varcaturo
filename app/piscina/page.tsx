@@ -35,8 +35,10 @@ export default function PoolPage() {
       heading="Piscina per bambini e famiglie a Varcaturo"
       title="Un tuffo"
       emphasis="nell’estate."
-      intro="La piscina appartiene alla struttura Playa Luna e completa la giornata al mare con uno spazio dedicato alle famiglie."
-      body="È un ambiente interno a Playa Luna, distinto da qualsiasi altra struttura, dove i bambini possono divertirsi e gli adulti rilassarsi restando all’interno della stessa esperienza."
+      intro="La piscina all'aperto di Playa Luna completa la giornata al mare con uno spazio dedicato ai bambini e alle famiglie."
+      body="Una piscina tutta per i più piccoli, a due passi dalla spiaggia e dal ristorante: loro giocano in acqua, voi vi godete il lettino senza perderli di vista. È all'aperto, aperta con il lido da maggio a settembre, con ingresso separato: chiedici disponibilità e tariffe su WhatsApp."
+      infoHeading={["Acqua bassa,", "giochi lunghi."]}
+      ctaHeading={["Una giornata", "per i più piccoli."]}
       image="/images/playa-luna/pool-family.webp"
       imageAlt="Bambini e famiglie nella piscina all'aperto di Playa Luna"
       heroObjectPosition="50% 55%"
