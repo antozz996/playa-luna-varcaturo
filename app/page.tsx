@@ -130,6 +130,7 @@ export default function Home() {
                 src={item.image}
                 alt=""
                 sizes="(max-width: 800px) 82vw, 33vw"
+                videoControls={false}
                 fill
               />
               <span className="card-number">{item.number}</span>

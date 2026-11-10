@@ -11,12 +11,13 @@ type ExperienceVideoProps = {
   priority?: boolean;
   className?: string;
   zIndex?: number;
-  /** Text alternative: exposed as role="img" when the video carries meaning. Empty = decorative. */
+  /** Text alternative read by screen readers (the video itself stays decorative). */
   label?: string;
-  /** Show a pause/play button (WCAG 2.2.2), used on hero videos. */
-  pausable?: boolean;
+  /** Show the pause/play button. Off for videos inside links (a button can't sit inside <a>). */
+  controls?: boolean;
 };
 
+/* ---- prefers-reduced-motion ---- */
 const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
 
 function subscribeReducedMotion(onChange: () => void) {
@@ -26,11 +27,25 @@ function subscribeReducedMotion(onChange: () => void) {
 }
 
 function usePrefersReducedMotion() {
-  return useSyncExternalStore(
-    subscribeReducedMotion,
-    () => window.matchMedia(REDUCED_MOTION).matches,
-    () => false,
-  );
+  return useSyncExternalStore(subscribeReducedMotion, () => window.matchMedia(REDUCED_MOTION).matches, () => false);
+}
+
+/* ---- Page-wide pause (WCAG 2.2.2): any pause button stops every video on the page ---- */
+let allPaused = false;
+const pauseListeners = new Set<() => void>();
+
+function setAllPaused(value: boolean) {
+  allPaused = value;
+  pauseListeners.forEach((listener) => listener());
+}
+
+function subscribePause(onChange: () => void) {
+  pauseListeners.add(onChange);
+  return () => pauseListeners.delete(onChange);
+}
+
+function useAllPaused() {
+  return useSyncExternalStore(subscribePause, () => allPaused, () => false);
 }
 
 export function ExperienceVideo({
@@ -42,26 +57,14 @@ export function ExperienceVideo({
   className = "",
   zIndex,
   label,
-  pausable = false,
+  controls = true,
 }: ExperienceVideoProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const reducedMotion = usePrefersReducedMotion();
+  const paused = useAllPaused();
   const [inView, setInView] = useState(priority);
   const [isReady, setIsReady] = useState(false);
-  const [userPaused, setUserPaused] = useState(false);
   const shouldLoad = inView && !reducedMotion;
-
-  const togglePlayback = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    if (userPaused) {
-      setUserPaused(false);
-      void video.play().catch(() => {});
-    } else {
-      setUserPaused(true);
-      video.pause();
-    }
-  };
 
   useEffect(() => {
     if (priority) return;
@@ -82,47 +85,58 @@ export function ExperienceVideo({
     return () => observer.disconnect();
   }, [priority]);
 
+  // Load once when it comes into view.
   useEffect(() => {
     const video = videoRef.current;
     if (!shouldLoad || !video) return;
     video.load();
+  }, [shouldLoad, src]);
+
+  // Play or stop following the page-wide pause and the reduced-motion preference.
+  // The hero is server-rendered with autoplay, so it must be stopped explicitly too.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (reducedMotion || paused || !shouldLoad) {
+      video.pause();
+      return;
+    }
     void video.play().catch(() => {
       // Autoplay can occasionally be deferred by the browser.
     });
-  }, [shouldLoad, src]);
+  }, [reducedMotion, paused, shouldLoad, isReady]);
 
   // With a poster the element is visible immediately; without one it fades in on first frame.
   const visible = Boolean(poster) || isReady;
-  const a11y = label ? { role: "img", "aria-label": label } : { "aria-hidden": true as const };
 
   return (
     <>
-    <video
-      ref={videoRef}
-      className={`${styles.video} ${fill ? styles.fill : ""} ${visible ? styles.ready : ""} ${className}`}
-      src={shouldLoad ? src : undefined}
-      poster={poster}
-      style={{ objectPosition, zIndex }}
-      muted
-      loop
-      playsInline
-      autoPlay={!reducedMotion && !userPaused}
-      preload={shouldLoad ? "metadata" : "none"}
-      onLoadedData={() => setIsReady(true)}
-      tabIndex={-1}
-      {...a11y}
-    />
-    {pausable && shouldLoad ? (
-      <button
-        type="button"
-        className="video-toggle"
-        onClick={togglePlayback}
-        aria-label={userPaused ? "Riproduci il video" : "Metti in pausa il video"}
-        aria-pressed={userPaused}
-      >
-        <span aria-hidden="true">{userPaused ? "▶" : "❚❚"}</span>
-      </button>
-    ) : null}
+      <video
+        ref={videoRef}
+        className={`${styles.video} ${fill ? styles.fill : ""} ${visible ? styles.ready : ""} ${className}`}
+        src={shouldLoad ? src : undefined}
+        poster={poster}
+        style={{ objectPosition, zIndex }}
+        muted
+        loop
+        playsInline
+        autoPlay={!reducedMotion && !paused}
+        preload={shouldLoad ? "metadata" : "none"}
+        onLoadedData={() => setIsReady(true)}
+        aria-hidden="true"
+        tabIndex={-1}
+      />
+      {label ? <span className="sr-only">{label}</span> : null}
+      {controls && shouldLoad ? (
+        <button
+          type="button"
+          className="video-toggle"
+          onClick={() => setAllPaused(!paused)}
+          aria-label={paused ? "Riproduci i video" : "Metti in pausa i video"}
+        >
+          <span aria-hidden="true">{paused ? "▶" : "❚❚"}</span>
+        </button>
+      ) : null}
     </>
   );
 }
