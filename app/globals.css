@@ -2406,6 +2406,46 @@ footer {
   transform: translateY(12px);
 }
 
+/* Box "In breve" / "Info rapide" */
+.key-facts {
+  padding-block: clamp(40px, 5vw, 72px);
+}
+
+.key-facts h2.eyebrow {
+  margin-bottom: 20px;
+  font-family: inherit;
+}
+
+.key-facts dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0 32px;
+  margin: 0;
+  border-top: 1px solid var(--line);
+}
+
+.key-facts dl > div {
+  display: grid;
+  gap: 4px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.key-facts dt {
+  color: color-mix(in srgb, var(--ink) 72%, transparent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.key-facts dd {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 19px;
+  line-height: 1.35;
+}
+
 /* Avviso stagionale (home e pagina spiaggia) */
 .season-notice {
   display: inline-flex;

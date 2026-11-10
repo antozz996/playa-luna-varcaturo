@@ -27,7 +27,7 @@ function read(path) {
 }
 
 test("FAQ with FAQPage schema on the service and contact pages", () => {
-  for (const path of ["/beach-club", "/ristorante-sul-mare", "/piscina", "/eventi", "/contatti"]) {
+  for (const path of ["/beach-club", "/ristorante-sul-mare", "/piscina", "/eventi", "/wedding", "/contatti"]) {
     const html = read(path);
     assert.match(html, /"@type":"FAQPage"/, `${path}: FAQPage schema`);
     assert.match(html, /<details><summary>/, `${path}: visible FAQ`);

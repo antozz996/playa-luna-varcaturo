@@ -23,6 +23,14 @@ export default function BeachClubPage() {
     <ServicePage
       slug="beach-club"
       notice={seasonState().notice}
+      facts={[
+        { label: "Stagione", value: "1 maggio – 30 settembre" },
+        { label: "Orari", value: `Tutti i giorni ${Number(season.opens.slice(0, 2))}–${Number(season.closes.slice(0, 2))}` },
+        { label: "In spiaggia", value: "Ombrelloni, lettini, docce, spogliatoi, Wi-Fi, bagnino" },
+        { label: "Prezzi e disponibilità", value: "Chiedili su WhatsApp" },
+        { label: "Parcheggio", value: "Gratuito" },
+        { label: "Animali", value: "Ammessi" },
+      ]}
       eyebrow="Beach Club"
       heading="Lido e spiaggia attrezzata a Marina di Varcaturo"
       title="La tua estate,"

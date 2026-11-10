@@ -5,6 +5,7 @@ import { SiteHeader } from "./site-header";
 import type { FaqItem } from "../lib/faqs";
 import { breadcrumbSchema, departmentSchema, jsonLd } from "../lib/schema";
 import { Faq } from "./faq";
+import { KeyFacts, type KeyFact } from "./key-facts";
 import { beachWhatsapp, siteUrl } from "../lib/site";
 
 type ServicePageProps = {
@@ -36,6 +37,8 @@ type ServicePageProps = {
   notice?: string;
   /** Optional second contact next to the main CTA (e.g. a phone call). */
   secondaryCta?: { href: string; label: string; event: string };
+  /** "Info rapide" block shown right after the hero. */
+  facts?: KeyFact[];
   heroObjectPosition?: string;
   detailObjectPosition?: string;
 };
@@ -64,6 +67,7 @@ export function ServicePage({
   faqs,
   notice,
   secondaryCta,
+  facts,
   heroObjectPosition = "center 55%",
   detailObjectPosition = "50% 50%",
 }: ServicePageProps) {
@@ -116,6 +120,8 @@ export function ServicePage({
           {notice ? <p className="season-notice">{notice}</p> : null}
         </div>
       </section>
+
+      {facts?.length ? <KeyFacts id="info-rapide" title="Info rapide" facts={facts} /> : null}
 
       <section className="service-content shell section-space">
         <div className="service-main-copy">

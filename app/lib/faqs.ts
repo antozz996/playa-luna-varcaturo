@@ -2,6 +2,7 @@
 import {
   address,
   beachPhoneNumber,
+  eventFacts,
   eventPhoneNumber,
   openingHours,
   restaurantPhoneNumber,
@@ -60,6 +61,10 @@ export const beachFaqs: FaqItem[] = [
 
 export const poolFaqs: FaqItem[] = [
   {
+    question: "Quando è aperta la piscina?",
+    answer: `È una piscina all'aperto, aperta tutti i giorni dalle ${h.beachSeason.opens} alle ${h.beachSeason.closes} insieme al lido, da maggio a settembre.`,
+  },
+  {
     question: "La piscina è inclusa con l'ombrellone?",
     answer: "No, la piscina ha un ingresso separato. Scrivici su WhatsApp per disponibilità, tariffe e condizioni.",
   },
@@ -98,14 +103,24 @@ export const restaurantFaqs: FaqItem[] = [
   parking,
 ];
 
+const e = eventFacts;
+
 export const eventFaqs: FaqItem[] = [
   {
     question: "Che tipo di eventi organizzate?",
-    answer: "Diciottesimi, compleanni, lauree, feste private, cerimonie, matrimoni ed eventi aziendali.",
+    answer: "Diciottesimi, compleanni, lauree, feste private, cerimonie, matrimoni ed eventi aziendali, tutto l'anno.",
+  },
+  {
+    question: "Quanti ospiti potete accogliere?",
+    answer: `Fino a ${e.maxGuestsSeated} ospiti con cena seduta, tra spiaggia, terrazza con pergola sul mare, sala interna e area piscina.`,
   },
   {
     question: "Si possono organizzare eventi di sera?",
-    answer: "Sì: la sera la struttura è riservata proprio agli eventi privati.",
+    answer: `Sì: la sera la struttura è riservata agli eventi privati, uno solo per sera, e la festa può durare fino all'${e.partyUntil.replace(":00", "")}.`,
+  },
+  {
+    question: "E se piove?",
+    answer: "C'è sempre un piano B al coperto nella sala interna.",
   },
   {
     question: "Come si richiede un preventivo?",
@@ -113,6 +128,49 @@ export const eventFaqs: FaqItem[] = [
   },
   parking,
   accessibility,
+];
+
+export const weddingFaqs: FaqItem[] = [
+  {
+    question: "Quanti invitati potete ospitare?",
+    answer: `Fino a ${e.maxGuestsSeated} invitati con cena seduta.`,
+  },
+  {
+    question: "Si può celebrare il matrimonio in struttura?",
+    answer: "Sì, sia con rito civile sia con rito simbolico, anche in spiaggia.",
+  },
+  {
+    question: "Quali spazi avete?",
+    answer: `${e.spaces.join(", ")}: potete usarli per cerimonia, aperitivo, cena e festa.`,
+  },
+  {
+    question: "E se piove?",
+    answer: "C'è sempre un piano B al coperto nella sala interna.",
+  },
+  {
+    question: "Fino a che ora può durare la festa?",
+    answer: `Fino all'${e.partyUntil.replace(":00", "")}. La sera la location è riservata a un solo evento: è tutta vostra.`,
+  },
+  {
+    question: "Chi si occupa della cucina?",
+    answer: "La nostra cucina interna: costruiamo il menu insieme a voi.",
+  },
+  {
+    question: "Musica, fiori e fornitori?",
+    answer: `${e.music} sono benvenuti. Allestimenti floreali e mise en place li curiamo noi, e vi mettiamo in contatto con la nostra rete di partner: fotografi, video maker, fioristi, fuochisti e angoli esperienza come profumo, tattoo e bracciale infinito.`,
+  },
+  {
+    question: "In che periodo dell'anno si può sposare da voi?",
+    answer: "Tutto l'anno: d'estate tra spiaggia e terrazza, d'inverno nella sala interna.",
+  },
+  {
+    question: "C'è parcheggio per gli invitati?",
+    answer: "Sì, il parcheggio è gratuito per tutti gli ospiti.",
+  },
+  {
+    question: "Come si richiede un preventivo?",
+    answer: `Scriveteci su WhatsApp o chiamate il ${eventPhoneNumber} con data o periodo, numero di invitati e budget indicativo: vi rispondiamo con una proposta su misura.`,
+  },
 ];
 
 export const contactFaqs: FaqItem[] = [hours, where, parking, pets, accessibility];

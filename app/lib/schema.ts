@@ -1,6 +1,7 @@
 import {
   address,
   amenities,
+  eventFacts,
   beachPhoneNumber,
   eventPhoneNumber,
   legalEntity,
@@ -121,6 +122,7 @@ export function eventVenueSchema(image: string) {
     telephone: eventPhoneNumber,
     extra: {
       description: "Feste private, diciottesimi, eventi aziendali e ricevimenti di matrimonio sul mare a Marina di Varcaturo.",
+      maximumAttendeeCapacity: eventFacts.maxGuestsSeated,
       subjectOf: [`${siteUrl}/eventi`, `${siteUrl}/wedding`],
     },
   });

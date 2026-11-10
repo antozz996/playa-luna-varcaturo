@@ -117,6 +117,33 @@ export function seasonState(now: Date = new Date()) {
   return { summer, lidoOpen, notice };
 }
 
+/** Confirmed facts for weddings and private events (pages, FAQ and structured data). */
+export const eventFacts = {
+  maxGuestsSeated: 250,
+  spaces: ["Spiaggia", "Terrazza con pergola sul mare", "Sala interna", "Area piscina"],
+  ceremony: "Rito civile e simbolico in struttura",
+  partyUntil: "01:00",
+  rainPlan: "Piano B al coperto nella sala interna",
+  catering: "Cucina interna, menu costruiti con voi",
+  exclusive: "Un solo evento per sera: la location è tutta vostra",
+  period: "Tutto l'anno",
+  music: "DJ e musica dal vivo",
+  styling: "Allestimenti floreali e mise en place curati da noi",
+  partners: "Rete di partner: fotografi, video maker, fioristi, fuochisti, angoli profumo, tattoo e bracciale infinito, collaborazioni con grandi brand",
+  parking: "Parcheggio gratuito per gli ospiti",
+};
+
+/** Children's pool: outdoor, open with the lido, separate entrance fee. */
+export const poolFacts = {
+  type: "Piscina all'aperto per bambini",
+  season: "1 maggio – 30 settembre",
+  hours: "Tutti i giorni 8–19, con il lido",
+  entrance: "Ingresso separato dalla spiaggia",
+};
+
+/** The island on the horizon. */
+export const islandOnHorizon = "Ischia";
+
 /** Confirmed amenities (used in page copy, FAQ and structured data). */
 export const amenities = {
   freeParking: true,

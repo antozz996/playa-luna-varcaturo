@@ -218,7 +218,7 @@ export default function Home() {
         <div className="family-copy">
           <p className="eyebrow light">Piscina · Playa Luna</p>
           <h2 id="pool-title">Un tuffo<br /><em>nell’estate.</em></h2>
-          <p>La piscina interna a Playa Luna completa la giornata al mare: uno spazio dedicato al divertimento dei più piccoli e al relax di tutta la famiglia.</p>
+          <p>La piscina all’aperto di Playa Luna completa la giornata al mare: uno spazio dedicato al divertimento dei più piccoli e al relax di tutta la famiglia, da maggio a settembre.</p>
           <a className="text-link light-link" href={poolWhatsapp} target="_blank" rel="noreferrer" data-event="whatsapp_pool">Chiedi disponibilità <span aria-hidden="true">→</span></a>
         </div>
       </section>

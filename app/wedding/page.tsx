@@ -3,8 +3,22 @@ import Link from "next/link";
 import { PageMedia } from "../components/page-media";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
+import { Faq } from "../components/faq";
+import { KeyFacts } from "../components/key-facts";
+import { weddingFaqs } from "../lib/faqs";
 import { breadcrumbSchema, eventVenueSchema, jsonLd } from "../lib/schema";
-import { pageOpenGraph, siteUrl, weddingWhatsapp } from "../lib/site";
+import { eventFacts, pageOpenGraph, siteUrl, weddingWhatsapp } from "../lib/site";
+
+const weddingKeyFacts = [
+  { label: "Invitati", value: `Fino a ${eventFacts.maxGuestsSeated} con cena seduta` },
+  { label: "Cerimonia", value: eventFacts.ceremony },
+  { label: "Spazi", value: eventFacts.spaces.join(" · ") },
+  { label: "Se piove", value: eventFacts.rainPlan },
+  { label: "Festa", value: `Fino all'1:00 · ${eventFacts.exclusive}` },
+  { label: "Cucina", value: eventFacts.catering },
+  { label: "Musica e allestimenti", value: `${eventFacts.music} · ${eventFacts.styling}` },
+  { label: "Periodo e parcheggio", value: `${eventFacts.period} · ${eventFacts.parking}` },
+];
 
 const title = "Matrimonio sul mare a Varcaturo, Napoli";
 const description =
@@ -74,6 +88,8 @@ export default function WeddingPage() {
         <p>La luce, il mare, i fiori, la tavola. Ogni scelta trova il suo posto senza perdere spontaneità, per un ricevimento elegante ma mai distante.</p>
       </section>
 
+      <KeyFacts id="matrimoni-in-breve" title="Il matrimonio in breve" facts={weddingKeyFacts} />
+
       <section className="shell wedding-gallery-v3" aria-label="Dettagli wedding Playa Luna">
         <div className="wedding-gallery-copy-v3">
           <p className="eyebrow">Mediterraneo contemporaneo</p>
@@ -112,6 +128,8 @@ export default function WeddingPage() {
           </div>
         </div>
       </section>
+
+      <Faq items={weddingFaqs} title="Domande frequenti sul matrimonio" />
 
       <section className="wedding-moment-v2">
         <div className="wedding-moment-image-v2" style={{ position: "relative", overflow: "hidden" }}>

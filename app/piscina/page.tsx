@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { ServicePage } from "../components/service-page";
 import { poolFaqs } from "../lib/faqs";
-import { beachPhoneNumber, pageOpenGraph, poolWhatsapp } from "../lib/site";
+import { beachPhoneNumber, pageOpenGraph, poolFacts, poolWhatsapp, seasonState } from "../lib/site";
+
+// Rebuild daily so the seasonal notice switches on its own.
+export const revalidate = 86400;
 
 const title = "Piscina per bambini a Varcaturo";
 const description =
-  "La piscina all'interno del Playa Luna a Marina di Varcaturo: uno spazio per il divertimento dei bambini e il relax delle famiglie, insieme a spiaggia e ristorante.";
+  "Piscina all'aperto per bambini al Playa Luna di Marina di Varcaturo, aperta tutti i giorni 8–19 da maggio a settembre, accanto a spiaggia e ristorante.";
 
 export const metadata: Metadata = {
   title,
@@ -15,9 +18,19 @@ export const metadata: Metadata = {
 };
 
 export default function PoolPage() {
+  const season = seasonState();
   return (
     <ServicePage
       slug="piscina"
+      notice={season.lidoOpen ? undefined : season.summer ? "La piscina apre il 1° maggio, con il lido" : "La piscina riapre a maggio, con il lido"}
+      facts={[
+        { label: "Cos'è", value: poolFacts.type },
+        { label: "Stagione", value: poolFacts.season },
+        { label: "Orari", value: poolFacts.hours },
+        { label: "Ingresso", value: poolFacts.entrance },
+        { label: "Prezzi e disponibilità", value: "Chiedili su WhatsApp" },
+        { label: "Servizi", value: "Docce, spogliatoi, parcheggio gratuito" },
+      ]}
       eyebrow="Piscina"
       heading="Piscina per bambini e famiglie a Varcaturo"
       title="Un tuffo"
@@ -25,12 +38,12 @@ export default function PoolPage() {
       intro="La piscina appartiene alla struttura Playa Luna e completa la giornata al mare con uno spazio dedicato alle famiglie."
       body="È un ambiente interno a Playa Luna, distinto da qualsiasi altra struttura, dove i bambini possono divertirsi e gli adulti rilassarsi restando all’interno della stessa esperienza."
       image="/images/playa-luna/pool-family.webp"
-      imageAlt="Bambini e famiglie nella piscina interna di Playa Luna"
+      imageAlt="Bambini e famiglie nella piscina all'aperto di Playa Luna"
       heroObjectPosition="50% 55%"
       detailImage="/images/playa-luna/pool-detail-2f8a1100.webp"
       detailAlt="Lettino davanti alla piscina Playa Luna con il logo della struttura"
       features={[
-        "Piscina all'interno della struttura Playa Luna",
+        "Piscina all'aperto dentro la struttura Playa Luna",
         "Spazio pensato per bambini e famiglie",
         "Ingresso separato dalla spiaggia",
         "Docce, spogliatoi e parcheggio gratuito",

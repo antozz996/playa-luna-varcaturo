@@ -4,9 +4,10 @@ import { PageMedia } from "../components/page-media";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
 import { Faq } from "../components/faq";
+import { KeyFacts } from "../components/key-facts";
 import { eventFaqs } from "../lib/faqs";
 import { breadcrumbSchema, eventVenueSchema, jsonLd } from "../lib/schema";
-import { eventWhatsapp, pageOpenGraph, siteUrl } from "../lib/site";
+import { eventFacts, eventWhatsapp, pageOpenGraph, siteUrl } from "../lib/site";
 
 const title = "Eventi e feste private sul mare a Varcaturo";
 const description =
@@ -80,6 +81,19 @@ export default function EventsPage() {
           <p>Dal primo brindisi all’ultima canzone, costruiamo un ritmo coerente con l’occasione e con chi la vive.</p>
         </div>
       </section>
+
+      <KeyFacts
+        id="eventi-in-breve"
+        title="Eventi in breve"
+        facts={[
+          { label: "Ospiti", value: `Fino a ${eventFacts.maxGuestsSeated} con cena seduta` },
+          { label: "Spazi", value: eventFacts.spaces.join(" · ") },
+          { label: "Serata", value: `Fino all'1:00 · ${eventFacts.exclusive}` },
+          { label: "Se piove", value: eventFacts.rainPlan },
+          { label: "Cucina e musica", value: `${eventFacts.catering} · ${eventFacts.music}` },
+          { label: "Periodo e parcheggio", value: `${eventFacts.period} · ${eventFacts.parking}` },
+        ]}
+      />
 
       <section className="shell events-gallery-v2" aria-label="Atmosfere degli eventi Playa Luna">
         {eventGallery.map((item) => (
